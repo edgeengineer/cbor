@@ -1,3 +1,19 @@
+// MARK: - DEPRECATED
+// This file is being deprecated in favor of the struct-based test files:
+// - CBORBasicTests.swift: Basic CBOR type tests and round-trip tests
+// - CBORErrorTests.swift: Error handling tests
+// - CBORCodableTests.swift: Codable protocol tests
+//
+// MIGRATION STATUS:
+// Round-trip tests: All migrated to CBORBasicTests.swift
+// Error tests: All migrated to CBORErrorTests.swift
+// Codable tests: All migrated to CBORCodableTests.swift
+// Special format tests (indefinite length, half-precision): Migrated to CBORBasicTests.swift
+//
+// The tests in this file are duplicates of tests in the struct-based test files.
+// This file is kept for backward compatibility and will be removed in a future release.
+// Please add new tests to the appropriate struct-based test file instead of here.
+
 #if canImport(FoundationEssentials)
 import FoundationEssentials
 #elseif canImport(Foundation)

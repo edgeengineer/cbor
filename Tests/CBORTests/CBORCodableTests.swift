@@ -550,4 +550,109 @@ struct CBORCodableTests {
         #expect(encodeTime < 1.0, "Encoding performance is too slow")
         #expect(decodeTime < 1.0, "Decoding performance is too slow")
     }
+    
+    // MARK: - Foundation Encoder/Decoder Tests
+    
+    @Test
+    func testFoundationEncoderDecoderRoundTrip() {
+        #if canImport(Foundation)
+        struct TestStruct: Codable, Equatable {
+            let int: Int
+            let string: String
+            let bool: Bool
+            let array: [Int]
+            let dictionary: [String: String]
+        }
+        
+        let original = TestStruct(
+            int: 42,
+            string: "Hello",
+            bool: true,
+            array: [1, 2, 3],
+            dictionary: ["key": "value"]
+        )
+        
+        do {
+            let encoder = CBOREncoder()
+            let decoder = CBORDecoder()
+            
+            let data = try encoder.encode(original)
+            let decoded = try decoder.decode(TestStruct.self, from: data)
+            
+            #expect(original == decoded, "Foundation encoder/decoder round-trip failed")
+        } catch {
+            Issue.record("Foundation encoder/decoder round-trip failed with error: \(error)")
+        }
+        #endif
+    }
+    
+    @Test
+    func testComplexCodableStructRoundTrip() {
+        #if canImport(Foundation)
+        // Create a complex Person object with nested Address objects.
+        struct Address: Codable, Equatable {
+            let street: String
+            let city: String
+        }
+        
+        struct ComplexPerson: Codable, Equatable {
+            let name: String
+            let age: Int
+            let addresses: [Address]
+            let metadata: [String: String]
+        }
+        
+        let person = ComplexPerson(
+            name: "Alice",
+            age: 30,
+            addresses: [
+                Address(street: "123 Main St", city: "Wonderland"),
+                Address(street: "456 Side Ave", city: "Fantasialand")
+            ],
+            metadata: [
+                "nickname": "Ally",
+                "occupation": "Adventurer"
+            ]
+        )
+        
+        do {
+            let encoder = CBOREncoder()
+            let data = try encoder.encode(person)
+            
+            // Decode the data back to a CBOR value first
+            let cbor = try CBOR.decode(Array(data))
+            
+            // Verify the structure manually
+            if case let .map(pairs) = cbor {
+                // Check that we have the expected keys
+                let nameFound = pairs.contains { pair in
+                    if case .textString("name") = pair.key, 
+                       case .textString("Alice") = pair.value {
+                        return true
+                    }
+                    return false
+                }
+                
+                let ageFound = pairs.contains { pair in
+                    if case .textString("age") = pair.key, 
+                       case .unsignedInt(30) = pair.value {
+                        return true
+                    }
+                    return false
+                }
+                
+                #expect(nameFound && ageFound, "Failed to find expected keys in encoded Person")
+            } else {
+                Issue.record("Expected map structure for encoded Person, got \(cbor)")
+            }
+            
+            // Also test full round-trip decoding
+            let decoder = CBORDecoder()
+            let decodedPerson = try decoder.decode(ComplexPerson.self, from: data)
+            #expect(decodedPerson == person, "Complex person round-trip failed")
+        } catch {
+            Issue.record("Encoding/decoding failed with error: \(error)")
+        }
+        #endif
+    }
 }
