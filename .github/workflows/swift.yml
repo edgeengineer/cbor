@@ -7,7 +7,7 @@ on:
     branches: [ main, master, develop ]
 
 jobs:
-  # Linux build and test
+  # Build and test on multiple platforms
   build-and-test:
     name: Swift ${{ matrix.swift }} on ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
@@ -27,10 +27,35 @@ jobs:
     - name: Run tests with Swift Testing
       run: swift test
 
+  # Generate documentation
+  generate-documentation:
+    name: Generate DocC Documentation
+    needs: build-and-test
+    if: github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master')
+    runs-on: macos-latest
+    steps:
+    - uses: actions/checkout@v4
+    - name: Setup Swift
+      uses: swift-actions/setup-swift@v2
+      with:
+        swift-version: "6.0.0"
+    - name: Generate DocC Documentation
+      run: |
+        swift package --allow-writing-to-directory ./docs generate-documentation \
+          --target CBOR \
+          --disable-indexing \
+          --transform-for-static-hosting \
+          --hosting-base-path cbor \
+          --output-path ./docs
+    - name: Upload Documentation
+      uses: actions/upload-pages-artifact@v2
+      with:
+        path: ./docs
 
   # Deploy documentation to GitHub Pages
   deploy:
-    needs: build-and-test
+    name: Deploy to GitHub Pages
+    needs: generate-documentation
     if: github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master')
     permissions:
       pages: write
