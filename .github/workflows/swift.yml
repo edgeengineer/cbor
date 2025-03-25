@@ -27,11 +27,23 @@ jobs:
     - name: Run tests with Swift Testing
       run: swift test
 
-  # Generate documentation
-  generate-docs:
-    name: Generate DocC Documentation
+  # Generate documentation and deploy to GitHub Pages
+  pages:
+    name: Generate and Deploy Documentation
     needs: build-and-test
     if: github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master')
+    # Sets permissions of the GITHUB_TOKEN to allow deployment to GitHub Pages
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
+    # Allow only one concurrent deployment
+    concurrency:
+      group: "pages"
+      cancel-in-progress: true
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
     runs-on: macos-latest
     steps:
     - name: Checkout
@@ -40,6 +52,9 @@ jobs:
       uses: swift-actions/setup-swift@v2
       with:
         swift-version: "6.0.0"
+    - name: Setup Pages
+      id: pages
+      uses: actions/configure-pages@v3
     - name: Generate DocC Documentation
       run: |
         swift package --allow-writing-to-directory ./docs generate-documentation \
@@ -48,47 +63,21 @@ jobs:
           --transform-for-static-hosting \
           --hosting-base-path cbor \
           --output-path ./docs
-    - name: Zip Documentation
+    - name: Deploy to GitHub Pages
+      id: deployment
       run: |
-        cd ./docs
-        zip -r ../docs.zip .
-    - name: Upload Documentation
-      uses: actions/upload-artifact@v4
-      with:
-        name: documentation
-        path: ./docs.zip
-        retention-days: 1
-
-  # Deploy to GitHub Pages
-  deploy:
-    name: Deploy to GitHub Pages
-    needs: generate-docs
-    if: github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master')
-    # Grant GITHUB_TOKEN the permissions required to make a Pages deployment
-    permissions:
-      pages: write      # to deploy to Pages
-      id-token: write   # to verify the deployment originates from an appropriate source
-    # Deploy to the github-pages environment
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-    runs-on: ubuntu-latest
-    steps:
-      - name: Download artifact
-        uses: actions/download-artifact@v4
-        with:
-          name: documentation
-          path: ./
-      - name: Unzip Documentation
-        run: |
-          mkdir -p ./docs
-          unzip -o docs.zip -d ./docs
-      - name: Setup Pages
-        uses: actions/configure-pages@v3
-      - name: Upload artifact
-        uses: actions/upload-pages-artifact@v1
-        with:
-          path: ./docs
-      - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v1
+        # Create _site directory for GitHub Pages
+        mkdir -p _site
+        # Copy documentation to _site
+        cp -R ./docs/* _site/
+        # Create .nojekyll file to disable Jekyll processing
+        touch _site/.nojekyll
+        # Deploy to GitHub Pages using gh-pages branch
+        git config --global user.name "GitHub Actions"
+        git config --global user.email "actions@github.com"
+        git checkout --orphan gh-pages
+        git reset --hard
+        cp -R _site/* .
+        git add .
+        git commit -m "Deploy documentation to GitHub Pages"
+        git push -f origin gh-pages

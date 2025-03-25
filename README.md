@@ -4,6 +4,7 @@
 [![Platforms](https://img.shields.io/badge/Platforms-macOS%20|%20Linux%20|%20Windows%20|%20Android-blue.svg)](https://swift.org)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Build](https://github.com/apache-edge/cbor/actions/workflows/swift.yml/badge.svg)](https://github.com/apache-edge/cbor/actions/workflows/swift.yml)
+[![Documentation](https://img.shields.io/badge/Documentation-DocC-blue)](https://apache-edge.github.io/cbor/documentation/cbor/)
 
 CBOR is a lightweight implementation of the [CBOR](https://tools.ietf.org/html/rfc7049) (Concise Binary Object Representation) format in Swift. It allows you to encode and decode data to and from the CBOR format, work directly with the CBOR data model, and integrate with Swift's `Codable` protocol.
 
@@ -25,6 +26,13 @@ CBOR is a lightweight implementation of the [CBOR](https://tools.ietf.org/html/r
 
 - **Error Handling:**  
   Detailed error types (`CBORError`) to help you diagnose encoding/decoding issues.
+
+## Documentation
+
+Comprehensive documentation is available via DocC:
+
+- [Online Documentation](https://apache-edge.github.io/cbor/documentation/cbor/)
+- Generate locally with: `swift package --allow-writing-to-directory ./docs generate-documentation --target CBOR`
 
 ## Installation
 
