@@ -8,7 +8,7 @@ on:
 
 jobs:
   # Linux build and test
-  linux:
+  build-and-test:
     name: Swift ${{ matrix.swift }} on ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
     strategy:
@@ -30,7 +30,7 @@ jobs:
 
   # Deploy documentation to GitHub Pages
   deploy:
-    needs: macos
+    needs: build-and-test
     if: github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master')
     permissions:
       pages: write
