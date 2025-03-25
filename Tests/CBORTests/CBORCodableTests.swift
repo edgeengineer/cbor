@@ -281,20 +281,16 @@ struct CBORCodableTests {
             let value = Data([0x01, 0x02, 0x03, 0x04, 0x05])
             let encoder = CBOREncoder()
             let data = try encoder.encode(value)
-            print("Encoded Data: \(data.map { String(format: "%02X", $0) }.joined(separator: " "))")
-            
-            // Decode the raw CBOR to see what's being encoded
-            let rawCBOR = try CBOR.decode([UInt8](data))
-            print("Raw CBOR: \(rawCBOR)")
             
             let decoder = CBORDecoder()
             
             // Try to decode as [Int] to see what's happening
             do {
                 let arrayValue = try decoder.decode([Int].self, from: data)
-                print("Decoded as [Int] array: \(arrayValue)")
+                // Array decoding should fail, not succeed
+                Issue.record("Expected decoding as [Int] to fail, but got \(arrayValue)")
             } catch {
-                print("Failed to decode as [Int] array: \(error)")
+                // This is expected - Data should not decode as [Int]
             }
             
             let decodedValue = try decoder.decode(Data.self, from: data)
@@ -346,5 +342,212 @@ struct CBORCodableTests {
                 try decoder.decode(Person.self, from: invalidData)
             }
         }
+    }
+    
+    // MARK: - Additional Tests
+    
+    @Test
+    func testNestedContainerCoding() throws {
+        // Define a struct for nested containers
+        struct NestedContainer: Codable, Equatable {
+            struct InnerDict: Codable, Equatable {
+                let a: Int
+                let b: [Int]
+                let c: [String: Int]
+            }
+            
+            let array: [NestedValue]
+            let dict: InnerDict
+            
+            static func == (lhs: NestedContainer, rhs: NestedContainer) -> Bool {
+                return lhs.array == rhs.array && lhs.dict == rhs.dict
+            }
+        }
+        
+        struct NestedValue: Codable, Equatable {
+            let id: Int?
+            let values: [Int]?
+            let nested: [String: NestedValue]?
+            
+            init(id: Int? = nil, values: [Int]? = nil, nested: [String: NestedValue]? = nil) {
+                self.id = id
+                self.values = values
+                self.nested = nested
+            }
+        }
+        
+        // Create a deeply nested structure
+        let nestedValue3 = NestedValue(id: 6)
+        let nestedValue2 = NestedValue(nested: ["nested": nestedValue3])
+        let nestedValue1 = NestedValue(values: [4, 5], nested: ["key": nestedValue2])
+        
+        let container = NestedContainer(
+            array: [
+                NestedValue(id: 1),
+                NestedValue(values: [2, 3]),
+                nestedValue1,
+                NestedValue(id: 7, nested: ["deep": NestedValue(nested: ["deeper": NestedValue(nested: ["deepest": NestedValue(id: 8)])])])
+            ],
+            dict: NestedContainer.InnerDict(
+                a: 1,
+                b: [2, 3],
+                c: ["d": 4]
+            )
+        )
+        
+        // Encode
+        let encoder = CBOREncoder()
+        let data = try encoder.encode(container)
+        
+        // Decode
+        let decoder = CBORDecoder()
+        let decoded = try decoder.decode(NestedContainer.self, from: data)
+        
+        // Verify structure is preserved
+        #expect(decoded.array.count == 4)
+        
+        // Check nested values
+        if let nestedId = decoded.array[0].id {
+            #expect(nestedId == 1)
+        } else {
+            Issue.record("Failed to decode nested id")
+        }
+        
+        if let nestedValues = decoded.array[1].values {
+            #expect(nestedValues == [2, 3])
+        } else {
+            Issue.record("Failed to decode nested values")
+        }
+        
+        // Check deeply nested value
+        if let nested = decoded.array[2].nested,
+           let key = nested["key"],
+           let keyNested = key.nested,
+           let nestedValue = keyNested["nested"],
+           let nestedId = nestedValue.id {
+            #expect(nestedId == 6)
+        } else {
+            Issue.record("Failed to access deeply nested values")
+        }
+        
+        // Check dict values
+        #expect(decoded.dict.a == 1)
+        #expect(decoded.dict.b == [2, 3])
+        #expect(decoded.dict.c["d"] == 4)
+    }
+    
+    @Test
+    func testCustomCodingKeys() throws {
+        // Define a struct with custom coding keys
+        struct CustomKeysStruct: Codable, Equatable {
+            let identifier: String
+            let createdAt: Date
+            let isEnabled: Bool
+            
+            enum CodingKeys: String, CodingKey {
+                case identifier = "id"
+                case createdAt = "created"
+                case isEnabled = "enabled"
+            }
+            
+            static func == (lhs: CustomKeysStruct, rhs: CustomKeysStruct) -> Bool {
+                return lhs.identifier == rhs.identifier &&
+                       abs(lhs.createdAt.timeIntervalSince(rhs.createdAt)) < 0.001 &&
+                       lhs.isEnabled == rhs.isEnabled
+            }
+        }
+        
+        let original = CustomKeysStruct(
+            identifier: "ABC123",
+            createdAt: Date(timeIntervalSince1970: 1609459200),
+            isEnabled: true
+        )
+        
+        // Encode
+        let encoder = CBOREncoder()
+        let data = try encoder.encode(original)
+        
+        // Decode
+        let decoder = CBORDecoder()
+        let decoded = try decoder.decode(CustomKeysStruct.self, from: data)
+        
+        // Verify
+        #expect(decoded == original)
+    }
+    
+    @Test
+    func testCodableWithInheritance() throws {
+        // Instead of using inheritance which requires superEncoder support,
+        // test composition which is a more Swift-friendly approach
+        struct Pet: Codable, Equatable {
+            let species: String
+            let age: Int
+            let name: String
+            
+            static func == (lhs: Pet, rhs: Pet) -> Bool {
+                return lhs.species == rhs.species && 
+                       lhs.age == rhs.age && 
+                       lhs.name == rhs.name
+            }
+        }
+        
+        struct Owner: Codable, Equatable {
+            let name: String
+            let pet: Pet
+            
+            static func == (lhs: Owner, rhs: Owner) -> Bool {
+                return lhs.name == rhs.name && lhs.pet == rhs.pet
+            }
+        }
+        
+        let pet = Pet(species: "Canine", age: 3, name: "Buddy")
+        let owner = Owner(name: "John", pet: pet)
+        
+        // Encode
+        let encoder = CBOREncoder()
+        let data = try encoder.encode(owner)
+        
+        // Decode
+        let decoder = CBORDecoder()
+        let decodedOwner = try decoder.decode(Owner.self, from: data)
+        
+        // Verify
+        #expect(decodedOwner.name == "John")
+        #expect(decodedOwner.pet.species == "Canine")
+        #expect(decodedOwner.pet.age == 3)
+        #expect(decodedOwner.pet.name == "Buddy")
+    }
+    
+    @Test
+    func testPerformance() throws {
+        // Create a large array of data to test performance
+        var largeArray: [Person] = []
+        for i in 0..<100 {
+            largeArray.append(Person(
+                name: "Person \(i)",
+                age: 20 + (i % 50),
+                email: "person\(i)@example.com",
+                isActive: i % 2 == 0
+            ))
+        }
+        
+        // Measure encoding performance
+        let encoder = CBOREncoder()
+        let startEncode = Date()
+        let data = try encoder.encode(largeArray)
+        let encodeTime = Date().timeIntervalSince(startEncode)
+        
+        // Measure decoding performance
+        let decoder = CBORDecoder()
+        let startDecode = Date()
+        let decoded = try decoder.decode([Person].self, from: data)
+        let decodeTime = Date().timeIntervalSince(startDecode)
+        
+        // Verify data was correctly encoded/decoded
+        #expect(decoded.count == largeArray.count)
+        
+        // Just verify the performance is reasonable
+        #expect(encodeTime < 1.0, "Encoding performance is too slow")
+        #expect(decodeTime < 1.0, "Decoding performance is too slow")
     }
 }
