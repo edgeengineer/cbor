@@ -331,4 +331,185 @@ struct CBORErrorTests {
             Issue.record("Expected CBORError but got \(error)")
         }
     }
+    
+    // MARK: - Additional Error Tests
+    
+    @Test
+    func testInvalidAdditionalInfoError() {
+        // Test invalid additional info for specific major types
+        
+        // Invalid additional info for Major Type 7 (simple values/floats)
+        // Note: This test uses a value that should be invalid according to the CBOR spec
+        // but the implementation might be handling it differently
+        let invalidSimpleValue: [UInt8] = [
+            0xF8, // Simple value with 1-byte additional info
+            0xFF  // Invalid simple value (outside valid range)
+        ]
+        
+        // We'll check if the implementation either throws an error or returns a value
+        // that we can verify is correctly interpreted
+        do {
+            let decoded = try CBOR.decode(invalidSimpleValue)
+            // If it doesn't throw, we should at least verify it's a simple value
+            if case .simple(let value) = decoded {
+                #expect(value == 0xFF, "Expected simple value 0xFF, got \(value)")
+            } else {
+                Issue.record("Expected simple value, got \(decoded)")
+            }
+        } catch {
+            // An error is also acceptable since this is technically invalid CBOR
+            // No need to record an issue
+        }
+        
+        // Invalid additional info for Major Type 0 (unsigned int)
+        let invalidUnsignedIntAdditionalInfo: [UInt8] = [
+            0x1F  // Unsigned int with invalid additional info 31 (reserved for indefinite length)
+        ]
+        
+        do {
+            let _ = try CBOR.decode(invalidUnsignedIntAdditionalInfo)
+            Issue.record("Expected decoding to fail with CBORError for invalid unsigned int additional info")
+        } catch is CBORError {
+            // This is the expected error
+        } catch {
+            Issue.record("Expected CBORError but got \(error)")
+        }
+    }
+    
+    @Test
+    func testUnexpectedBreak() {
+        // Test unexpected break code (0xFF) outside of indefinite length context
+        let unexpectedBreak: [UInt8] = [
+            0xFF  // Break code outside of indefinite length context
+        ]
+        
+        do {
+            let _ = try CBOR.decode(unexpectedBreak)
+            Issue.record("Expected decoding to fail with CBORError for unexpected break code")
+        } catch is CBORError {
+            // This is the expected error
+        } catch {
+            Issue.record("Expected CBORError but got \(error)")
+        }
+        
+        // Test unexpected break in the middle of an array
+        let unexpectedBreakInArray: [UInt8] = [
+            0x82,  // Array of 2 items
+            0x01,  // First item
+            0xFF,  // Unexpected break
+            0x02   // Second item (should never be reached)
+        ]
+        
+        do {
+            let _ = try CBOR.decode(unexpectedBreakInArray)
+            Issue.record("Expected decoding to fail with CBORError for unexpected break in array")
+        } catch is CBORError {
+            // This is the expected error
+        } catch {
+            Issue.record("Expected CBORError but got \(error)")
+        }
+    }
+    
+    @Test
+    func testMissingKeyError() {
+        // Test decoding a struct with a required key that's missing using CBORDecoder
+        struct RequiredKeyStruct: Decodable {
+            let requiredKey: String
+            let optionalKey: Int?
+        }
+        
+        // Create a CBOR map with only the optional key
+        let mapPairs: [CBORMapPair] = [
+            CBORMapPair(key: .textString("optionalKey"), value: .unsignedInt(42))
+        ]
+        let encoded = CBOR.map(mapPairs).encode()
+        
+        // Try to decode it (should fail with key not found)
+        let decoder = CBORDecoder()
+        do {
+            let _ = try decoder.decode(RequiredKeyStruct.self, from: Data(encoded))
+            Issue.record("Expected decoding to fail with DecodingError.keyNotFound")
+        } catch let error as DecodingError {
+            switch error {
+            case .keyNotFound:
+                // This is the expected error
+                break
+            default:
+                Issue.record("Expected DecodingError.keyNotFound but got \(error)")
+            }
+        } catch {
+            Issue.record("Expected DecodingError but got \(error)")
+        }
+    }
+    
+    @Test
+    func testLengthTooLargeError() {
+        // Test string with length that exceeds available memory
+        let lengthTooLarge: [UInt8] = [
+            0x5B,  // Byte string with 8-byte length
+            0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF  // Length of UInt64.max (way too large)
+        ]
+        
+        do {
+            let _ = try CBOR.decode(lengthTooLarge)
+            Issue.record("Expected decoding to fail with CBORError for length too large")
+        } catch is CBORError {
+            // This is the expected error
+        } catch {
+            Issue.record("Expected CBORError but got \(error)")
+        }
+        
+        // Test array with length that exceeds available memory
+        let arrayTooLarge: [UInt8] = [
+            0x9B,  // Array with 8-byte length
+            0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF  // Length of UInt64.max (way too large)
+        ]
+        
+        do {
+            let _ = try CBOR.decode(arrayTooLarge)
+            Issue.record("Expected decoding to fail with CBORError for array length too large")
+        } catch is CBORError {
+            // This is the expected error
+        } catch {
+            Issue.record("Expected CBORError but got \(error)")
+        }
+    }
+    
+    @Test
+    func testValueConversionError() {
+        // Test converting between incompatible CBOR types
+        
+        // Try to convert a CBOR array to a string
+        let array = CBOR.array([CBOR.unsignedInt(1), CBOR.unsignedInt(2)])
+        
+        // Check if we can extract a string from an array (should not be possible)
+        if case .textString = array {
+            Issue.record("CBOR array should not match textString pattern")
+        }
+        
+        // Try to convert a CBOR map to an integer
+        let mapPairs: [CBORMapPair] = [
+            CBORMapPair(key: .textString("key"), value: .unsignedInt(42))
+        ]
+        let map = CBOR.map(mapPairs)
+        
+        // Check if we can extract an int from a map (should not be possible)
+        if case .unsignedInt = map {
+            Issue.record("CBOR map should not match unsignedInt pattern")
+        }
+        
+        // Try to decode a string as an int
+        let stringCBOR = CBOR.textString("not an integer")
+        let encoded = stringCBOR.encode()
+        
+        let decoder = CBORDecoder()
+        do {
+            let _ = try decoder.decode(Int.self, from: Data(encoded))
+            Issue.record("Expected decoding a string as Int to fail")
+        } catch is DecodingError {
+            // This is the expected error
+        } catch {
+            Issue.record("Expected DecodingError but got \(error)")
+        }
+    }
 }
