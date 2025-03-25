@@ -1,7 +1,19 @@
 #if canImport(FoundationEssentials)
 import FoundationEssentials
+#if canImport(FoundationEssentials.Numerics)
+import FoundationEssentials.Numerics
+#endif
 #elseif canImport(Foundation)
 import Foundation
+#if canImport(Foundation.Numerics)
+import Foundation.Numerics
+#endif
+#endif
+
+#if canImport(Darwin)
+import Darwin
+#elseif canImport(Glibc)
+import Glibc
 #endif
 
 // MARK: - CBOR Type
