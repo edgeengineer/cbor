@@ -138,3 +138,9 @@ extension CBORError: CustomStringConvertible {
         }
     }
 }
+
+extension CBORError: LocalizedError {
+    public var errorDescription: String? {
+        return description
+    }
+}
