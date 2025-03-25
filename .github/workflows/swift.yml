@@ -57,12 +57,13 @@ jobs:
       uses: actions/configure-pages@v4
     - name: Generate DocC Documentation
       run: |
+        # Generate the documentation
         swift package --allow-writing-to-directory ./docs generate-documentation \
           --target CBOR \
           --disable-indexing \
           --transform-for-static-hosting \
-          --hosting-base-path cbor \
           --output-path ./docs
+        
         # Create .nojekyll file to disable Jekyll processing
         touch ./docs/.nojekyll
     - name: Upload artifact
