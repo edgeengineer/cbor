@@ -62,10 +62,19 @@ jobs:
           --transform-for-static-hosting \
           --hosting-base-path cbor \
           --output-path ./docs
-    - name: Upload artifact
-      uses: actions/upload-pages-artifact@v2
-      with:
-        path: ./docs
+    - name: Create GitHub Pages Artifact
+      run: |
+        # Create artifact directory
+        mkdir -p _site
+        # Copy documentation to artifact directory
+        cp -R ./docs/* _site/
+        # Create artifact
+        tar --dereference --hard-dereference --directory _site/ -cvf artifact.tar .
+        # Upload artifact
+        echo "GITHUB_PAGES_ARTIFACT_PATH=$(pwd)/artifact.tar" >> $GITHUB_ENV
     - name: Deploy to GitHub Pages
       id: deployment
       uses: actions/deploy-pages@v2
+      with:
+        artifact_name: github-pages
+        path: ${{ env.GITHUB_PAGES_ARTIFACT_PATH }}
