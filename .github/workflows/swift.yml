@@ -14,7 +14,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-22.04]
+        os: [ubuntu-latest, macos-latest]
         swift: ["6.0.0"]
     steps:
     - uses: actions/checkout@v4
@@ -27,39 +27,6 @@ jobs:
     - name: Run tests with Swift Testing
       run: swift test
 
-  # macOS build, test, and generate documentation
-  macos:
-    name: Swift ${{ matrix.swift }} on ${{ matrix.os }}
-    runs-on: ${{ matrix.os }}
-    strategy:
-      fail-fast: false
-      matrix:
-        os: [macos-latest]
-        swift: ["6.0.0"]
-    steps:
-    - uses: actions/checkout@v4
-    - name: Setup Swift
-      uses: swift-actions/setup-swift@v2
-      with:
-        swift-version: ${{ matrix.swift }}
-    - name: Build
-      run: swift build -c release
-    - name: Run tests with Swift Testing
-      run: swift test
-    - name: Generate DocC Documentation
-      if: github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master')
-      run: |
-        swift package --allow-writing-to-directory ./docs generate-documentation \
-          --target CBOR \
-          --disable-indexing \
-          --transform-for-static-hosting \
-          --hosting-base-path cbor \
-          --output-path ./docs
-    - name: Upload Documentation
-      if: github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master')
-      uses: actions/upload-pages-artifact@v2
-      with:
-        path: ./docs
 
   # Deploy documentation to GitHub Pages
   deploy:
