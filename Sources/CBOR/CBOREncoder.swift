@@ -6,526 +6,768 @@ import Foundation
 
 // MARK: - CBOR Encoder
 
-/// An encoder that converts Swift values to CBOR data
 public class CBOREncoder {
+    // MARK: - Storage
+    
+    private class Storage {
+        var values: [CBOR] = []
+        
+        var count: Int {
+            return values.count
+        }
+        
+        func push(_ value: CBOR) {
+            values.append(value)
+        }
+        
+        var topValue: CBOR {
+            guard let value = values.last else {
+                return CBOR.null
+            }
+            return value
+        }
+    }
+    
+    private var storage = Storage()
+    
+    // MARK: - Properties
+    
+    public var codingPath: [CodingKey] = []
+    public var userInfo: [CodingUserInfoKey: Any] = [:]
+    
+    // MARK: - Public API
+    
     public init() {}
     
     public func encode<T: Encodable>(_ value: T) throws -> Data {
-        let encoder = _CBOREncoder()
-        let cbor = try encoder.encode(value)
+        // Special case for Data
+        if let data = value as? Data {
+            let cbor = CBOR.byteString(Array(data))
+            return Data(cbor.encode())
+        }
+        
+        // Special case for Date
+        if let date = value as? Date {
+            let cbor = CBOR.tagged(1, CBOR.float(date.timeIntervalSince1970))
+            return Data(cbor.encode())
+        }
+        
+        // Special case for URL
+        if let url = value as? URL {
+            let cbor = CBOR.textString(url.absoluteString)
+            return Data(cbor.encode())
+        }
+        
+        // Special case for arrays of primitive types
+        if let array = value as? [Int] {
+            let cbor = CBOR.array(array.map { 
+                if $0 < 0 {
+                    return CBOR.negativeInt(Int64(-1 - $0))
+                } else {
+                    return CBOR.unsignedInt(UInt64($0))
+                }
+            })
+            return Data(cbor.encode())
+        }
+        if let array = value as? [String] {
+            let cbor = CBOR.array(array.map { CBOR.textString($0) })
+            return Data(cbor.encode())
+        }
+        if let array = value as? [Bool] {
+            let cbor = CBOR.array(array.map { CBOR.bool($0) })
+            return Data(cbor.encode())
+        }
+        if let array = value as? [Double] {
+            let cbor = CBOR.array(array.map { CBOR.float($0) })
+            return Data(cbor.encode())
+        }
+        if let array = value as? [Float] {
+            let cbor = CBOR.array(array.map { CBOR.float(Double($0)) })
+            return Data(cbor.encode())
+        }
+        if let array = value as? [Data] {
+            let cbor = CBOR.array(array.map { CBOR.byteString(Array($0)) })
+            return Data(cbor.encode())
+        }
+        
+        // For other types, use the Encodable protocol
+        storage = Storage() // Reset storage
+        try value.encode(to: self)
+        
+        // Get the encoded CBOR value and convert it to Data
+        let cbor = storage.topValue
         return Data(cbor.encode())
     }
-}
-
-private class _CBOREncoder {
-    func encode<T: Encodable>(_ value: T) throws -> CBOR {
-        let encoder = _CBOREncoderImpl(codingPath: [])
-        try value.encode(to: encoder)
-        return encoder.storage.topValue
-    }
-}
-
-// MARK: - Encoder Storage
-
-private class EncoderStorage {
-    private(set) var values: [CBOR] = []
     
-    var count: Int {
-        return values.count
+    // MARK: - Internal API
+    
+    fileprivate func push(_ value: CBOR) {
+        storage.push(value)
     }
     
-    var topValue: CBOR {
-        guard let value = values.last else {
-            fatalError("Empty storage")
+    // Implementation of the encodeCBOR method that's referenced in the code
+    fileprivate func encodeCBOR<T: Encodable>(_ value: T) throws -> CBOR {
+        // Special case for Data
+        if let data = value as? Data {
+            return CBOR.byteString(Array(data))
         }
-        return value
-    }
-    
-    func push(_ value: CBOR) {
-        values.append(value)
-    }
-    
-    func popValue() -> CBOR {
-        guard let value = values.popLast() else {
-            fatalError("Empty storage")
+        
+        // Special case for Date
+        if let date = value as? Date {
+            return CBOR.tagged(1, CBOR.float(date.timeIntervalSince1970))
         }
-        return value
+        
+        // Special case for URL
+        if let url = value as? URL {
+            return CBOR.textString(url.absoluteString)
+        }
+        
+        // Special case for arrays of primitive types
+        if let array = value as? [Int] {
+            return CBOR.array(array.map { 
+                if $0 < 0 {
+                    return CBOR.negativeInt(Int64(-1 - $0))
+                } else {
+                    return CBOR.unsignedInt(UInt64($0))
+                }
+            })
+        }
+        if let array = value as? [String] {
+            return CBOR.array(array.map { CBOR.textString($0) })
+        }
+        if let array = value as? [Bool] {
+            return CBOR.array(array.map { CBOR.bool($0) })
+        }
+        if let array = value as? [Double] {
+            return CBOR.array(array.map { CBOR.float($0) })
+        }
+        if let array = value as? [Float] {
+            return CBOR.array(array.map { CBOR.float(Double($0)) })
+        }
+        if let array = value as? [Data] {
+            return CBOR.array(array.map { CBOR.byteString(Array($0)) })
+        }
+        
+        // For other types, use the Encodable protocol
+        let tempEncoder = CBOREncoder()
+        try value.encode(to: tempEncoder)
+        
+        // Get the encoded CBOR value
+        return tempEncoder.storage.topValue
     }
 }
 
-// MARK: - CBOR Encoder Implementation
+// MARK: - Encoder Context
 
-private class _CBOREncoderImpl: Encoder {
-    var codingPath: [CodingKey]
-    var userInfo: [CodingUserInfoKey: Any] = [:]
-    
-    fileprivate var storage: EncoderStorage
-    
-    init(codingPath: [CodingKey]) {
-        self.codingPath = codingPath
-        self.storage = EncoderStorage()
-    }
-    
-    func container<Key>(keyedBy type: Key.Type) -> KeyedEncodingContainer<Key> where Key: CodingKey {
-        let container = CBORKeyedEncodingContainer<Key>(encoder: self, codingPath: codingPath)
+extension CBOREncoder: Encoder {
+    public func container<Key>(keyedBy type: Key.Type) -> KeyedEncodingContainer<Key> where Key: CodingKey {
+        let container = CBOREncoderKeyedContainer<Key>(codingPath: codingPath, encoder: self)
         return KeyedEncodingContainer(container)
     }
     
-    func unkeyedContainer() -> UnkeyedEncodingContainer {
-        return CBORUnkeyedEncodingContainer(encoder: self, codingPath: codingPath)
+    public func unkeyedContainer() -> UnkeyedEncodingContainer {
+        return CBOREncoderUnkeyedContainer(codingPath: codingPath, encoder: self)
     }
     
-    func singleValueContainer() -> SingleValueEncodingContainer {
-        return CBORSingleValueEncodingContainer(encoder: self, codingPath: codingPath)
-    }
-    
-    func createSubencoder(for container: Any) -> _CBOREncoderImpl {
-        let newEncoder = _CBOREncoderImpl(codingPath: codingPath)
-        return newEncoder
+    public func singleValueContainer() -> SingleValueEncodingContainer {
+        return CBOREncoderSingleValueContainer(codingPath: codingPath, encoder: self)
     }
 }
 
-// MARK: - CBOR Single Value Encoding Container
+// MARK: - CBOREncoderUnkeyedContainer
 
-private struct CBORSingleValueEncodingContainer: SingleValueEncodingContainer {
-    var codingPath: [CodingKey]
-    private let encoder: _CBOREncoderImpl
-    
-    fileprivate var _value: CBOR?
-    
-    init(encoder: _CBOREncoderImpl, codingPath: [CodingKey]) {
-        self.encoder = encoder
-        self.codingPath = codingPath
-    }
-    
-    mutating func encodeNil() throws {
-        _value = CBOR.null
-        encoder.storage.push(CBOR.null)
-    }
-    
-    mutating func encode(_ value: Bool) throws {
-        _value = CBOR.bool(value)
-        encoder.storage.push(CBOR.bool(value))
-    }
-    
-    mutating func encode(_ value: Double) throws {
-        _value = CBOR.float(value)
-        encoder.storage.push(CBOR.float(value))
-    }
-    
-    mutating func encode(_ value: Float) throws {
-        _value = CBOR.float(Double(value))
-        encoder.storage.push(CBOR.float(Double(value)))
-    }
-    
-    mutating func encode(_ value: Int) throws {
-        if value < 0 {
-            _value = CBOR.negativeInt(Int64(value))
-            encoder.storage.push(CBOR.negativeInt(Int64(value)))
-        } else {
-            _value = CBOR.unsignedInt(UInt64(value))
-            encoder.storage.push(CBOR.unsignedInt(UInt64(value)))
-        }
-    }
-    
-    mutating func encode(_ value: Int8) throws {
-        if value < 0 {
-            _value = CBOR.negativeInt(Int64(value))
-            encoder.storage.push(CBOR.negativeInt(Int64(value)))
-        } else {
-            _value = CBOR.unsignedInt(UInt64(value))
-            encoder.storage.push(CBOR.unsignedInt(UInt64(value)))
-        }
-    }
-    
-    mutating func encode(_ value: Int16) throws {
-        if value < 0 {
-            _value = CBOR.negativeInt(Int64(value))
-            encoder.storage.push(CBOR.negativeInt(Int64(value)))
-        } else {
-            _value = CBOR.unsignedInt(UInt64(value))
-            encoder.storage.push(CBOR.unsignedInt(UInt64(value)))
-        }
-    }
-    
-    mutating func encode(_ value: Int32) throws {
-        if value < 0 {
-            _value = CBOR.negativeInt(Int64(value))
-            encoder.storage.push(CBOR.negativeInt(Int64(value)))
-        } else {
-            _value = CBOR.unsignedInt(UInt64(value))
-            encoder.storage.push(CBOR.unsignedInt(UInt64(value)))
-        }
-    }
-    
-    mutating func encode(_ value: Int64) throws {
-        if value < 0 {
-            _value = CBOR.negativeInt(value)
-            encoder.storage.push(CBOR.negativeInt(value))
-        } else {
-            _value = CBOR.unsignedInt(UInt64(value))
-            encoder.storage.push(CBOR.unsignedInt(UInt64(value)))
-        }
-    }
-    
-    mutating func encode(_ value: UInt) throws {
-        _value = CBOR.unsignedInt(UInt64(value))
-        encoder.storage.push(CBOR.unsignedInt(UInt64(value)))
-    }
-    
-    mutating func encode(_ value: UInt8) throws {
-        _value = CBOR.unsignedInt(UInt64(value))
-        encoder.storage.push(CBOR.unsignedInt(UInt64(value)))
-    }
-    
-    mutating func encode(_ value: UInt16) throws {
-        _value = CBOR.unsignedInt(UInt64(value))
-        encoder.storage.push(CBOR.unsignedInt(UInt64(value)))
-    }
-    
-    mutating func encode(_ value: UInt32) throws {
-        _value = CBOR.unsignedInt(UInt64(value))
-        encoder.storage.push(CBOR.unsignedInt(UInt64(value)))
-    }
-    
-    mutating func encode(_ value: UInt64) throws {
-        _value = CBOR.unsignedInt(value)
-        encoder.storage.push(CBOR.unsignedInt(value))
-    }
-    
-    mutating func encode(_ value: String) throws {
-        _value = CBOR.textString(value)
-        encoder.storage.push(CBOR.textString(value))
-    }
-    
-    mutating func encode<T: Encodable>(_ value: T) throws {
-        // Special cases for Foundation types
-        if let date = value as? Date {
-            let timeInterval = date.timeIntervalSince1970
-            _value = CBOR.tagged(1, CBOR.float(timeInterval))
-            encoder.storage.push(CBOR.tagged(1, CBOR.float(timeInterval)))
-            return
-        }
-        
-        if let url = value as? URL {
-            _value = CBOR.textString(url.absoluteString)
-            encoder.storage.push(CBOR.textString(url.absoluteString))
-            return
-        }
-        
-        if let data = value as? Data {
-            _value = CBOR.byteString([UInt8](data))
-            encoder.storage.push(CBOR.byteString([UInt8](data)))
-            return
-        }
-        
-        // Handle CBOR values directly
-        if let cbor = value as? CBOR {
-            _value = cbor
-            encoder.storage.push(cbor)
-            return
-        }
-        
-        // For all other types, encode using a container
-        let nestedEncoder = _CBOREncoderImpl(codingPath: codingPath)
-        try value.encode(to: nestedEncoder)
-        _value = nestedEncoder.storage.topValue
-        encoder.storage.push(nestedEncoder.storage.topValue)
-    }
-}
-
-// MARK: - CBOR Unkeyed Encoding Container
-
-private struct CBORUnkeyedEncodingContainer: UnkeyedEncodingContainer {
-    var codingPath: [CodingKey]
-    private let encoder: _CBOREncoderImpl
-    
-    fileprivate var elements: [CBOR] = []
-    
-    init(encoder: _CBOREncoderImpl, codingPath: [CodingKey]) {
-        self.encoder = encoder
-        self.codingPath = codingPath
-    }
+private struct CBOREncoderUnkeyedContainer: UnkeyedEncodingContainer {
+    let codingPath: [CodingKey]
+    fileprivate let encoder: CBOREncoder
+    private var elements: [CBOR] = []
     
     var count: Int {
         return elements.count
     }
     
+    init(codingPath: [CodingKey], encoder: CBOREncoder) {
+        self.codingPath = codingPath
+        self.encoder = encoder
+    }
+    
+    // Finalize the container by pushing the array to the encoder
+    private mutating func finalize() {
+        encoder.push(CBOR.array(elements))
+    }
+    
     mutating func encodeNil() throws {
         elements.append(CBOR.null)
+        finalize()
     }
     
     mutating func encode(_ value: Bool) throws {
         elements.append(CBOR.bool(value))
-    }
-    
-    mutating func encode(_ value: Double) throws {
-        elements.append(CBOR.float(value))
-    }
-    
-    mutating func encode(_ value: Float) throws {
-        elements.append(CBOR.float(Double(value)))
-    }
-    
-    mutating func encode(_ value: Int) throws {
-        if value < 0 {
-            elements.append(CBOR.negativeInt(Int64(value)))
-        } else {
-            elements.append(CBOR.unsignedInt(UInt64(value)))
-        }
-    }
-    
-    mutating func encode(_ value: Int8) throws {
-        if value < 0 {
-            elements.append(CBOR.negativeInt(Int64(value)))
-        } else {
-            elements.append(CBOR.unsignedInt(UInt64(value)))
-        }
-    }
-    
-    mutating func encode(_ value: Int16) throws {
-        if value < 0 {
-            elements.append(CBOR.negativeInt(Int64(value)))
-        } else {
-            elements.append(CBOR.unsignedInt(UInt64(value)))
-        }
-    }
-    
-    mutating func encode(_ value: Int32) throws {
-        if value < 0 {
-            elements.append(CBOR.negativeInt(Int64(value)))
-        } else {
-            elements.append(CBOR.unsignedInt(UInt64(value)))
-        }
-    }
-    
-    mutating func encode(_ value: Int64) throws {
-        if value < 0 {
-            elements.append(CBOR.negativeInt(value))
-        } else {
-            elements.append(CBOR.unsignedInt(UInt64(value)))
-        }
-    }
-    
-    mutating func encode(_ value: UInt) throws {
-        elements.append(CBOR.unsignedInt(UInt64(value)))
-    }
-    
-    mutating func encode(_ value: UInt8) throws {
-        elements.append(CBOR.unsignedInt(UInt64(value)))
-    }
-    
-    mutating func encode(_ value: UInt16) throws {
-        elements.append(CBOR.unsignedInt(UInt64(value)))
-    }
-    
-    mutating func encode(_ value: UInt32) throws {
-        elements.append(CBOR.unsignedInt(UInt64(value)))
-    }
-    
-    mutating func encode(_ value: UInt64) throws {
-        elements.append(CBOR.unsignedInt(value))
+        finalize()
     }
     
     mutating func encode(_ value: String) throws {
         elements.append(CBOR.textString(value))
+        finalize()
     }
     
-    mutating func encode<T: Encodable>(_ value: T) throws {
-        // Special cases for Foundation types
-        if let date = value as? Date {
-            let timeInterval = date.timeIntervalSince1970
-            elements.append(CBOR.tagged(1, CBOR.float(timeInterval)))
+    mutating func encode(_ value: Double) throws {
+        elements.append(CBOR.float(value))
+        finalize()
+    }
+    
+    mutating func encode(_ value: Float) throws {
+        elements.append(CBOR.float(Double(value)))
+        finalize()
+    }
+    
+    mutating func encode(_ value: Int) throws {
+        if value < 0 {
+            elements.append(CBOR.negativeInt(Int64(-1 - value)))
+        } else {
+            elements.append(CBOR.unsignedInt(UInt64(value)))
+        }
+        finalize()
+    }
+    
+    mutating func encode(_ value: Int8) throws {
+        try encode(Int(value))
+    }
+    
+    mutating func encode(_ value: Int16) throws {
+        try encode(Int(value))
+    }
+    
+    mutating func encode(_ value: Int32) throws {
+        try encode(Int(value))
+    }
+    
+    mutating func encode(_ value: Int64) throws {
+        if value < 0 {
+            elements.append(CBOR.negativeInt(Int64(-1 - value)))
+        } else {
+            elements.append(CBOR.unsignedInt(UInt64(value)))
+        }
+        finalize()
+    }
+    
+    mutating func encode(_ value: UInt) throws {
+        elements.append(CBOR.unsignedInt(UInt64(value)))
+        finalize()
+    }
+    
+    mutating func encode(_ value: UInt8) throws {
+        try encode(UInt(value))
+    }
+    
+    mutating func encode(_ value: UInt16) throws {
+        try encode(UInt(value))
+    }
+    
+    mutating func encode(_ value: UInt32) throws {
+        try encode(UInt(value))
+    }
+    
+    mutating func encode(_ value: UInt64) throws {
+        elements.append(CBOR.unsignedInt(value))
+        finalize()
+    }
+    
+    mutating func encode<T>(_ value: T) throws where T: Encodable {
+        // Special case for Data
+        if let data = value as? Data {
+            elements.append(CBOR.byteString(Array(data)))
+            finalize()
             return
         }
         
+        // Special case for Date
+        if let date = value as? Date {
+            elements.append(CBOR.tagged(1, CBOR.float(date.timeIntervalSince1970)))
+            finalize()
+            return
+        }
+        
+        // Special case for URL
         if let url = value as? URL {
             elements.append(CBOR.textString(url.absoluteString))
+            finalize()
             return
         }
         
-        if let data = value as? Data {
-            elements.append(CBOR.byteString([UInt8](data)))
-            return
-        }
-        
-        // Handle CBOR values directly
-        if let cbor = value as? CBOR {
+        // For other types, use the Encodable protocol
+        if let cbor = try? encoder.encodeCBOR(value) {
             elements.append(cbor)
-            return
+        } else {
+            elements.append(CBOR.null)
+        }
+        finalize()
+    }
+    
+    func nestedContainer<NestedKey>(keyedBy keyType: NestedKey.Type) -> KeyedEncodingContainer<NestedKey> where NestedKey: CodingKey {
+        // Create a new encoder for the nested container
+        let nestedEncoder = CBOREncoder()
+        let container = CBOREncoderKeyedContainer<NestedKey>(codingPath: codingPath, encoder: nestedEncoder)
+        
+        // Create a new container that will finalize when it's done
+        let finalizedContainer = FinalizedKeyedEncodingContainer(container: container) { [self] result in
+            var mutableSelf = self
+            mutableSelf.elements.append(result)
         }
         
-        // For all other types, encode using a container
-        let subencoder = encoder.createSubencoder(for: self)
-        try value.encode(to: subencoder)
+        return KeyedEncodingContainer(finalizedContainer)
+    }
+    
+    func nestedUnkeyedContainer() -> UnkeyedEncodingContainer {
+        // Create a new encoder for the nested container
+        let nestedEncoder = CBOREncoder()
+        let container = CBOREncoderUnkeyedContainer(codingPath: codingPath, encoder: nestedEncoder)
         
-        let container = subencoder.storage.topValue
-        elements.append(container)
+        // Create a new container that will finalize when it's done
+        return FinalizedUnkeyedEncodingContainer(container: container) { [self] result in
+            var mutableSelf = self
+            mutableSelf.elements.append(result)
+        }
     }
     
-    mutating func nestedContainer<NestedKey: CodingKey>(keyedBy keyType: NestedKey.Type) -> KeyedEncodingContainer<NestedKey> {
-        let container = CBORKeyedEncodingContainer<NestedKey>(encoder: encoder, codingPath: codingPath)
-        return KeyedEncodingContainer(container)
-    }
-    
-    mutating func nestedUnkeyedContainer() -> UnkeyedEncodingContainer {
-        return CBORUnkeyedEncodingContainer(encoder: encoder, codingPath: codingPath)
-    }
-    
-    mutating func superEncoder() -> Encoder {
-        return encoder.createSubencoder(for: self)
-    }
-    
-    private func finalize() {
-        encoder.storage.push(CBOR.array(elements))
+    func superEncoder() -> Encoder {
+        return encoder
     }
 }
 
-// MARK: - CBOR Keyed Encoding Container
+// MARK: - CBOREncoderKeyedContainer
 
-private struct CBORKeyedEncodingContainer<K: CodingKey>: KeyedEncodingContainerProtocol {
+private struct CBOREncoderKeyedContainer<K: CodingKey>: KeyedEncodingContainerProtocol {
     typealias Key = K
     
-    var codingPath: [CodingKey]
-    private let encoder: _CBOREncoderImpl
+    let codingPath: [CodingKey]
+    fileprivate let encoder: CBOREncoder
+    private var pairs: [CBORMapPair] = []
     
-    fileprivate var pairs: [CBORMapPair] = []
-    
-    init(encoder: _CBOREncoderImpl, codingPath: [CodingKey]) {
-        self.encoder = encoder
+    init(codingPath: [CodingKey], encoder: CBOREncoder) {
         self.codingPath = codingPath
+        self.encoder = encoder
+    }
+    
+    // Finalize the container by pushing the map to the encoder
+    private mutating func finalize() {
+        encoder.push(CBOR.map(pairs))
     }
     
     mutating func encodeNil(forKey key: K) throws {
-        pairs.append(CBORMapPair(key: CBOR.textString(key.stringValue), value: CBOR.null))
+        let keyString = key.stringValue
+        pairs.append(CBORMapPair(key: CBOR.textString(keyString), value: CBOR.null))
+        finalize()
     }
     
     mutating func encode(_ value: Bool, forKey key: K) throws {
-        pairs.append(CBORMapPair(key: CBOR.textString(key.stringValue), value: CBOR.bool(value)))
-    }
-    
-    mutating func encode(_ value: Double, forKey key: K) throws {
-        pairs.append(CBORMapPair(key: CBOR.textString(key.stringValue), value: CBOR.float(value)))
-    }
-    
-    mutating func encode(_ value: Float, forKey key: K) throws {
-        pairs.append(CBORMapPair(key: CBOR.textString(key.stringValue), value: CBOR.float(Double(value))))
-    }
-    
-    mutating func encode(_ value: Int, forKey key: K) throws {
-        if value < 0 {
-            pairs.append(CBORMapPair(key: CBOR.textString(key.stringValue), value: CBOR.negativeInt(Int64(value))))
-        } else {
-            pairs.append(CBORMapPair(key: CBOR.textString(key.stringValue), value: CBOR.unsignedInt(UInt64(value))))
-        }
-    }
-    
-    mutating func encode(_ value: Int8, forKey key: K) throws {
-        if value < 0 {
-            pairs.append(CBORMapPair(key: CBOR.textString(key.stringValue), value: CBOR.negativeInt(Int64(value))))
-        } else {
-            pairs.append(CBORMapPair(key: CBOR.textString(key.stringValue), value: CBOR.unsignedInt(UInt64(value))))
-        }
-    }
-    
-    mutating func encode(_ value: Int16, forKey key: K) throws {
-        if value < 0 {
-            pairs.append(CBORMapPair(key: CBOR.textString(key.stringValue), value: CBOR.negativeInt(Int64(value))))
-        } else {
-            pairs.append(CBORMapPair(key: CBOR.textString(key.stringValue), value: CBOR.unsignedInt(UInt64(value))))
-        }
-    }
-    
-    mutating func encode(_ value: Int32, forKey key: K) throws {
-        if value < 0 {
-            pairs.append(CBORMapPair(key: CBOR.textString(key.stringValue), value: CBOR.negativeInt(Int64(value))))
-        } else {
-            pairs.append(CBORMapPair(key: CBOR.textString(key.stringValue), value: CBOR.unsignedInt(UInt64(value))))
-        }
-    }
-    
-    mutating func encode(_ value: Int64, forKey key: K) throws {
-        if value < 0 {
-            pairs.append(CBORMapPair(key: CBOR.textString(key.stringValue), value: CBOR.negativeInt(value)))
-        } else {
-            pairs.append(CBORMapPair(key: CBOR.textString(key.stringValue), value: CBOR.unsignedInt(UInt64(value))))
-        }
-    }
-    
-    mutating func encode(_ value: UInt, forKey key: K) throws {
-        pairs.append(CBORMapPair(key: CBOR.textString(key.stringValue), value: CBOR.unsignedInt(UInt64(value))))
-    }
-    
-    mutating func encode(_ value: UInt8, forKey key: K) throws {
-        pairs.append(CBORMapPair(key: CBOR.textString(key.stringValue), value: CBOR.unsignedInt(UInt64(value))))
-    }
-    
-    mutating func encode(_ value: UInt16, forKey key: K) throws {
-        pairs.append(CBORMapPair(key: CBOR.textString(key.stringValue), value: CBOR.unsignedInt(UInt64(value))))
-    }
-    
-    mutating func encode(_ value: UInt32, forKey key: K) throws {
-        pairs.append(CBORMapPair(key: CBOR.textString(key.stringValue), value: CBOR.unsignedInt(UInt64(value))))
-    }
-    
-    mutating func encode(_ value: UInt64, forKey key: K) throws {
-        pairs.append(CBORMapPair(key: CBOR.textString(key.stringValue), value: CBOR.unsignedInt(value)))
+        let keyString = key.stringValue
+        pairs.append(CBORMapPair(key: CBOR.textString(keyString), value: CBOR.bool(value)))
+        finalize()
     }
     
     mutating func encode(_ value: String, forKey key: K) throws {
-        pairs.append(CBORMapPair(key: CBOR.textString(key.stringValue), value: CBOR.textString(value)))
+        let keyString = key.stringValue
+        pairs.append(CBORMapPair(key: CBOR.textString(keyString), value: CBOR.textString(value)))
+        finalize()
     }
     
-    mutating func encode<T: Encodable>(_ value: T, forKey key: K) throws {
-        // Special cases for Foundation types
-        if let date = value as? Date {
-            let timeInterval = date.timeIntervalSince1970
-            pairs.append(CBORMapPair(key: CBOR.textString(key.stringValue), value: CBOR.tagged(1, CBOR.float(timeInterval))))
-            return
+    mutating func encode(_ value: Double, forKey key: K) throws {
+        let keyString = key.stringValue
+        pairs.append(CBORMapPair(key: CBOR.textString(keyString), value: CBOR.float(value)))
+        finalize()
+    }
+    
+    mutating func encode(_ value: Float, forKey key: K) throws {
+        let keyString = key.stringValue
+        pairs.append(CBORMapPair(key: CBOR.textString(keyString), value: CBOR.float(Double(value))))
+        finalize()
+    }
+    
+    mutating func encode(_ value: Int, forKey key: K) throws {
+        let keyString = key.stringValue
+        if value < 0 {
+            pairs.append(CBORMapPair(key: CBOR.textString(keyString), value: CBOR.negativeInt(Int64(-1 - value))))
+        } else {
+            pairs.append(CBORMapPair(key: CBOR.textString(keyString), value: CBOR.unsignedInt(UInt64(value))))
+        }
+        finalize()
+    }
+    
+    mutating func encode(_ value: Int8, forKey key: K) throws {
+        try encode(Int(value), forKey: key)
+    }
+    
+    mutating func encode(_ value: Int16, forKey key: K) throws {
+        try encode(Int(value), forKey: key)
+    }
+    
+    mutating func encode(_ value: Int32, forKey key: K) throws {
+        try encode(Int(value), forKey: key)
+    }
+    
+    mutating func encode(_ value: Int64, forKey key: K) throws {
+        let keyString = key.stringValue
+        if value < 0 {
+            pairs.append(CBORMapPair(key: CBOR.textString(keyString), value: CBOR.negativeInt(Int64(-1 - value))))
+        } else {
+            pairs.append(CBORMapPair(key: CBOR.textString(keyString), value: CBOR.unsignedInt(UInt64(value))))
+        }
+        finalize()
+    }
+    
+    mutating func encode(_ value: UInt, forKey key: K) throws {
+        let keyString = key.stringValue
+        pairs.append(CBORMapPair(key: CBOR.textString(keyString), value: CBOR.unsignedInt(UInt64(value))))
+        finalize()
+    }
+    
+    mutating func encode(_ value: UInt8, forKey key: K) throws {
+        try encode(UInt(value), forKey: key)
+    }
+    
+    mutating func encode(_ value: UInt16, forKey key: K) throws {
+        try encode(UInt(value), forKey: key)
+    }
+    
+    mutating func encode(_ value: UInt32, forKey key: K) throws {
+        try encode(UInt(value), forKey: key)
+    }
+    
+    mutating func encode(_ value: UInt64, forKey key: K) throws {
+        let keyString = key.stringValue
+        pairs.append(CBORMapPair(key: CBOR.textString(keyString), value: CBOR.unsignedInt(value)))
+        finalize()
+    }
+    
+    mutating func encode<T>(_ value: T, forKey key: K) throws where T: Encodable {
+        let keyString = key.stringValue
+        let cbor = try encoder.encodeCBOR(value)
+        pairs.append(CBORMapPair(key: CBOR.textString(keyString), value: cbor))
+        finalize()
+    }
+    
+    func nestedContainer<NestedKey>(keyedBy keyType: NestedKey.Type, forKey key: K) -> KeyedEncodingContainer<NestedKey> where NestedKey: CodingKey {
+        let keyString = key.stringValue
+        
+        // Create a new encoder for the nested container
+        let nestedEncoder = CBOREncoder()
+        let container = CBOREncoderKeyedContainer<NestedKey>(codingPath: codingPath, encoder: nestedEncoder)
+        
+        // Create a new container that will finalize when it's done
+        let finalizedContainer = FinalizedKeyedEncodingContainer(container: container) { [self] result in
+            var mutableSelf = self
+            mutableSelf.pairs.append(CBORMapPair(key: CBOR.textString(keyString), value: result))
         }
         
-        if let url = value as? URL {
-            pairs.append(CBORMapPair(key: CBOR.textString(key.stringValue), value: CBOR.textString(url.absoluteString)))
-            return
+        return KeyedEncodingContainer(finalizedContainer)
+    }
+    
+    func nestedUnkeyedContainer(forKey key: K) -> UnkeyedEncodingContainer {
+        let keyString = key.stringValue
+        
+        // Create a new encoder for the nested container
+        let nestedEncoder = CBOREncoder()
+        let container = CBOREncoderUnkeyedContainer(codingPath: codingPath, encoder: nestedEncoder)
+        
+        // Create a new container that will finalize when it's done
+        return FinalizedUnkeyedEncodingContainer(container: container) { [self] result in
+            var mutableSelf = self
+            mutableSelf.pairs.append(CBORMapPair(key: CBOR.textString(keyString), value: result))
         }
-        
-        if let data = value as? Data {
-            pairs.append(CBORMapPair(key: CBOR.textString(key.stringValue), value: CBOR.byteString([UInt8](data))))
-            return
+    }
+    
+    func superEncoder() -> Encoder {
+        return superEncoder(forKey: Key(stringValue: "super")!)
+    }
+    
+    func superEncoder(forKey key: K) -> Encoder {
+        return encoder
+    }
+}
+
+// MARK: - Finalized Containers
+
+private class FinalizedKeyedEncodingContainer<K: CodingKey>: KeyedEncodingContainerProtocol {
+    typealias Key = K
+    
+    private var container: CBOREncoderKeyedContainer<K>
+    private let onFinalize: (CBOR) -> Void
+    
+    let codingPath: [CodingKey]
+    
+    init(container: CBOREncoderKeyedContainer<K>, onFinalize: @escaping (CBOR) -> Void) {
+        self.container = container
+        self.onFinalize = onFinalize
+        self.codingPath = container.codingPath
+    }
+    
+    func encodeNil(forKey key: K) throws {
+        try container.encodeNil(forKey: key)
+    }
+    
+    func encode(_ value: Bool, forKey key: K) throws {
+        try container.encode(value, forKey: key)
+    }
+    
+    func encode(_ value: String, forKey key: K) throws {
+        try container.encode(value, forKey: key)
+    }
+    
+    func encode(_ value: Double, forKey key: K) throws {
+        try container.encode(value, forKey: key)
+    }
+    
+    func encode(_ value: Float, forKey key: K) throws {
+        try container.encode(value, forKey: key)
+    }
+    
+    func encode(_ value: Int, forKey key: K) throws {
+        try container.encode(value, forKey: key)
+    }
+    
+    func encode(_ value: Int8, forKey key: K) throws {
+        try container.encode(value, forKey: key)
+    }
+    
+    func encode(_ value: Int16, forKey key: K) throws {
+        try container.encode(value, forKey: key)
+    }
+    
+    func encode(_ value: Int32, forKey key: K) throws {
+        try container.encode(value, forKey: key)
+    }
+    
+    func encode(_ value: Int64, forKey key: K) throws {
+        try container.encode(value, forKey: key)
+    }
+    
+    func encode(_ value: UInt, forKey key: K) throws {
+        try container.encode(value, forKey: key)
+    }
+    
+    func encode(_ value: UInt8, forKey key: K) throws {
+        try container.encode(value, forKey: key)
+    }
+    
+    func encode(_ value: UInt16, forKey key: K) throws {
+        try container.encode(value, forKey: key)
+    }
+    
+    func encode(_ value: UInt32, forKey key: K) throws {
+        try container.encode(value, forKey: key)
+    }
+    
+    func encode(_ value: UInt64, forKey key: K) throws {
+        try container.encode(value, forKey: key)
+    }
+    
+    func encode<T>(_ value: T, forKey key: K) throws where T: Encodable {
+        try container.encode(value, forKey: key)
+    }
+    
+    func nestedContainer<NestedKey>(keyedBy keyType: NestedKey.Type, forKey key: K) -> KeyedEncodingContainer<NestedKey> where NestedKey: CodingKey {
+        return container.nestedContainer(keyedBy: keyType, forKey: key)
+    }
+    
+    func nestedUnkeyedContainer(forKey key: K) -> UnkeyedEncodingContainer {
+        return container.nestedUnkeyedContainer(forKey: key)
+    }
+    
+    func superEncoder() -> Encoder {
+        return container.superEncoder()
+    }
+    
+    func superEncoder(forKey key: K) -> Encoder {
+        return container.superEncoder(forKey: key)
+    }
+}
+
+private class FinalizedUnkeyedEncodingContainer: UnkeyedEncodingContainer {
+    private var container: CBOREncoderUnkeyedContainer
+    private let onFinalize: (CBOR) -> Void
+    
+    let codingPath: [CodingKey]
+    let count: Int
+    
+    init(container: CBOREncoderUnkeyedContainer, onFinalize: @escaping (CBOR) -> Void) {
+        self.container = container
+        self.onFinalize = onFinalize
+        self.codingPath = container.codingPath
+        self.count = container.count
+    }
+    
+    func encodeNil() throws {
+        try container.encodeNil()
+    }
+    
+    func encode(_ value: Bool) throws {
+        try container.encode(value)
+    }
+    
+    func encode(_ value: String) throws {
+        try container.encode(value)
+    }
+    
+    func encode(_ value: Double) throws {
+        try container.encode(value)
+    }
+    
+    func encode(_ value: Float) throws {
+        try container.encode(value)
+    }
+    
+    func encode(_ value: Int) throws {
+        try container.encode(value)
+    }
+    
+    func encode(_ value: Int8) throws {
+        try container.encode(value)
+    }
+    
+    func encode(_ value: Int16) throws {
+        try container.encode(value)
+    }
+    
+    func encode(_ value: Int32) throws {
+        try container.encode(value)
+    }
+    
+    func encode(_ value: Int64) throws {
+        try container.encode(value)
+    }
+    
+    func encode(_ value: UInt) throws {
+        try container.encode(value)
+    }
+    
+    func encode(_ value: UInt8) throws {
+        try container.encode(value)
+    }
+    
+    func encode(_ value: UInt16) throws {
+        try container.encode(value)
+    }
+    
+    func encode(_ value: UInt32) throws {
+        try container.encode(value)
+    }
+    
+    func encode(_ value: UInt64) throws {
+        try container.encode(value)
+    }
+    
+    func encode<T>(_ value: T) throws where T: Encodable {
+        try container.encode(value)
+    }
+    
+    func nestedContainer<NestedKey>(keyedBy keyType: NestedKey.Type) -> KeyedEncodingContainer<NestedKey> where NestedKey: CodingKey {
+        return container.nestedContainer(keyedBy: keyType)
+    }
+    
+    func nestedUnkeyedContainer() -> UnkeyedEncodingContainer {
+        return container.nestedUnkeyedContainer()
+    }
+    
+    func superEncoder() -> Encoder {
+        return container.superEncoder()
+    }
+}
+
+// MARK: - Helper Types
+
+private struct AnyCodingKey: CodingKey {
+    var stringValue: String
+    var intValue: Int?
+    
+    init(stringValue: String) {
+        self.stringValue = stringValue
+        self.intValue = nil
+    }
+    
+    init(intValue: Int) {
+        self.stringValue = "\(intValue)"
+        self.intValue = intValue
+    }
+}
+
+private struct CBOREncoderSingleValueContainer: SingleValueEncodingContainer {
+    let codingPath: [CodingKey]
+    private let encoder: CBOREncoder
+    
+    init(codingPath: [CodingKey], encoder: CBOREncoder) {
+        self.codingPath = codingPath
+        self.encoder = encoder
+    }
+    
+    func encodeNil() throws {
+        encoder.push(CBOR.null)
+    }
+    
+    func encode(_ value: Bool) throws {
+        encoder.push(CBOR.bool(value))
+    }
+    
+    func encode(_ value: String) throws {
+        encoder.push(CBOR.textString(value))
+    }
+    
+    func encode(_ value: Double) throws {
+        encoder.push(CBOR.float(value))
+    }
+    
+    func encode(_ value: Float) throws {
+        encoder.push(CBOR.float(Double(value)))
+    }
+    
+    func encode(_ value: Int) throws {
+        if value < 0 {
+            encoder.push(CBOR.negativeInt(Int64(-1 - value)))
+        } else {
+            encoder.push(CBOR.unsignedInt(UInt64(value)))
         }
-        
-        // Handle CBOR values directly
-        if let cbor = value as? CBOR {
-            pairs.append(CBORMapPair(key: CBOR.textString(key.stringValue), value: cbor))
-            return
+    }
+    
+    func encode(_ value: Int8) throws {
+        try encode(Int(value))
+    }
+    
+    func encode(_ value: Int16) throws {
+        try encode(Int(value))
+    }
+    
+    func encode(_ value: Int32) throws {
+        try encode(Int(value))
+    }
+    
+    func encode(_ value: Int64) throws {
+        if value < 0 {
+            encoder.push(CBOR.negativeInt(Int64(-1 - value)))
+        } else {
+            encoder.push(CBOR.unsignedInt(UInt64(value)))
         }
-        
-        // For all other types, encode using a container
-        let subencoder = encoder.createSubencoder(for: self)
-        try value.encode(to: subencoder)
-        
-        let container = subencoder.storage.topValue
-        pairs.append(CBORMapPair(key: CBOR.textString(key.stringValue), value: container))
     }
     
-    mutating func nestedContainer<NestedKey: CodingKey>(keyedBy keyType: NestedKey.Type, forKey key: K) -> KeyedEncodingContainer<NestedKey> {
-        let container = CBORKeyedEncodingContainer<NestedKey>(encoder: encoder, codingPath: codingPath + [key])
-        return KeyedEncodingContainer(container)
+    func encode(_ value: UInt) throws {
+        encoder.push(CBOR.unsignedInt(UInt64(value)))
     }
     
-    mutating func nestedUnkeyedContainer(forKey key: K) -> UnkeyedEncodingContainer {
-        return CBORUnkeyedEncodingContainer(encoder: encoder, codingPath: codingPath + [key])
+    func encode(_ value: UInt8) throws {
+        try encode(UInt(value))
     }
     
-    mutating func superEncoder() -> Encoder {
-        return encoder.createSubencoder(for: self)
+    func encode(_ value: UInt16) throws {
+        try encode(UInt(value))
     }
     
-    mutating func superEncoder(forKey key: K) -> Encoder {
-        return encoder.createSubencoder(for: self)
+    func encode(_ value: UInt32) throws {
+        try encode(UInt(value))
     }
     
-    private func finalize() {
-        encoder.storage.push(CBOR.map(pairs))
+    func encode(_ value: UInt64) throws {
+        encoder.push(CBOR.unsignedInt(value))
+    }
+    
+    func encode<T>(_ value: T) throws where T: Encodable {
+        try encoder.push(encoder.encodeCBOR(value))
     }
 }

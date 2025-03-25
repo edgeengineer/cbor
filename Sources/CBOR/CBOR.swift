@@ -61,7 +61,16 @@ private func _encode(_ value: CBOR, into output: inout [UInt8]) {
     case .unsignedInt(let u):
         encodeUnsigned(major: 0, value: u, into: &output)
     case .negativeInt(let n):
-        encodeUnsigned(major: 1, value: UInt64(n), into: &output)
+        // In CBOR, negative integers are encoded as -(n+1) where n is a non-negative integer
+        // So we need to convert our negative Int64 to the correct positive UInt64 value
+        if n < 0 {
+            // For negative values, we encode as -(n+1)
+            let positiveValue = UInt64(-1 - n)
+            encodeUnsigned(major: 1, value: positiveValue, into: &output)
+        } else {
+            // For non-negative values, we encode as n
+            encodeUnsigned(major: 1, value: UInt64(n), into: &output)
+        }
     case .byteString(let bytes):
         encodeUnsigned(major: 2, value: UInt64(bytes.count), into: &output)
         output.append(contentsOf: bytes)
@@ -163,7 +172,7 @@ private func _decode(reader: inout CBORReader) throws -> CBOR {
         
     case 1: // negative integer
         let value = try readUIntValue(additional: additional, reader: &reader)
-        return .negativeInt(Int64(value))
+        return .negativeInt(Int64(-1 - Int64(value)))
         
     case 2: // byte string
         let length = try readUIntValue(additional: additional, reader: &reader)

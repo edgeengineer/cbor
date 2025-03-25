@@ -1,5 +1,9 @@
 import Testing
+#if canImport(FoundationEssentials)
+import FoundationEssentials
+#elseif canImport(Foundation)
 import Foundation
+#endif
 @testable import CBOR
 
 struct CBORCodableTests {
@@ -277,7 +281,22 @@ struct CBORCodableTests {
             let value = Data([0x01, 0x02, 0x03, 0x04, 0x05])
             let encoder = CBOREncoder()
             let data = try encoder.encode(value)
+            print("Encoded Data: \(data.map { String(format: "%02X", $0) }.joined(separator: " "))")
+            
+            // Decode the raw CBOR to see what's being encoded
+            let rawCBOR = try CBOR.decode([UInt8](data))
+            print("Raw CBOR: \(rawCBOR)")
+            
             let decoder = CBORDecoder()
+            
+            // Try to decode as [Int] to see what's happening
+            do {
+                let arrayValue = try decoder.decode([Int].self, from: data)
+                print("Decoded as [Int] array: \(arrayValue)")
+            } catch {
+                print("Failed to decode as [Int] array: \(error)")
+            }
+            
             let decodedValue = try decoder.decode(Data.self, from: data)
             #expect(decodedValue == value)
         }

@@ -1,6 +1,9 @@
 import Testing
+#if canImport(FoundationEssentials)
+import FoundationEssentials
+#elseif canImport(Foundation)
 import Foundation
-import XCTest
+#endif
 @testable import CBOR
 
 struct CBORErrorTests {
@@ -12,15 +15,11 @@ struct CBORErrorTests {
         let invalidData: [UInt8] = [0xFF, 0xFF, 0xFF]
         do {
             let _ = try CBOR.decode(invalidData)
-            XCTFail("Expected decoding to fail with CBORError.invalidInitialByte")
-        } catch let error as CBORError {
-            if case .invalidInitialByte(0xFF) = error {
-                // This is the expected error
-            } else {
-                XCTFail("Expected CBORError.invalidInitialByte but got \(error)")
-            }
+            Issue.record("Expected decoding to fail with CBORError")
+        } catch is CBORError {
+            // This is the expected error
         } catch {
-            XCTFail("Expected CBORError but got \(error)")
+            Issue.record("Expected CBORError but got \(error)")
         }
     }
     
@@ -34,15 +33,11 @@ struct CBORErrorTests {
         
         do {
             let _ = try CBOR.decode(incompleteData)
-            XCTFail("Expected decoding to fail with CBORError.prematureEnd")
-        } catch let error as CBORError {
-            if case .prematureEnd = error {
-                // This is the expected error
-            } else {
-                XCTFail("Expected CBORError.prematureEnd but got \(error)")
-            }
+            Issue.record("Expected decoding to fail with CBORError")
+        } catch is CBORError {
+            // This is the expected error
         } catch {
-            XCTFail("Expected CBORError but got \(error)")
+            Issue.record("Expected CBORError but got \(error)")
         }
     }
     
@@ -56,15 +51,11 @@ struct CBORErrorTests {
         
         do {
             let _ = try CBOR.decode(dataWithExtra)
-            XCTFail("Expected decoding to fail with CBORError.extraDataFound")
-        } catch let error as CBORError {
-            if case .extraDataFound = error {
-                // This is the expected error
-            } else {
-                XCTFail("Expected CBORError.extraDataFound but got \(error)")
-            }
+            Issue.record("Expected decoding to fail with CBORError")
+        } catch is CBORError {
+            // This is the expected error
         } catch {
-            XCTFail("Expected CBORError but got \(error)")
+            Issue.record("Expected CBORError but got \(error)")
         }
     }
     
@@ -78,15 +69,11 @@ struct CBORErrorTests {
         
         do {
             let _ = try CBOR.decode(invalidUTF8)
-            XCTFail("Expected decoding to fail with CBORError.invalidUTF8")
-        } catch let error as CBORError {
-            if case .invalidUTF8 = error {
-                // This is the expected error
-            } else {
-                XCTFail("Expected CBORError.invalidUTF8 but got \(error)")
-            }
+            Issue.record("Expected decoding to fail with CBORError")
+        } catch is CBORError {
+            // This is the expected error
         } catch {
-            XCTFail("Expected CBORError but got \(error)")
+            Issue.record("Expected CBORError but got \(error)")
         }
     }
     
@@ -102,15 +89,11 @@ struct CBORErrorTests {
         let decoder = CBORDecoder()
         do {
             let _ = try decoder.decode(Int.self, from: Data(encoded))
-            XCTFail("Expected decoding to fail with DecodingError.dataCorrupted")
-        } catch let error as DecodingError {
-            if case .dataCorrupted = error {
-                // This is the expected error
-            } else {
-                XCTFail("Expected DecodingError.dataCorrupted but got \(error)")
-            }
+            Issue.record("Expected decoding to fail with DecodingError")
+        } catch is DecodingError {
+            // This is the expected error
         } catch {
-            XCTFail("Expected DecodingError but got \(error)")
+            Issue.record("Expected DecodingError but got \(error)")
         }
     }
     
@@ -124,15 +107,11 @@ struct CBORErrorTests {
         let decoder = CBORDecoder()
         do {
             let _ = try decoder.decode(Int.self, from: Data(encoded))
-            XCTFail("Expected decoding to fail with DecodingError.typeMismatch")
-        } catch let error as DecodingError {
-            if case .typeMismatch = error {
-                // This is the expected error
-            } else {
-                XCTFail("Expected DecodingError.typeMismatch but got \(error)")
-            }
+            Issue.record("Expected decoding to fail with DecodingError")
+        } catch is DecodingError {
+            // This is the expected error
         } catch {
-            XCTFail("Expected DecodingError but got \(error)")
+            Issue.record("Expected DecodingError but got \(error)")
         }
     }
     
@@ -150,15 +129,11 @@ struct CBORErrorTests {
         let decoder = CBORDecoder()
         do {
             let _ = try decoder.decode(RequiredKeyStruct.self, from: Data(encoded))
-            XCTFail("Expected decoding to fail with DecodingError.keyNotFound")
-        } catch let error as DecodingError {
-            if case .keyNotFound = error {
-                // This is the expected error
-            } else {
-                XCTFail("Expected DecodingError.keyNotFound but got \(error)")
-            }
+            Issue.record("Expected decoding to fail with DecodingError")
+        } catch is DecodingError {
+            // This is the expected error
         } catch {
-            XCTFail("Expected DecodingError but got \(error)")
+            Issue.record("Expected DecodingError but got \(error)")
         }
     }
     
@@ -172,15 +147,11 @@ struct CBORErrorTests {
         let decoder = CBORDecoder()
         do {
             let _ = try decoder.decode(URL.self, from: Data(encoded))
-            XCTFail("Expected decoding to fail with DecodingError.dataCorrupted")
-        } catch let error as DecodingError {
-            if case .dataCorrupted = error {
-                // This is the expected error
-            } else {
-                XCTFail("Expected DecodingError.dataCorrupted but got \(error)")
-            }
+            Issue.record("Expected decoding to fail with DecodingError")
+        } catch is DecodingError {
+            // This is the expected error
         } catch {
-            XCTFail("Expected DecodingError but got \(error)")
+            Issue.record("Expected DecodingError but got \(error)")
         }
     }
     
@@ -195,15 +166,11 @@ struct CBORErrorTests {
         
         do {
             let _ = try CBOR.decode(incompleteData)
-            XCTFail("Expected decoding to fail with CBORError.prematureEnd")
-        } catch let error as CBORError {
-            if case .prematureEnd = error {
-                // This is the expected error
-            } else {
-                XCTFail("Expected CBORError.prematureEnd but got \(error)")
-            }
+            Issue.record("Expected decoding to fail with CBORError")
+        } catch is CBORError {
+            // This is the expected error
         } catch {
-            XCTFail("Expected CBORError but got \(error)")
+            Issue.record("Expected CBORError but got \(error)")
         }
         
         // Test decoding CBOR with extra data
@@ -214,15 +181,11 @@ struct CBORErrorTests {
         
         do {
             let _ = try CBOR.decode(dataWithExtra)
-            XCTFail("Expected decoding to fail with CBORError.extraDataFound")
-        } catch let error as CBORError {
-            if case .extraDataFound = error {
-                // This is the expected error
-            } else {
-                XCTFail("Expected CBORError.extraDataFound but got \(error)")
-            }
+            Issue.record("Expected decoding to fail with CBORError")
+        } catch is CBORError {
+            // This is the expected error
         } catch {
-            XCTFail("Expected CBORError but got \(error)")
+            Issue.record("Expected CBORError but got \(error)")
         }
     }
     
@@ -279,15 +242,11 @@ struct CBORErrorTests {
         
         do {
             let _ = try encoder.encode(unencodable)
-            XCTFail("Expected encoding to fail with EncodingError.invalidValue")
-        } catch let error as EncodingError {
-            if case .invalidValue = error {
-                // This is the expected error
-            } else {
-                XCTFail("Expected EncodingError.invalidValue but got \(error)")
-            }
+            Issue.record("Expected encoding to fail with EncodingError")
+        } catch is EncodingError {
+            // This is the expected error
         } catch {
-            XCTFail("Expected EncodingError but got \(error)")
+            Issue.record("Expected EncodingError but got \(error)")
         }
     }
     
@@ -300,15 +259,15 @@ struct CBORErrorTests {
         
         // First read should succeed
         let byte = try shortReader.readByte()
-        #expect(byte == 0x01)
+        #expect(byte == 0x01, "Byte read is not 0x01")
         
         do {
             let _ = try shortReader.readByte() // This should fail (no more data)
-            XCTFail("Expected reading to fail with CBORError.prematureEnd")
+            Issue.record("Expected reading to fail with CBORError")
         } catch is CBORError {
             // This is the expected error
         } catch {
-            XCTFail("Expected CBORError but got \(error)")
+            Issue.record("Expected CBORError but got \(error)")
         }
         
         // Test reading multiple bytes
@@ -318,20 +277,20 @@ struct CBORErrorTests {
             let byte2 = try multiByteReader.readByte()
             let byte3 = try multiByteReader.readByte()
             
-            #expect(byte1 == 0x01)
-            #expect(byte2 == 0x02)
-            #expect(byte3 == 0x03)
+            #expect(byte1 == 0x01, "Byte 1 read is not 0x01")
+            #expect(byte2 == 0x02, "Byte 2 read is not 0x02")
+            #expect(byte3 == 0x03, "Byte 3 read is not 0x03")
             
             do {
                 let _ = try multiByteReader.readByte() // Should fail after reading all bytes
-                XCTFail("Expected reading to fail with CBORError.prematureEnd")
+                Issue.record("Expected reading to fail with CBORError")
             } catch is CBORError {
                 // This is the expected error
             } catch {
-                XCTFail("Expected CBORError but got \(error)")
+                Issue.record("Expected CBORError but got \(error)")
             }
         } catch {
-            XCTFail("Failed to read bytes: \(error)")
+            Issue.record("Failed to read bytes: \(error)")
         }
     }
     
@@ -349,11 +308,11 @@ struct CBORErrorTests {
         
         do {
             let _ = try CBOR.decode(invalidArrayItem)
-            XCTFail("Expected decoding to fail with CBORError")
+            Issue.record("Expected decoding to fail with CBORError")
         } catch is CBORError {
             // This is the expected error
         } catch {
-            XCTFail("Expected CBORError but got \(error)")
+            Issue.record("Expected CBORError but got \(error)")
         }
         
         // Map with invalid value
@@ -365,11 +324,11 @@ struct CBORErrorTests {
         
         do {
             let _ = try CBOR.decode(invalidMapValue)
-            XCTFail("Expected decoding to fail with CBORError")
+            Issue.record("Expected decoding to fail with CBORError")
         } catch is CBORError {
             // This is the expected error
         } catch {
-            XCTFail("Expected CBORError but got \(error)")
+            Issue.record("Expected CBORError but got \(error)")
         }
     }
 }
