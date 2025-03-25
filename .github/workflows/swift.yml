@@ -1,0 +1,28 @@
+name: Swift 6 CBOR CI
+
+on:
+  push:
+    branches: [ main, master, develop ]
+  pull_request:
+    branches: [ main, master, develop ]
+
+jobs:
+  # Linux build and test
+  linux:
+    name: Swift ${{ matrix.swift }} on ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, ubuntu-22.04]
+        swift: ["6.0.0", "6.0.1", "6.0.2"]
+    steps:
+    - uses: actions/checkout@v4
+    - name: Setup Swift
+      uses: swift-actions/setup-swift@v2
+      with:
+        swift-version: ${{ matrix.swift }}
+    - name: Build
+      run: swift build -c release
+    - name: Run tests with Swift Testing
+      run: swift test --enable-test-discovery
