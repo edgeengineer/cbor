@@ -20,17 +20,29 @@ import Glibc
 
 /// A CBOR value
 public indirect enum CBOR: Equatable {
+    /// A positive unsigned integer
     case unsignedInt(UInt64)
+    /// A negative integer
     case negativeInt(Int64)
+    /// A byte string
     case byteString([UInt8])
+    /// A text string
     case textString(String)
+    /// An array of CBOR values
     case array([CBOR])
+    /// A map of CBOR key-value pairs
     case map([CBORMapPair])
+    /// A tagged CBOR value
     case tagged(UInt64, CBOR)
+    /// A simple value
     case simple(UInt8)
+    /// A boolean value
     case bool(Bool)
+    /// A null value
     case null
+    /// An undefined value
     case undefined
+    /// A floating-point number
     case float(Double)
     
     /// Encodes the CBOR value to bytes
@@ -55,6 +67,10 @@ public indirect enum CBOR: Equatable {
 }
 
 /// A key-value pair in a CBOR map
+///
+/// - Parameters:
+///   - key: The key of the pair
+///   - value: The value of the pair
 public struct CBORMapPair: Equatable {
     public let key: CBOR
     public let value: CBOR
@@ -68,6 +84,10 @@ public struct CBORMapPair: Equatable {
 // MARK: - Encoding
 
 /// Encodes a CBOR value to bytes
+///
+/// - Parameters:
+///   - value: The CBOR value to encode
+///   - output: The output buffer to write the encoded bytes to
 private func _encode(_ value: CBOR, into output: inout [UInt8]) {
     switch value {
     case .unsignedInt(let u):
@@ -133,6 +153,11 @@ private func _encode(_ value: CBOR, into output: inout [UInt8]) {
 }
 
 /// Encodes an unsigned integer with the given major type
+///
+/// - Parameters:
+///   - major: The major type of the integer
+///   - value: The unsigned integer value
+///   - output: The output buffer to write the encoded bytes to
 private func encodeUnsigned(major: UInt8, value: UInt64, into output: inout [UInt8]) {
     let majorByte = major << 5
     if value < 24 {
@@ -166,6 +191,11 @@ private func encodeUnsigned(major: UInt8, value: UInt64, into output: inout [UIn
 // MARK: - Decoding
 
 /// Decodes a CBOR value from the reader.
+///
+/// - Parameters:
+///   - reader: The reader to decode from
+/// - Returns: The decoded CBOR value
+/// - Throws: A `CBORError` if the decoding fails
 private func _decode(reader: inout CBORReader) throws -> CBOR {
     let initial = try reader.readByte()
     
