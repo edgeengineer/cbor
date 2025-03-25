@@ -1,0 +1,3455 @@
+{
+  "builtTestProducts" : [
+    {
+      "binaryPath" : "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/CBORPackageTests.xctest/Contents/MacOS/CBORPackageTests",
+      "packagePath" : "/Users/runner/work/cbor/cbor",
+      "productName" : "CBORPackageTests"
+    }
+  ],
+  "copyCommands" : {
+
+  },
+  "explicitTargetDependencyImportCheckingMode" : {
+    "none" : {
+
+    }
+  },
+  "generatedSourceTargetSet" : [
+    "Swift_DocC",
+    "Swift_DocC_Preview"
+  ],
+  "pluginDescriptions" : [
+    {
+      "moduleC99Name" : "Swift_DocC",
+      "moduleName" : "Swift-DocC",
+      "package" : "swift-docc-plugin",
+      "productNames" : [
+        "Swift-DocC"
+      ],
+      "sources" : {
+        "relativePaths" : [
+          "SwiftDocCConvert.swift",
+          "Symbolic Links/SharedPackagePluginExtensions/ArgumentExtractor+extractSpecifiedTargets.swift",
+          "Symbolic Links/SharedPackagePluginExtensions/PackageExtensions.swift",
+          "Symbolic Links/SharedPackagePluginExtensions/PackageManager+getSymbolGraphsForDocC.swift",
+          "Symbolic Links/SharedPackagePluginExtensions/PluginContext+doccExecutableURL.swift",
+          "Symbolic Links/SharedPackagePluginExtensions/SnippetExtractor+generateSnippetsForTarget.swift",
+          "Symbolic Links/SharedPackagePluginExtensions/SourceModuleTarget+doccCatalogPath.swift",
+          "Symbolic Links/SharedPackagePluginExtensions/Target+defaultSymbolGraphOptions.swift",
+          "Symbolic Links/SharedPackagePluginExtensions/Target+doccArchiveOutputPath.swift",
+          "Symbolic Links/SwiftDocCPluginUtilities/BuildGraph/DocumentationBuildGraph.swift",
+          "Symbolic Links/SwiftDocCPluginUtilities/BuildGraph/DocumentationBuildGraphRunner.swift",
+          "Symbolic Links/SwiftDocCPluginUtilities/CommandLineArguments/CommandLineArgument.swift",
+          "Symbolic Links/SwiftDocCPluginUtilities/CommandLineArguments/CommandLineArguments.swift",
+          "Symbolic Links/SwiftDocCPluginUtilities/CommandLineArguments/ParsedPluginArguments.swift",
+          "Symbolic Links/SwiftDocCPluginUtilities/DispatchTimeInterval+descriptionInSeconds.swift",
+          "Symbolic Links/SwiftDocCPluginUtilities/DocCFeatures.swift",
+          "Symbolic Links/SwiftDocCPluginUtilities/DocumentationTargetKind.swift",
+          "Symbolic Links/SwiftDocCPluginUtilities/DocumentedPluginFlags/DocumentedArgument.swift",
+          "Symbolic Links/SwiftDocCPluginUtilities/FoundationExtensions/String+singleQuoted.swift",
+          "Symbolic Links/SwiftDocCPluginUtilities/HelpInformation.swift",
+          "Symbolic Links/SwiftDocCPluginUtilities/Lock.swift",
+          "Symbolic Links/SwiftDocCPluginUtilities/ParsedArguments.swift",
+          "Symbolic Links/SwiftDocCPluginUtilities/PluginAction.swift",
+          "Symbolic Links/SwiftDocCPluginUtilities/Snippets/SnippetExtractor.swift"
+        ],
+        "root" : "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-plugin/Plugins/Swift-DocC Convert"
+      },
+      "toolsVersion" : {
+        "_version" : "5.7.0"
+      }
+    },
+    {
+      "moduleC99Name" : "Swift_DocC_Preview",
+      "moduleName" : "Swift-DocC Preview",
+      "package" : "swift-docc-plugin",
+      "productNames" : [
+        "Swift-DocC Preview"
+      ],
+      "sources" : {
+        "relativePaths" : [
+          "SwiftDocCPreview.swift",
+          "Symbolic Links/SharedPackagePluginExtensions/ArgumentExtractor+extractSpecifiedTargets.swift",
+          "Symbolic Links/SharedPackagePluginExtensions/PackageExtensions.swift",
+          "Symbolic Links/SharedPackagePluginExtensions/PackageManager+getSymbolGraphsForDocC.swift",
+          "Symbolic Links/SharedPackagePluginExtensions/PluginContext+doccExecutableURL.swift",
+          "Symbolic Links/SharedPackagePluginExtensions/SnippetExtractor+generateSnippetsForTarget.swift",
+          "Symbolic Links/SharedPackagePluginExtensions/SourceModuleTarget+doccCatalogPath.swift",
+          "Symbolic Links/SharedPackagePluginExtensions/Target+defaultSymbolGraphOptions.swift",
+          "Symbolic Links/SharedPackagePluginExtensions/Target+doccArchiveOutputPath.swift",
+          "Symbolic Links/SwiftDocCPluginUtilities/BuildGraph/DocumentationBuildGraph.swift",
+          "Symbolic Links/SwiftDocCPluginUtilities/BuildGraph/DocumentationBuildGraphRunner.swift",
+          "Symbolic Links/SwiftDocCPluginUtilities/CommandLineArguments/CommandLineArgument.swift",
+          "Symbolic Links/SwiftDocCPluginUtilities/CommandLineArguments/CommandLineArguments.swift",
+          "Symbolic Links/SwiftDocCPluginUtilities/CommandLineArguments/ParsedPluginArguments.swift",
+          "Symbolic Links/SwiftDocCPluginUtilities/DispatchTimeInterval+descriptionInSeconds.swift",
+          "Symbolic Links/SwiftDocCPluginUtilities/DocCFeatures.swift",
+          "Symbolic Links/SwiftDocCPluginUtilities/DocumentationTargetKind.swift",
+          "Symbolic Links/SwiftDocCPluginUtilities/DocumentedPluginFlags/DocumentedArgument.swift",
+          "Symbolic Links/SwiftDocCPluginUtilities/FoundationExtensions/String+singleQuoted.swift",
+          "Symbolic Links/SwiftDocCPluginUtilities/HelpInformation.swift",
+          "Symbolic Links/SwiftDocCPluginUtilities/Lock.swift",
+          "Symbolic Links/SwiftDocCPluginUtilities/ParsedArguments.swift",
+          "Symbolic Links/SwiftDocCPluginUtilities/PluginAction.swift",
+          "Symbolic Links/SwiftDocCPluginUtilities/Snippets/SnippetExtractor.swift"
+        ],
+        "root" : "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-plugin/Plugins/Swift-DocC Preview"
+      },
+      "toolsVersion" : {
+        "_version" : "5.7.0"
+      }
+    }
+  ],
+  "swiftCommands" : {
+    "C.CBOR-arm64-apple-macosx14.0-debug.module" : {
+      "executable" : "/Users/runner/hostedtoolcache/swift-macOS/6.0/arm64/usr/bin/swiftc",
+      "fileList" : "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/CBOR.build/sources",
+      "importPath" : "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/Modules",
+      "inputs" : [
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/Sources/CBOR/CBOR.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/Sources/CBOR/CBORCodable.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/Sources/CBOR/CBORDecoder.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/Sources/CBOR/CBOREncoder.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/Sources/CBOR/CBORError.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/Sources/CBOR/CBORReader.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/swift-version--55D1F9F952A18E34.txt"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/CBOR.build/sources"
+        }
+      ],
+      "isLibrary" : true,
+      "moduleName" : "CBOR",
+      "moduleOutputPath" : "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/Modules/CBOR.swiftmodule",
+      "objects" : [
+        "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/CBOR.build/CBOR.swift.o",
+        "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/CBOR.build/CBORCodable.swift.o",
+        "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/CBOR.build/CBORDecoder.swift.o",
+        "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/CBOR.build/CBOREncoder.swift.o",
+        "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/CBOR.build/CBORError.swift.o",
+        "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/CBOR.build/CBORReader.swift.o"
+      ],
+      "otherArguments" : [
+        "-target",
+        "arm64-apple-macosx10.15",
+        "-enable-batch-mode",
+        "-index-store-path",
+        "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/index/store",
+        "-Onone",
+        "-enable-testing",
+        "-j3",
+        "-DSWIFT_PACKAGE",
+        "-DDEBUG",
+        "-module-cache-path",
+        "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/ModuleCache",
+        "-parseable-output",
+        "-parse-as-library",
+        "-emit-objc-header",
+        "-emit-objc-header-path",
+        "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/CBOR.build/CBOR-Swift.h",
+        "-swift-version",
+        "6",
+        "-I",
+        "/Users/runner/hostedtoolcache/swift-macOS/6.0/arm64/usr/lib/swift/macosx/testing",
+        "-L",
+        "/Users/runner/hostedtoolcache/swift-macOS/6.0/arm64/usr/lib/swift/macosx/testing",
+        "-plugin-path",
+        "/Users/runner/hostedtoolcache/swift-macOS/6.0/arm64/usr/lib/swift/host/plugins/testing",
+        "-sdk",
+        "/Applications/Xcode_15.4.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.5.sdk",
+        "-F",
+        "/Applications/Xcode_15.4.app/Contents/Developer/Platforms/MacOSX.platform/Developer/Library/Frameworks",
+        "-I",
+        "/Applications/Xcode_15.4.app/Contents/Developer/Platforms/MacOSX.platform/Developer/usr/lib",
+        "-L",
+        "/Applications/Xcode_15.4.app/Contents/Developer/Platforms/MacOSX.platform/Developer/usr/lib",
+        "-g",
+        "-Xcc",
+        "-isysroot",
+        "-Xcc",
+        "/Applications/Xcode_15.4.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.5.sdk",
+        "-Xcc",
+        "-F",
+        "-Xcc",
+        "/Applications/Xcode_15.4.app/Contents/Developer/Platforms/MacOSX.platform/Developer/Library/Frameworks",
+        "-Xcc",
+        "-fPIC",
+        "-Xcc",
+        "-g",
+        "-package-name",
+        "cbor"
+      ],
+      "outputFileMapPath" : "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/CBOR.build/output-file-map.json",
+      "outputs" : [
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/CBOR.build/CBOR.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/CBOR.build/CBORCodable.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/CBOR.build/CBORDecoder.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/CBOR.build/CBOREncoder.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/CBOR.build/CBORError.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/CBOR.build/CBORReader.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/Modules/CBOR.swiftmodule"
+        }
+      ],
+      "prepareForIndexing" : false,
+      "sources" : [
+        "/Users/runner/work/cbor/cbor/Sources/CBOR/CBOR.swift",
+        "/Users/runner/work/cbor/cbor/Sources/CBOR/CBORCodable.swift",
+        "/Users/runner/work/cbor/cbor/Sources/CBOR/CBORDecoder.swift",
+        "/Users/runner/work/cbor/cbor/Sources/CBOR/CBOREncoder.swift",
+        "/Users/runner/work/cbor/cbor/Sources/CBOR/CBORError.swift",
+        "/Users/runner/work/cbor/cbor/Sources/CBOR/CBORReader.swift"
+      ],
+      "tempsPath" : "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/CBOR.build",
+      "wholeModuleOptimization" : false
+    },
+    "C.CBORPackageTests-arm64-apple-macosx14.0-debug.module" : {
+      "executable" : "/Users/runner/hostedtoolcache/swift-macOS/6.0/arm64/usr/bin/swiftc",
+      "fileList" : "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/CBORPackageTests.build/sources",
+      "importPath" : "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/Modules",
+      "inputs" : [
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/CBORPackageTests.derived/runner.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/swift-version--55D1F9F952A18E34.txt"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/Modules/CBORTests.swiftmodule"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/CBORPackageTests.build/sources"
+        }
+      ],
+      "isLibrary" : true,
+      "moduleName" : "CBORPackageTests",
+      "moduleOutputPath" : "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/Modules/CBORPackageTests.swiftmodule",
+      "objects" : [
+        "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/CBORPackageTests.build/runner.swift.o"
+      ],
+      "otherArguments" : [
+        "-target",
+        "arm64-apple-macosx10.15",
+        "-enable-batch-mode",
+        "-index-store-path",
+        "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/index/store",
+        "-Onone",
+        "-enable-testing",
+        "-j3",
+        "-DSWIFT_PACKAGE",
+        "-DDEBUG",
+        "-module-cache-path",
+        "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/ModuleCache",
+        "-parseable-output",
+        "-parse-as-library",
+        "-emit-objc-header",
+        "-emit-objc-header-path",
+        "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/CBORPackageTests.build/CBORPackageTests-Swift.h",
+        "-I",
+        "/Users/runner/hostedtoolcache/swift-macOS/6.0/arm64/usr/lib/swift/macosx/testing",
+        "-L",
+        "/Users/runner/hostedtoolcache/swift-macOS/6.0/arm64/usr/lib/swift/macosx/testing",
+        "-plugin-path",
+        "/Users/runner/hostedtoolcache/swift-macOS/6.0/arm64/usr/lib/swift/host/plugins/testing",
+        "-sdk",
+        "/Applications/Xcode_15.4.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.5.sdk",
+        "-F",
+        "/Applications/Xcode_15.4.app/Contents/Developer/Platforms/MacOSX.platform/Developer/Library/Frameworks",
+        "-I",
+        "/Applications/Xcode_15.4.app/Contents/Developer/Platforms/MacOSX.platform/Developer/usr/lib",
+        "-L",
+        "/Applications/Xcode_15.4.app/Contents/Developer/Platforms/MacOSX.platform/Developer/usr/lib",
+        "-g",
+        "-Xcc",
+        "-isysroot",
+        "-Xcc",
+        "/Applications/Xcode_15.4.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.5.sdk",
+        "-Xcc",
+        "-F",
+        "-Xcc",
+        "/Applications/Xcode_15.4.app/Contents/Developer/Platforms/MacOSX.platform/Developer/Library/Frameworks",
+        "-Xcc",
+        "-fPIC",
+        "-Xcc",
+        "-g",
+        "-package-name",
+        "cbor"
+      ],
+      "outputFileMapPath" : "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/CBORPackageTests.build/output-file-map.json",
+      "outputs" : [
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/CBORPackageTests.build/runner.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/Modules/CBORPackageTests.swiftmodule"
+        }
+      ],
+      "prepareForIndexing" : false,
+      "sources" : [
+        "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/CBORPackageTests.derived/runner.swift"
+      ],
+      "tempsPath" : "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/CBORPackageTests.build",
+      "wholeModuleOptimization" : false
+    },
+    "C.CBORTests-arm64-apple-macosx14.0-debug.module" : {
+      "executable" : "/Users/runner/hostedtoolcache/swift-macOS/6.0/arm64/usr/bin/swiftc",
+      "fileList" : "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/CBORTests.build/sources",
+      "importPath" : "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/Modules",
+      "inputs" : [
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/Tests/CBORTests/CBORBasicTests.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/Tests/CBORTests/CBORCodableTests.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/Tests/CBORTests/CBORErrorTests.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/swift-version--55D1F9F952A18E34.txt"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/Modules/CBOR.swiftmodule"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/CBORTests.build/sources"
+        }
+      ],
+      "isLibrary" : true,
+      "moduleName" : "CBORTests",
+      "moduleOutputPath" : "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/Modules/CBORTests.swiftmodule",
+      "objects" : [
+        "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/CBORTests.build/CBORBasicTests.swift.o",
+        "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/CBORTests.build/CBORCodableTests.swift.o",
+        "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/CBORTests.build/CBORErrorTests.swift.o"
+      ],
+      "otherArguments" : [
+        "-target",
+        "arm64-apple-macosx13.0",
+        "-enable-batch-mode",
+        "-index-store-path",
+        "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/index/store",
+        "-Onone",
+        "-enable-testing",
+        "-j3",
+        "-DSWIFT_PACKAGE",
+        "-DDEBUG",
+        "-module-cache-path",
+        "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/ModuleCache",
+        "-parseable-output",
+        "-parse-as-library",
+        "-swift-version",
+        "6",
+        "-I",
+        "/Users/runner/hostedtoolcache/swift-macOS/6.0/arm64/usr/lib/swift/macosx/testing",
+        "-L",
+        "/Users/runner/hostedtoolcache/swift-macOS/6.0/arm64/usr/lib/swift/macosx/testing",
+        "-plugin-path",
+        "/Users/runner/hostedtoolcache/swift-macOS/6.0/arm64/usr/lib/swift/host/plugins/testing",
+        "-sdk",
+        "/Applications/Xcode_15.4.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.5.sdk",
+        "-F",
+        "/Applications/Xcode_15.4.app/Contents/Developer/Platforms/MacOSX.platform/Developer/Library/Frameworks",
+        "-I",
+        "/Applications/Xcode_15.4.app/Contents/Developer/Platforms/MacOSX.platform/Developer/usr/lib",
+        "-L",
+        "/Applications/Xcode_15.4.app/Contents/Developer/Platforms/MacOSX.platform/Developer/usr/lib",
+        "-g",
+        "-Xcc",
+        "-isysroot",
+        "-Xcc",
+        "/Applications/Xcode_15.4.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.5.sdk",
+        "-Xcc",
+        "-F",
+        "-Xcc",
+        "/Applications/Xcode_15.4.app/Contents/Developer/Platforms/MacOSX.platform/Developer/Library/Frameworks",
+        "-Xcc",
+        "-fPIC",
+        "-Xcc",
+        "-g",
+        "-package-name",
+        "cbor"
+      ],
+      "outputFileMapPath" : "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/CBORTests.build/output-file-map.json",
+      "outputs" : [
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/CBORTests.build/CBORBasicTests.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/CBORTests.build/CBORCodableTests.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/CBORTests.build/CBORErrorTests.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/Modules/CBORTests.swiftmodule"
+        }
+      ],
+      "prepareForIndexing" : false,
+      "sources" : [
+        "/Users/runner/work/cbor/cbor/Tests/CBORTests/CBORBasicTests.swift",
+        "/Users/runner/work/cbor/cbor/Tests/CBORTests/CBORCodableTests.swift",
+        "/Users/runner/work/cbor/cbor/Tests/CBORTests/CBORErrorTests.swift"
+      ],
+      "tempsPath" : "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/CBORTests.build",
+      "wholeModuleOptimization" : false
+    },
+    "C.snippet-extract-arm64-apple-macosx14.0-debug-tool.module" : {
+      "executable" : "/Users/runner/hostedtoolcache/swift-macOS/6.0/arm64/usr/bin/swiftc",
+      "fileList" : "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/snippet_extract-tool.build/sources",
+      "importPath" : "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/Modules-tool",
+      "inputs" : [
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-plugin/Sources/snippet-extract/SnippetBuildCommand.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-plugin/Sources/snippet-extract/Utility/SymbolGraph+Snippet.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-plugin/Sources/snippet-extract/Utility/URL+Status.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/swift-version--55D1F9F952A18E34.txt"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/Modules-tool/Snippets.swiftmodule"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/Modules-tool/SymbolKit.swiftmodule"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/snippet_extract-tool.build/sources"
+        }
+      ],
+      "isLibrary" : false,
+      "moduleName" : "snippet_extract",
+      "moduleOutputPath" : "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/Modules-tool/snippet_extract.swiftmodule",
+      "objects" : [
+        "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/snippet_extract-tool.build/SnippetBuildCommand.swift.o",
+        "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/snippet_extract-tool.build/SymbolGraph+Snippet.swift.o",
+        "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/snippet_extract-tool.build/URL+Status.swift.o"
+      ],
+      "otherArguments" : [
+        "-target",
+        "arm64-apple-macosx10.15.4",
+        "-enable-batch-mode",
+        "-index-store-path",
+        "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/index/store",
+        "-Onone",
+        "-enable-testing",
+        "-j3",
+        "-DSWIFT_PACKAGE",
+        "-DDEBUG",
+        "-module-cache-path",
+        "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/ModuleCache",
+        "-parseable-output",
+        "-Xfrontend",
+        "-entry-point-function-name",
+        "-Xfrontend",
+        "snippet_extract_main",
+        "-swift-version",
+        "5",
+        "-I",
+        "/Users/runner/hostedtoolcache/swift-macOS/6.0/arm64/usr/lib/swift/macosx/testing",
+        "-L",
+        "/Users/runner/hostedtoolcache/swift-macOS/6.0/arm64/usr/lib/swift/macosx/testing",
+        "-plugin-path",
+        "/Users/runner/hostedtoolcache/swift-macOS/6.0/arm64/usr/lib/swift/host/plugins/testing",
+        "-sdk",
+        "/Applications/Xcode_15.4.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.5.sdk",
+        "-F",
+        "/Applications/Xcode_15.4.app/Contents/Developer/Platforms/MacOSX.platform/Developer/Library/Frameworks",
+        "-I",
+        "/Applications/Xcode_15.4.app/Contents/Developer/Platforms/MacOSX.platform/Developer/usr/lib",
+        "-L",
+        "/Applications/Xcode_15.4.app/Contents/Developer/Platforms/MacOSX.platform/Developer/usr/lib",
+        "-g",
+        "-Xcc",
+        "-isysroot",
+        "-Xcc",
+        "/Applications/Xcode_15.4.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.5.sdk",
+        "-Xcc",
+        "-F",
+        "-Xcc",
+        "/Applications/Xcode_15.4.app/Contents/Developer/Platforms/MacOSX.platform/Developer/Library/Frameworks",
+        "-Xcc",
+        "-fPIC",
+        "-Xcc",
+        "-g",
+        "-suppress-warnings"
+      ],
+      "outputFileMapPath" : "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/snippet_extract-tool.build/output-file-map.json",
+      "outputs" : [
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/snippet_extract-tool.build/SnippetBuildCommand.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/snippet_extract-tool.build/SymbolGraph+Snippet.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/snippet_extract-tool.build/URL+Status.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/Modules-tool/snippet_extract.swiftmodule"
+        }
+      ],
+      "prepareForIndexing" : false,
+      "sources" : [
+        "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-plugin/Sources/snippet-extract/SnippetBuildCommand.swift",
+        "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-plugin/Sources/snippet-extract/Utility/SymbolGraph+Snippet.swift",
+        "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-plugin/Sources/snippet-extract/Utility/URL+Status.swift"
+      ],
+      "tempsPath" : "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/snippet_extract-tool.build",
+      "wholeModuleOptimization" : false
+    },
+    "C.snippet-extract-arm64-apple-macosx14.0-debug.module" : {
+      "executable" : "/Users/runner/hostedtoolcache/swift-macOS/6.0/arm64/usr/bin/swiftc",
+      "fileList" : "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/snippet_extract.build/sources",
+      "importPath" : "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/Modules",
+      "inputs" : [
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-plugin/Sources/snippet-extract/SnippetBuildCommand.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-plugin/Sources/snippet-extract/Utility/SymbolGraph+Snippet.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-plugin/Sources/snippet-extract/Utility/URL+Status.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/swift-version--55D1F9F952A18E34.txt"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/Modules/Snippets.swiftmodule"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/Modules/SymbolKit.swiftmodule"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/snippet_extract.build/sources"
+        }
+      ],
+      "isLibrary" : false,
+      "moduleName" : "snippet_extract",
+      "moduleOutputPath" : "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/Modules/snippet_extract.swiftmodule",
+      "objects" : [
+        "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/snippet_extract.build/SnippetBuildCommand.swift.o",
+        "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/snippet_extract.build/SymbolGraph+Snippet.swift.o",
+        "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/snippet_extract.build/URL+Status.swift.o"
+      ],
+      "otherArguments" : [
+        "-target",
+        "arm64-apple-macosx10.15.4",
+        "-enable-batch-mode",
+        "-index-store-path",
+        "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/index/store",
+        "-Onone",
+        "-enable-testing",
+        "-j3",
+        "-DSWIFT_PACKAGE",
+        "-DDEBUG",
+        "-module-cache-path",
+        "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/ModuleCache",
+        "-parseable-output",
+        "-Xfrontend",
+        "-entry-point-function-name",
+        "-Xfrontend",
+        "snippet_extract_main",
+        "-swift-version",
+        "5",
+        "-I",
+        "/Users/runner/hostedtoolcache/swift-macOS/6.0/arm64/usr/lib/swift/macosx/testing",
+        "-L",
+        "/Users/runner/hostedtoolcache/swift-macOS/6.0/arm64/usr/lib/swift/macosx/testing",
+        "-plugin-path",
+        "/Users/runner/hostedtoolcache/swift-macOS/6.0/arm64/usr/lib/swift/host/plugins/testing",
+        "-sdk",
+        "/Applications/Xcode_15.4.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.5.sdk",
+        "-F",
+        "/Applications/Xcode_15.4.app/Contents/Developer/Platforms/MacOSX.platform/Developer/Library/Frameworks",
+        "-I",
+        "/Applications/Xcode_15.4.app/Contents/Developer/Platforms/MacOSX.platform/Developer/usr/lib",
+        "-L",
+        "/Applications/Xcode_15.4.app/Contents/Developer/Platforms/MacOSX.platform/Developer/usr/lib",
+        "-g",
+        "-Xcc",
+        "-isysroot",
+        "-Xcc",
+        "/Applications/Xcode_15.4.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.5.sdk",
+        "-Xcc",
+        "-F",
+        "-Xcc",
+        "/Applications/Xcode_15.4.app/Contents/Developer/Platforms/MacOSX.platform/Developer/Library/Frameworks",
+        "-Xcc",
+        "-fPIC",
+        "-Xcc",
+        "-g",
+        "-suppress-warnings"
+      ],
+      "outputFileMapPath" : "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/snippet_extract.build/output-file-map.json",
+      "outputs" : [
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/snippet_extract.build/SnippetBuildCommand.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/snippet_extract.build/SymbolGraph+Snippet.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/snippet_extract.build/URL+Status.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/Modules/snippet_extract.swiftmodule"
+        }
+      ],
+      "prepareForIndexing" : false,
+      "sources" : [
+        "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-plugin/Sources/snippet-extract/SnippetBuildCommand.swift",
+        "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-plugin/Sources/snippet-extract/Utility/SymbolGraph+Snippet.swift",
+        "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-plugin/Sources/snippet-extract/Utility/URL+Status.swift"
+      ],
+      "tempsPath" : "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/snippet_extract.build",
+      "wholeModuleOptimization" : false
+    },
+    "C.Snippets-arm64-apple-macosx14.0-debug-tool.module" : {
+      "executable" : "/Users/runner/hostedtoolcache/swift-macOS/6.0/arm64/usr/bin/swiftc",
+      "fileList" : "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/Snippets-tool.build/sources",
+      "importPath" : "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/Modules-tool",
+      "inputs" : [
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-plugin/Sources/Snippets/Model/Snippet.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-plugin/Sources/Snippets/Parsing/SnippetParser.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/swift-version--55D1F9F952A18E34.txt"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/Snippets-tool.build/sources"
+        }
+      ],
+      "isLibrary" : true,
+      "moduleName" : "Snippets",
+      "moduleOutputPath" : "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/Modules-tool/Snippets.swiftmodule",
+      "objects" : [
+        "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/Snippets-tool.build/Snippet.swift.o",
+        "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/Snippets-tool.build/SnippetParser.swift.o"
+      ],
+      "otherArguments" : [
+        "-target",
+        "arm64-apple-macosx10.15.4",
+        "-enable-batch-mode",
+        "-index-store-path",
+        "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/index/store",
+        "-Onone",
+        "-enable-testing",
+        "-j3",
+        "-DSWIFT_PACKAGE",
+        "-DDEBUG",
+        "-module-cache-path",
+        "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/ModuleCache",
+        "-parseable-output",
+        "-parse-as-library",
+        "-emit-objc-header",
+        "-emit-objc-header-path",
+        "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/Snippets-tool.build/Snippets-Swift.h",
+        "-swift-version",
+        "5",
+        "-I",
+        "/Users/runner/hostedtoolcache/swift-macOS/6.0/arm64/usr/lib/swift/macosx/testing",
+        "-L",
+        "/Users/runner/hostedtoolcache/swift-macOS/6.0/arm64/usr/lib/swift/macosx/testing",
+        "-plugin-path",
+        "/Users/runner/hostedtoolcache/swift-macOS/6.0/arm64/usr/lib/swift/host/plugins/testing",
+        "-sdk",
+        "/Applications/Xcode_15.4.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.5.sdk",
+        "-F",
+        "/Applications/Xcode_15.4.app/Contents/Developer/Platforms/MacOSX.platform/Developer/Library/Frameworks",
+        "-I",
+        "/Applications/Xcode_15.4.app/Contents/Developer/Platforms/MacOSX.platform/Developer/usr/lib",
+        "-L",
+        "/Applications/Xcode_15.4.app/Contents/Developer/Platforms/MacOSX.platform/Developer/usr/lib",
+        "-g",
+        "-Xcc",
+        "-isysroot",
+        "-Xcc",
+        "/Applications/Xcode_15.4.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.5.sdk",
+        "-Xcc",
+        "-F",
+        "-Xcc",
+        "/Applications/Xcode_15.4.app/Contents/Developer/Platforms/MacOSX.platform/Developer/Library/Frameworks",
+        "-Xcc",
+        "-fPIC",
+        "-Xcc",
+        "-g",
+        "-suppress-warnings"
+      ],
+      "outputFileMapPath" : "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/Snippets-tool.build/output-file-map.json",
+      "outputs" : [
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/Snippets-tool.build/Snippet.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/Snippets-tool.build/SnippetParser.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/Modules-tool/Snippets.swiftmodule"
+        }
+      ],
+      "prepareForIndexing" : false,
+      "sources" : [
+        "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-plugin/Sources/Snippets/Model/Snippet.swift",
+        "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-plugin/Sources/Snippets/Parsing/SnippetParser.swift"
+      ],
+      "tempsPath" : "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/Snippets-tool.build",
+      "wholeModuleOptimization" : false
+    },
+    "C.Snippets-arm64-apple-macosx14.0-debug.module" : {
+      "executable" : "/Users/runner/hostedtoolcache/swift-macOS/6.0/arm64/usr/bin/swiftc",
+      "fileList" : "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/Snippets.build/sources",
+      "importPath" : "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/Modules",
+      "inputs" : [
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-plugin/Sources/Snippets/Model/Snippet.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-plugin/Sources/Snippets/Parsing/SnippetParser.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/swift-version--55D1F9F952A18E34.txt"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/Snippets.build/sources"
+        }
+      ],
+      "isLibrary" : true,
+      "moduleName" : "Snippets",
+      "moduleOutputPath" : "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/Modules/Snippets.swiftmodule",
+      "objects" : [
+        "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/Snippets.build/Snippet.swift.o",
+        "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/Snippets.build/SnippetParser.swift.o"
+      ],
+      "otherArguments" : [
+        "-target",
+        "arm64-apple-macosx10.15.4",
+        "-enable-batch-mode",
+        "-index-store-path",
+        "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/index/store",
+        "-Onone",
+        "-enable-testing",
+        "-j3",
+        "-DSWIFT_PACKAGE",
+        "-DDEBUG",
+        "-module-cache-path",
+        "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/ModuleCache",
+        "-parseable-output",
+        "-parse-as-library",
+        "-emit-objc-header",
+        "-emit-objc-header-path",
+        "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/Snippets.build/Snippets-Swift.h",
+        "-swift-version",
+        "5",
+        "-I",
+        "/Users/runner/hostedtoolcache/swift-macOS/6.0/arm64/usr/lib/swift/macosx/testing",
+        "-L",
+        "/Users/runner/hostedtoolcache/swift-macOS/6.0/arm64/usr/lib/swift/macosx/testing",
+        "-plugin-path",
+        "/Users/runner/hostedtoolcache/swift-macOS/6.0/arm64/usr/lib/swift/host/plugins/testing",
+        "-sdk",
+        "/Applications/Xcode_15.4.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.5.sdk",
+        "-F",
+        "/Applications/Xcode_15.4.app/Contents/Developer/Platforms/MacOSX.platform/Developer/Library/Frameworks",
+        "-I",
+        "/Applications/Xcode_15.4.app/Contents/Developer/Platforms/MacOSX.platform/Developer/usr/lib",
+        "-L",
+        "/Applications/Xcode_15.4.app/Contents/Developer/Platforms/MacOSX.platform/Developer/usr/lib",
+        "-g",
+        "-Xcc",
+        "-isysroot",
+        "-Xcc",
+        "/Applications/Xcode_15.4.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.5.sdk",
+        "-Xcc",
+        "-F",
+        "-Xcc",
+        "/Applications/Xcode_15.4.app/Contents/Developer/Platforms/MacOSX.platform/Developer/Library/Frameworks",
+        "-Xcc",
+        "-fPIC",
+        "-Xcc",
+        "-g",
+        "-suppress-warnings"
+      ],
+      "outputFileMapPath" : "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/Snippets.build/output-file-map.json",
+      "outputs" : [
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/Snippets.build/Snippet.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/Snippets.build/SnippetParser.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/Modules/Snippets.swiftmodule"
+        }
+      ],
+      "prepareForIndexing" : false,
+      "sources" : [
+        "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-plugin/Sources/Snippets/Model/Snippet.swift",
+        "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-plugin/Sources/Snippets/Parsing/SnippetParser.swift"
+      ],
+      "tempsPath" : "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/Snippets.build",
+      "wholeModuleOptimization" : false
+    },
+    "C.SymbolKit-arm64-apple-macosx14.0-debug-tool.module" : {
+      "executable" : "/Users/runner/hostedtoolcache/swift-macOS/6.0/arm64/usr/bin/swiftc",
+      "fileList" : "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/SymbolKit-tool.build/sources",
+      "importPath" : "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/Modules-tool",
+      "inputs" : [
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-symbolkit/Sources/SymbolKit/Mixin/Mixin+Equals.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-symbolkit/Sources/SymbolKit/Mixin/Mixin+Hash.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-symbolkit/Sources/SymbolKit/Mixin/Mixin.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-symbolkit/Sources/SymbolKit/SymbolGraph/LineList/LineList.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-symbolkit/Sources/SymbolKit/SymbolGraph/LineList/SourceRange/Position.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-symbolkit/Sources/SymbolKit/SymbolGraph/LineList/SourceRange/SourceRange.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-symbolkit/Sources/SymbolKit/SymbolGraph/Metadata.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-symbolkit/Sources/SymbolKit/SymbolGraph/Module.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-symbolkit/Sources/SymbolKit/SymbolGraph/OperatingSystem.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-symbolkit/Sources/SymbolKit/SymbolGraph/Platform.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-symbolkit/Sources/SymbolKit/SymbolGraph/Relationship/Relationship.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-symbolkit/Sources/SymbolKit/SymbolGraph/Relationship/RelationshipKind.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-symbolkit/Sources/SymbolKit/SymbolGraph/Relationship/SourceOrigin.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-symbolkit/Sources/SymbolKit/SymbolGraph/Relationship/Swift/GenericConstraints.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-symbolkit/Sources/SymbolKit/SymbolGraph/Relationship/Swift/Swift.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-symbolkit/Sources/SymbolKit/SymbolGraph/SemanticVersion.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-symbolkit/Sources/SymbolKit/SymbolGraph/Symbol/AccessControl.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-symbolkit/Sources/SymbolKit/SymbolGraph/Symbol/Availability/Availability.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-symbolkit/Sources/SymbolKit/SymbolGraph/Symbol/Availability/AvailabilityItem.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-symbolkit/Sources/SymbolKit/SymbolGraph/Symbol/Availability/Domain.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-symbolkit/Sources/SymbolKit/SymbolGraph/Symbol/DeclarationFragments/DeclarationFragments.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-symbolkit/Sources/SymbolKit/SymbolGraph/Symbol/DeclarationFragments/Fragment/Fragment.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-symbolkit/Sources/SymbolKit/SymbolGraph/Symbol/DeclarationFragments/Fragment/FragmentKind.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-symbolkit/Sources/SymbolKit/SymbolGraph/Symbol/FunctionSignature/FunctionParameter.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-symbolkit/Sources/SymbolKit/SymbolGraph/Symbol/FunctionSignature/FunctionSignature.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-symbolkit/Sources/SymbolKit/SymbolGraph/Symbol/Identifier.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-symbolkit/Sources/SymbolKit/SymbolGraph/Symbol/KindIdentifier.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-symbolkit/Sources/SymbolKit/SymbolGraph/Symbol/Location.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-symbolkit/Sources/SymbolKit/SymbolGraph/Symbol/Mutability.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-symbolkit/Sources/SymbolKit/SymbolGraph/Symbol/Names.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-symbolkit/Sources/SymbolKit/SymbolGraph/Symbol/SPI.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-symbolkit/Sources/SymbolKit/SymbolGraph/Symbol/Snippet.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-symbolkit/Sources/SymbolKit/SymbolGraph/Symbol/Swift/Extension.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-symbolkit/Sources/SymbolKit/SymbolGraph/Symbol/Swift/GenericConstraint.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-symbolkit/Sources/SymbolKit/SymbolGraph/Symbol/Swift/GenericParameter.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-symbolkit/Sources/SymbolKit/SymbolGraph/Symbol/Swift/Generics.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-symbolkit/Sources/SymbolKit/SymbolGraph/Symbol/Swift/Namespace.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-symbolkit/Sources/SymbolKit/SymbolGraph/Symbol/Symbol.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-symbolkit/Sources/SymbolKit/SymbolGraph/Symbol/SymbolKind.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-symbolkit/Sources/SymbolKit/SymbolGraph/SymbolGraph.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-symbolkit/Sources/SymbolKit/UnifiedSymbolGraph/GraphCollector.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-symbolkit/Sources/SymbolKit/UnifiedSymbolGraph/UnifiedSymbol+Encodable.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-symbolkit/Sources/SymbolKit/UnifiedSymbolGraph/UnifiedSymbol.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-symbolkit/Sources/SymbolKit/UnifiedSymbolGraph/UnifiedSymbolGraph+Encodable.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-symbolkit/Sources/SymbolKit/UnifiedSymbolGraph/UnifiedSymbolGraph.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/swift-version--55D1F9F952A18E34.txt"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/SymbolKit-tool.build/sources"
+        }
+      ],
+      "isLibrary" : true,
+      "moduleName" : "SymbolKit",
+      "moduleOutputPath" : "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/Modules-tool/SymbolKit.swiftmodule",
+      "objects" : [
+        "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/SymbolKit-tool.build/Mixin+Equals.swift.o",
+        "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/SymbolKit-tool.build/Mixin+Hash.swift.o",
+        "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/SymbolKit-tool.build/Mixin.swift.o",
+        "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/SymbolKit-tool.build/LineList.swift.o",
+        "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/SymbolKit-tool.build/Position.swift.o",
+        "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/SymbolKit-tool.build/SourceRange.swift.o",
+        "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/SymbolKit-tool.build/Metadata.swift.o",
+        "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/SymbolKit-tool.build/Module.swift.o",
+        "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/SymbolKit-tool.build/OperatingSystem.swift.o",
+        "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/SymbolKit-tool.build/Platform.swift.o",
+        "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/SymbolKit-tool.build/Relationship.swift.o",
+        "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/SymbolKit-tool.build/RelationshipKind.swift.o",
+        "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/SymbolKit-tool.build/SourceOrigin.swift.o",
+        "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/SymbolKit-tool.build/GenericConstraints.swift.o",
+        "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/SymbolKit-tool.build/Swift.swift.o",
+        "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/SymbolKit-tool.build/SemanticVersion.swift.o",
+        "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/SymbolKit-tool.build/AccessControl.swift.o",
+        "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/SymbolKit-tool.build/Availability.swift.o",
+        "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/SymbolKit-tool.build/AvailabilityItem.swift.o",
+        "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/SymbolKit-tool.build/Domain.swift.o",
+        "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/SymbolKit-tool.build/DeclarationFragments.swift.o",
+        "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/SymbolKit-tool.build/Fragment.swift.o",
+        "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/SymbolKit-tool.build/FragmentKind.swift.o",
+        "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/SymbolKit-tool.build/FunctionParameter.swift.o",
+        "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/SymbolKit-tool.build/FunctionSignature.swift.o",
+        "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/SymbolKit-tool.build/Identifier.swift.o",
+        "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/SymbolKit-tool.build/KindIdentifier.swift.o",
+        "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/SymbolKit-tool.build/Location.swift.o",
+        "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/SymbolKit-tool.build/Mutability.swift.o",
+        "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/SymbolKit-tool.build/Names.swift.o",
+        "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/SymbolKit-tool.build/SPI.swift.o",
+        "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/SymbolKit-tool.build/Snippet.swift.o",
+        "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/SymbolKit-tool.build/Extension.swift.o",
+        "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/SymbolKit-tool.build/GenericConstraint.swift.o",
+        "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/SymbolKit-tool.build/GenericParameter.swift.o",
+        "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/SymbolKit-tool.build/Generics.swift.o",
+        "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/SymbolKit-tool.build/Namespace.swift.o",
+        "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/SymbolKit-tool.build/Symbol.swift.o",
+        "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/SymbolKit-tool.build/SymbolKind.swift.o",
+        "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/SymbolKit-tool.build/SymbolGraph.swift.o",
+        "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/SymbolKit-tool.build/GraphCollector.swift.o",
+        "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/SymbolKit-tool.build/UnifiedSymbol+Encodable.swift.o",
+        "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/SymbolKit-tool.build/UnifiedSymbol.swift.o",
+        "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/SymbolKit-tool.build/UnifiedSymbolGraph+Encodable.swift.o",
+        "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/SymbolKit-tool.build/UnifiedSymbolGraph.swift.o"
+      ],
+      "otherArguments" : [
+        "-target",
+        "arm64-apple-macosx10.13",
+        "-enable-batch-mode",
+        "-index-store-path",
+        "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/index/store",
+        "-Onone",
+        "-enable-testing",
+        "-j3",
+        "-DSWIFT_PACKAGE",
+        "-DDEBUG",
+        "-module-cache-path",
+        "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/ModuleCache",
+        "-parseable-output",
+        "-parse-as-library",
+        "-emit-objc-header",
+        "-emit-objc-header-path",
+        "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/SymbolKit-tool.build/SymbolKit-Swift.h",
+        "-swift-version",
+        "5",
+        "-I",
+        "/Users/runner/hostedtoolcache/swift-macOS/6.0/arm64/usr/lib/swift/macosx/testing",
+        "-L",
+        "/Users/runner/hostedtoolcache/swift-macOS/6.0/arm64/usr/lib/swift/macosx/testing",
+        "-plugin-path",
+        "/Users/runner/hostedtoolcache/swift-macOS/6.0/arm64/usr/lib/swift/host/plugins/testing",
+        "-sdk",
+        "/Applications/Xcode_15.4.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.5.sdk",
+        "-F",
+        "/Applications/Xcode_15.4.app/Contents/Developer/Platforms/MacOSX.platform/Developer/Library/Frameworks",
+        "-I",
+        "/Applications/Xcode_15.4.app/Contents/Developer/Platforms/MacOSX.platform/Developer/usr/lib",
+        "-L",
+        "/Applications/Xcode_15.4.app/Contents/Developer/Platforms/MacOSX.platform/Developer/usr/lib",
+        "-g",
+        "-Xcc",
+        "-isysroot",
+        "-Xcc",
+        "/Applications/Xcode_15.4.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.5.sdk",
+        "-Xcc",
+        "-F",
+        "-Xcc",
+        "/Applications/Xcode_15.4.app/Contents/Developer/Platforms/MacOSX.platform/Developer/Library/Frameworks",
+        "-Xcc",
+        "-fPIC",
+        "-Xcc",
+        "-g",
+        "-suppress-warnings"
+      ],
+      "outputFileMapPath" : "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/SymbolKit-tool.build/output-file-map.json",
+      "outputs" : [
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/SymbolKit-tool.build/Mixin+Equals.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/SymbolKit-tool.build/Mixin+Hash.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/SymbolKit-tool.build/Mixin.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/SymbolKit-tool.build/LineList.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/SymbolKit-tool.build/Position.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/SymbolKit-tool.build/SourceRange.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/SymbolKit-tool.build/Metadata.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/SymbolKit-tool.build/Module.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/SymbolKit-tool.build/OperatingSystem.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/SymbolKit-tool.build/Platform.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/SymbolKit-tool.build/Relationship.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/SymbolKit-tool.build/RelationshipKind.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/SymbolKit-tool.build/SourceOrigin.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/SymbolKit-tool.build/GenericConstraints.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/SymbolKit-tool.build/Swift.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/SymbolKit-tool.build/SemanticVersion.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/SymbolKit-tool.build/AccessControl.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/SymbolKit-tool.build/Availability.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/SymbolKit-tool.build/AvailabilityItem.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/SymbolKit-tool.build/Domain.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/SymbolKit-tool.build/DeclarationFragments.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/SymbolKit-tool.build/Fragment.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/SymbolKit-tool.build/FragmentKind.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/SymbolKit-tool.build/FunctionParameter.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/SymbolKit-tool.build/FunctionSignature.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/SymbolKit-tool.build/Identifier.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/SymbolKit-tool.build/KindIdentifier.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/SymbolKit-tool.build/Location.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/SymbolKit-tool.build/Mutability.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/SymbolKit-tool.build/Names.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/SymbolKit-tool.build/SPI.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/SymbolKit-tool.build/Snippet.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/SymbolKit-tool.build/Extension.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/SymbolKit-tool.build/GenericConstraint.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/SymbolKit-tool.build/GenericParameter.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/SymbolKit-tool.build/Generics.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/SymbolKit-tool.build/Namespace.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/SymbolKit-tool.build/Symbol.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/SymbolKit-tool.build/SymbolKind.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/SymbolKit-tool.build/SymbolGraph.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/SymbolKit-tool.build/GraphCollector.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/SymbolKit-tool.build/UnifiedSymbol+Encodable.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/SymbolKit-tool.build/UnifiedSymbol.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/SymbolKit-tool.build/UnifiedSymbolGraph+Encodable.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/SymbolKit-tool.build/UnifiedSymbolGraph.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/Modules-tool/SymbolKit.swiftmodule"
+        }
+      ],
+      "prepareForIndexing" : false,
+      "sources" : [
+        "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-symbolkit/Sources/SymbolKit/Mixin/Mixin+Equals.swift",
+        "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-symbolkit/Sources/SymbolKit/Mixin/Mixin+Hash.swift",
+        "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-symbolkit/Sources/SymbolKit/Mixin/Mixin.swift",
+        "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-symbolkit/Sources/SymbolKit/SymbolGraph/LineList/LineList.swift",
+        "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-symbolkit/Sources/SymbolKit/SymbolGraph/LineList/SourceRange/Position.swift",
+        "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-symbolkit/Sources/SymbolKit/SymbolGraph/LineList/SourceRange/SourceRange.swift",
+        "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-symbolkit/Sources/SymbolKit/SymbolGraph/Metadata.swift",
+        "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-symbolkit/Sources/SymbolKit/SymbolGraph/Module.swift",
+        "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-symbolkit/Sources/SymbolKit/SymbolGraph/OperatingSystem.swift",
+        "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-symbolkit/Sources/SymbolKit/SymbolGraph/Platform.swift",
+        "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-symbolkit/Sources/SymbolKit/SymbolGraph/Relationship/Relationship.swift",
+        "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-symbolkit/Sources/SymbolKit/SymbolGraph/Relationship/RelationshipKind.swift",
+        "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-symbolkit/Sources/SymbolKit/SymbolGraph/Relationship/SourceOrigin.swift",
+        "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-symbolkit/Sources/SymbolKit/SymbolGraph/Relationship/Swift/GenericConstraints.swift",
+        "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-symbolkit/Sources/SymbolKit/SymbolGraph/Relationship/Swift/Swift.swift",
+        "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-symbolkit/Sources/SymbolKit/SymbolGraph/SemanticVersion.swift",
+        "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-symbolkit/Sources/SymbolKit/SymbolGraph/Symbol/AccessControl.swift",
+        "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-symbolkit/Sources/SymbolKit/SymbolGraph/Symbol/Availability/Availability.swift",
+        "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-symbolkit/Sources/SymbolKit/SymbolGraph/Symbol/Availability/AvailabilityItem.swift",
+        "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-symbolkit/Sources/SymbolKit/SymbolGraph/Symbol/Availability/Domain.swift",
+        "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-symbolkit/Sources/SymbolKit/SymbolGraph/Symbol/DeclarationFragments/DeclarationFragments.swift",
+        "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-symbolkit/Sources/SymbolKit/SymbolGraph/Symbol/DeclarationFragments/Fragment/Fragment.swift",
+        "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-symbolkit/Sources/SymbolKit/SymbolGraph/Symbol/DeclarationFragments/Fragment/FragmentKind.swift",
+        "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-symbolkit/Sources/SymbolKit/SymbolGraph/Symbol/FunctionSignature/FunctionParameter.swift",
+        "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-symbolkit/Sources/SymbolKit/SymbolGraph/Symbol/FunctionSignature/FunctionSignature.swift",
+        "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-symbolkit/Sources/SymbolKit/SymbolGraph/Symbol/Identifier.swift",
+        "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-symbolkit/Sources/SymbolKit/SymbolGraph/Symbol/KindIdentifier.swift",
+        "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-symbolkit/Sources/SymbolKit/SymbolGraph/Symbol/Location.swift",
+        "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-symbolkit/Sources/SymbolKit/SymbolGraph/Symbol/Mutability.swift",
+        "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-symbolkit/Sources/SymbolKit/SymbolGraph/Symbol/Names.swift",
+        "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-symbolkit/Sources/SymbolKit/SymbolGraph/Symbol/SPI.swift",
+        "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-symbolkit/Sources/SymbolKit/SymbolGraph/Symbol/Snippet.swift",
+        "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-symbolkit/Sources/SymbolKit/SymbolGraph/Symbol/Swift/Extension.swift",
+        "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-symbolkit/Sources/SymbolKit/SymbolGraph/Symbol/Swift/GenericConstraint.swift",
+        "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-symbolkit/Sources/SymbolKit/SymbolGraph/Symbol/Swift/GenericParameter.swift",
+        "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-symbolkit/Sources/SymbolKit/SymbolGraph/Symbol/Swift/Generics.swift",
+        "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-symbolkit/Sources/SymbolKit/SymbolGraph/Symbol/Swift/Namespace.swift",
+        "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-symbolkit/Sources/SymbolKit/SymbolGraph/Symbol/Symbol.swift",
+        "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-symbolkit/Sources/SymbolKit/SymbolGraph/Symbol/SymbolKind.swift",
+        "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-symbolkit/Sources/SymbolKit/SymbolGraph/SymbolGraph.swift",
+        "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-symbolkit/Sources/SymbolKit/UnifiedSymbolGraph/GraphCollector.swift",
+        "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-symbolkit/Sources/SymbolKit/UnifiedSymbolGraph/UnifiedSymbol+Encodable.swift",
+        "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-symbolkit/Sources/SymbolKit/UnifiedSymbolGraph/UnifiedSymbol.swift",
+        "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-symbolkit/Sources/SymbolKit/UnifiedSymbolGraph/UnifiedSymbolGraph+Encodable.swift",
+        "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-symbolkit/Sources/SymbolKit/UnifiedSymbolGraph/UnifiedSymbolGraph.swift"
+      ],
+      "tempsPath" : "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/SymbolKit-tool.build",
+      "wholeModuleOptimization" : false
+    },
+    "C.SymbolKit-arm64-apple-macosx14.0-debug.module" : {
+      "executable" : "/Users/runner/hostedtoolcache/swift-macOS/6.0/arm64/usr/bin/swiftc",
+      "fileList" : "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/SymbolKit.build/sources",
+      "importPath" : "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/Modules",
+      "inputs" : [
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-symbolkit/Sources/SymbolKit/Mixin/Mixin+Equals.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-symbolkit/Sources/SymbolKit/Mixin/Mixin+Hash.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-symbolkit/Sources/SymbolKit/Mixin/Mixin.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-symbolkit/Sources/SymbolKit/SymbolGraph/LineList/LineList.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-symbolkit/Sources/SymbolKit/SymbolGraph/LineList/SourceRange/Position.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-symbolkit/Sources/SymbolKit/SymbolGraph/LineList/SourceRange/SourceRange.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-symbolkit/Sources/SymbolKit/SymbolGraph/Metadata.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-symbolkit/Sources/SymbolKit/SymbolGraph/Module.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-symbolkit/Sources/SymbolKit/SymbolGraph/OperatingSystem.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-symbolkit/Sources/SymbolKit/SymbolGraph/Platform.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-symbolkit/Sources/SymbolKit/SymbolGraph/Relationship/Relationship.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-symbolkit/Sources/SymbolKit/SymbolGraph/Relationship/RelationshipKind.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-symbolkit/Sources/SymbolKit/SymbolGraph/Relationship/SourceOrigin.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-symbolkit/Sources/SymbolKit/SymbolGraph/Relationship/Swift/GenericConstraints.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-symbolkit/Sources/SymbolKit/SymbolGraph/Relationship/Swift/Swift.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-symbolkit/Sources/SymbolKit/SymbolGraph/SemanticVersion.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-symbolkit/Sources/SymbolKit/SymbolGraph/Symbol/AccessControl.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-symbolkit/Sources/SymbolKit/SymbolGraph/Symbol/Availability/Availability.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-symbolkit/Sources/SymbolKit/SymbolGraph/Symbol/Availability/AvailabilityItem.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-symbolkit/Sources/SymbolKit/SymbolGraph/Symbol/Availability/Domain.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-symbolkit/Sources/SymbolKit/SymbolGraph/Symbol/DeclarationFragments/DeclarationFragments.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-symbolkit/Sources/SymbolKit/SymbolGraph/Symbol/DeclarationFragments/Fragment/Fragment.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-symbolkit/Sources/SymbolKit/SymbolGraph/Symbol/DeclarationFragments/Fragment/FragmentKind.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-symbolkit/Sources/SymbolKit/SymbolGraph/Symbol/FunctionSignature/FunctionParameter.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-symbolkit/Sources/SymbolKit/SymbolGraph/Symbol/FunctionSignature/FunctionSignature.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-symbolkit/Sources/SymbolKit/SymbolGraph/Symbol/Identifier.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-symbolkit/Sources/SymbolKit/SymbolGraph/Symbol/KindIdentifier.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-symbolkit/Sources/SymbolKit/SymbolGraph/Symbol/Location.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-symbolkit/Sources/SymbolKit/SymbolGraph/Symbol/Mutability.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-symbolkit/Sources/SymbolKit/SymbolGraph/Symbol/Names.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-symbolkit/Sources/SymbolKit/SymbolGraph/Symbol/SPI.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-symbolkit/Sources/SymbolKit/SymbolGraph/Symbol/Snippet.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-symbolkit/Sources/SymbolKit/SymbolGraph/Symbol/Swift/Extension.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-symbolkit/Sources/SymbolKit/SymbolGraph/Symbol/Swift/GenericConstraint.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-symbolkit/Sources/SymbolKit/SymbolGraph/Symbol/Swift/GenericParameter.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-symbolkit/Sources/SymbolKit/SymbolGraph/Symbol/Swift/Generics.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-symbolkit/Sources/SymbolKit/SymbolGraph/Symbol/Swift/Namespace.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-symbolkit/Sources/SymbolKit/SymbolGraph/Symbol/Symbol.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-symbolkit/Sources/SymbolKit/SymbolGraph/Symbol/SymbolKind.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-symbolkit/Sources/SymbolKit/SymbolGraph/SymbolGraph.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-symbolkit/Sources/SymbolKit/UnifiedSymbolGraph/GraphCollector.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-symbolkit/Sources/SymbolKit/UnifiedSymbolGraph/UnifiedSymbol+Encodable.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-symbolkit/Sources/SymbolKit/UnifiedSymbolGraph/UnifiedSymbol.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-symbolkit/Sources/SymbolKit/UnifiedSymbolGraph/UnifiedSymbolGraph+Encodable.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-symbolkit/Sources/SymbolKit/UnifiedSymbolGraph/UnifiedSymbolGraph.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/swift-version--55D1F9F952A18E34.txt"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/SymbolKit.build/sources"
+        }
+      ],
+      "isLibrary" : true,
+      "moduleName" : "SymbolKit",
+      "moduleOutputPath" : "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/Modules/SymbolKit.swiftmodule",
+      "objects" : [
+        "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/SymbolKit.build/Mixin+Equals.swift.o",
+        "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/SymbolKit.build/Mixin+Hash.swift.o",
+        "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/SymbolKit.build/Mixin.swift.o",
+        "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/SymbolKit.build/LineList.swift.o",
+        "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/SymbolKit.build/Position.swift.o",
+        "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/SymbolKit.build/SourceRange.swift.o",
+        "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/SymbolKit.build/Metadata.swift.o",
+        "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/SymbolKit.build/Module.swift.o",
+        "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/SymbolKit.build/OperatingSystem.swift.o",
+        "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/SymbolKit.build/Platform.swift.o",
+        "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/SymbolKit.build/Relationship.swift.o",
+        "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/SymbolKit.build/RelationshipKind.swift.o",
+        "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/SymbolKit.build/SourceOrigin.swift.o",
+        "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/SymbolKit.build/GenericConstraints.swift.o",
+        "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/SymbolKit.build/Swift.swift.o",
+        "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/SymbolKit.build/SemanticVersion.swift.o",
+        "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/SymbolKit.build/AccessControl.swift.o",
+        "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/SymbolKit.build/Availability.swift.o",
+        "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/SymbolKit.build/AvailabilityItem.swift.o",
+        "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/SymbolKit.build/Domain.swift.o",
+        "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/SymbolKit.build/DeclarationFragments.swift.o",
+        "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/SymbolKit.build/Fragment.swift.o",
+        "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/SymbolKit.build/FragmentKind.swift.o",
+        "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/SymbolKit.build/FunctionParameter.swift.o",
+        "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/SymbolKit.build/FunctionSignature.swift.o",
+        "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/SymbolKit.build/Identifier.swift.o",
+        "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/SymbolKit.build/KindIdentifier.swift.o",
+        "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/SymbolKit.build/Location.swift.o",
+        "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/SymbolKit.build/Mutability.swift.o",
+        "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/SymbolKit.build/Names.swift.o",
+        "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/SymbolKit.build/SPI.swift.o",
+        "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/SymbolKit.build/Snippet.swift.o",
+        "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/SymbolKit.build/Extension.swift.o",
+        "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/SymbolKit.build/GenericConstraint.swift.o",
+        "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/SymbolKit.build/GenericParameter.swift.o",
+        "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/SymbolKit.build/Generics.swift.o",
+        "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/SymbolKit.build/Namespace.swift.o",
+        "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/SymbolKit.build/Symbol.swift.o",
+        "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/SymbolKit.build/SymbolKind.swift.o",
+        "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/SymbolKit.build/SymbolGraph.swift.o",
+        "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/SymbolKit.build/GraphCollector.swift.o",
+        "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/SymbolKit.build/UnifiedSymbol+Encodable.swift.o",
+        "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/SymbolKit.build/UnifiedSymbol.swift.o",
+        "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/SymbolKit.build/UnifiedSymbolGraph+Encodable.swift.o",
+        "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/SymbolKit.build/UnifiedSymbolGraph.swift.o"
+      ],
+      "otherArguments" : [
+        "-target",
+        "arm64-apple-macosx10.13",
+        "-enable-batch-mode",
+        "-index-store-path",
+        "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/index/store",
+        "-Onone",
+        "-enable-testing",
+        "-j3",
+        "-DSWIFT_PACKAGE",
+        "-DDEBUG",
+        "-module-cache-path",
+        "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/ModuleCache",
+        "-parseable-output",
+        "-parse-as-library",
+        "-emit-objc-header",
+        "-emit-objc-header-path",
+        "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/SymbolKit.build/SymbolKit-Swift.h",
+        "-swift-version",
+        "5",
+        "-I",
+        "/Users/runner/hostedtoolcache/swift-macOS/6.0/arm64/usr/lib/swift/macosx/testing",
+        "-L",
+        "/Users/runner/hostedtoolcache/swift-macOS/6.0/arm64/usr/lib/swift/macosx/testing",
+        "-plugin-path",
+        "/Users/runner/hostedtoolcache/swift-macOS/6.0/arm64/usr/lib/swift/host/plugins/testing",
+        "-sdk",
+        "/Applications/Xcode_15.4.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.5.sdk",
+        "-F",
+        "/Applications/Xcode_15.4.app/Contents/Developer/Platforms/MacOSX.platform/Developer/Library/Frameworks",
+        "-I",
+        "/Applications/Xcode_15.4.app/Contents/Developer/Platforms/MacOSX.platform/Developer/usr/lib",
+        "-L",
+        "/Applications/Xcode_15.4.app/Contents/Developer/Platforms/MacOSX.platform/Developer/usr/lib",
+        "-g",
+        "-Xcc",
+        "-isysroot",
+        "-Xcc",
+        "/Applications/Xcode_15.4.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.5.sdk",
+        "-Xcc",
+        "-F",
+        "-Xcc",
+        "/Applications/Xcode_15.4.app/Contents/Developer/Platforms/MacOSX.platform/Developer/Library/Frameworks",
+        "-Xcc",
+        "-fPIC",
+        "-Xcc",
+        "-g",
+        "-suppress-warnings"
+      ],
+      "outputFileMapPath" : "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/SymbolKit.build/output-file-map.json",
+      "outputs" : [
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/SymbolKit.build/Mixin+Equals.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/SymbolKit.build/Mixin+Hash.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/SymbolKit.build/Mixin.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/SymbolKit.build/LineList.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/SymbolKit.build/Position.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/SymbolKit.build/SourceRange.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/SymbolKit.build/Metadata.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/SymbolKit.build/Module.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/SymbolKit.build/OperatingSystem.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/SymbolKit.build/Platform.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/SymbolKit.build/Relationship.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/SymbolKit.build/RelationshipKind.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/SymbolKit.build/SourceOrigin.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/SymbolKit.build/GenericConstraints.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/SymbolKit.build/Swift.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/SymbolKit.build/SemanticVersion.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/SymbolKit.build/AccessControl.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/SymbolKit.build/Availability.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/SymbolKit.build/AvailabilityItem.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/SymbolKit.build/Domain.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/SymbolKit.build/DeclarationFragments.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/SymbolKit.build/Fragment.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/SymbolKit.build/FragmentKind.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/SymbolKit.build/FunctionParameter.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/SymbolKit.build/FunctionSignature.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/SymbolKit.build/Identifier.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/SymbolKit.build/KindIdentifier.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/SymbolKit.build/Location.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/SymbolKit.build/Mutability.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/SymbolKit.build/Names.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/SymbolKit.build/SPI.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/SymbolKit.build/Snippet.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/SymbolKit.build/Extension.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/SymbolKit.build/GenericConstraint.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/SymbolKit.build/GenericParameter.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/SymbolKit.build/Generics.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/SymbolKit.build/Namespace.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/SymbolKit.build/Symbol.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/SymbolKit.build/SymbolKind.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/SymbolKit.build/SymbolGraph.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/SymbolKit.build/GraphCollector.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/SymbolKit.build/UnifiedSymbol+Encodable.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/SymbolKit.build/UnifiedSymbol.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/SymbolKit.build/UnifiedSymbolGraph+Encodable.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/SymbolKit.build/UnifiedSymbolGraph.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/Modules/SymbolKit.swiftmodule"
+        }
+      ],
+      "prepareForIndexing" : false,
+      "sources" : [
+        "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-symbolkit/Sources/SymbolKit/Mixin/Mixin+Equals.swift",
+        "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-symbolkit/Sources/SymbolKit/Mixin/Mixin+Hash.swift",
+        "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-symbolkit/Sources/SymbolKit/Mixin/Mixin.swift",
+        "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-symbolkit/Sources/SymbolKit/SymbolGraph/LineList/LineList.swift",
+        "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-symbolkit/Sources/SymbolKit/SymbolGraph/LineList/SourceRange/Position.swift",
+        "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-symbolkit/Sources/SymbolKit/SymbolGraph/LineList/SourceRange/SourceRange.swift",
+        "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-symbolkit/Sources/SymbolKit/SymbolGraph/Metadata.swift",
+        "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-symbolkit/Sources/SymbolKit/SymbolGraph/Module.swift",
+        "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-symbolkit/Sources/SymbolKit/SymbolGraph/OperatingSystem.swift",
+        "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-symbolkit/Sources/SymbolKit/SymbolGraph/Platform.swift",
+        "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-symbolkit/Sources/SymbolKit/SymbolGraph/Relationship/Relationship.swift",
+        "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-symbolkit/Sources/SymbolKit/SymbolGraph/Relationship/RelationshipKind.swift",
+        "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-symbolkit/Sources/SymbolKit/SymbolGraph/Relationship/SourceOrigin.swift",
+        "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-symbolkit/Sources/SymbolKit/SymbolGraph/Relationship/Swift/GenericConstraints.swift",
+        "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-symbolkit/Sources/SymbolKit/SymbolGraph/Relationship/Swift/Swift.swift",
+        "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-symbolkit/Sources/SymbolKit/SymbolGraph/SemanticVersion.swift",
+        "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-symbolkit/Sources/SymbolKit/SymbolGraph/Symbol/AccessControl.swift",
+        "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-symbolkit/Sources/SymbolKit/SymbolGraph/Symbol/Availability/Availability.swift",
+        "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-symbolkit/Sources/SymbolKit/SymbolGraph/Symbol/Availability/AvailabilityItem.swift",
+        "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-symbolkit/Sources/SymbolKit/SymbolGraph/Symbol/Availability/Domain.swift",
+        "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-symbolkit/Sources/SymbolKit/SymbolGraph/Symbol/DeclarationFragments/DeclarationFragments.swift",
+        "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-symbolkit/Sources/SymbolKit/SymbolGraph/Symbol/DeclarationFragments/Fragment/Fragment.swift",
+        "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-symbolkit/Sources/SymbolKit/SymbolGraph/Symbol/DeclarationFragments/Fragment/FragmentKind.swift",
+        "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-symbolkit/Sources/SymbolKit/SymbolGraph/Symbol/FunctionSignature/FunctionParameter.swift",
+        "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-symbolkit/Sources/SymbolKit/SymbolGraph/Symbol/FunctionSignature/FunctionSignature.swift",
+        "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-symbolkit/Sources/SymbolKit/SymbolGraph/Symbol/Identifier.swift",
+        "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-symbolkit/Sources/SymbolKit/SymbolGraph/Symbol/KindIdentifier.swift",
+        "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-symbolkit/Sources/SymbolKit/SymbolGraph/Symbol/Location.swift",
+        "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-symbolkit/Sources/SymbolKit/SymbolGraph/Symbol/Mutability.swift",
+        "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-symbolkit/Sources/SymbolKit/SymbolGraph/Symbol/Names.swift",
+        "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-symbolkit/Sources/SymbolKit/SymbolGraph/Symbol/SPI.swift",
+        "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-symbolkit/Sources/SymbolKit/SymbolGraph/Symbol/Snippet.swift",
+        "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-symbolkit/Sources/SymbolKit/SymbolGraph/Symbol/Swift/Extension.swift",
+        "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-symbolkit/Sources/SymbolKit/SymbolGraph/Symbol/Swift/GenericConstraint.swift",
+        "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-symbolkit/Sources/SymbolKit/SymbolGraph/Symbol/Swift/GenericParameter.swift",
+        "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-symbolkit/Sources/SymbolKit/SymbolGraph/Symbol/Swift/Generics.swift",
+        "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-symbolkit/Sources/SymbolKit/SymbolGraph/Symbol/Swift/Namespace.swift",
+        "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-symbolkit/Sources/SymbolKit/SymbolGraph/Symbol/Symbol.swift",
+        "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-symbolkit/Sources/SymbolKit/SymbolGraph/Symbol/SymbolKind.swift",
+        "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-symbolkit/Sources/SymbolKit/SymbolGraph/SymbolGraph.swift",
+        "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-symbolkit/Sources/SymbolKit/UnifiedSymbolGraph/GraphCollector.swift",
+        "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-symbolkit/Sources/SymbolKit/UnifiedSymbolGraph/UnifiedSymbol+Encodable.swift",
+        "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-symbolkit/Sources/SymbolKit/UnifiedSymbolGraph/UnifiedSymbol.swift",
+        "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-symbolkit/Sources/SymbolKit/UnifiedSymbolGraph/UnifiedSymbolGraph+Encodable.swift",
+        "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-symbolkit/Sources/SymbolKit/UnifiedSymbolGraph/UnifiedSymbolGraph.swift"
+      ],
+      "tempsPath" : "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/SymbolKit.build",
+      "wholeModuleOptimization" : false
+    }
+  },
+  "swiftFrontendCommands" : {
+
+  },
+  "swiftTargetScanArgs" : {
+    "CBOR" : [
+      "/Users/runner/hostedtoolcache/swift-macOS/6.0/arm64/usr/bin/swiftc",
+      "-module-name",
+      "CBOR",
+      "-package-name",
+      "cbor",
+      "-incremental",
+      "-c",
+      "/Users/runner/work/cbor/cbor/Sources/CBOR/CBOR.swift",
+      "/Users/runner/work/cbor/cbor/Sources/CBOR/CBORCodable.swift",
+      "/Users/runner/work/cbor/cbor/Sources/CBOR/CBORDecoder.swift",
+      "/Users/runner/work/cbor/cbor/Sources/CBOR/CBOREncoder.swift",
+      "/Users/runner/work/cbor/cbor/Sources/CBOR/CBORError.swift",
+      "/Users/runner/work/cbor/cbor/Sources/CBOR/CBORReader.swift",
+      "-I",
+      "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/Modules",
+      "-target",
+      "arm64-apple-macosx10.15",
+      "-enable-batch-mode",
+      "-index-store-path",
+      "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/index/store",
+      "-Onone",
+      "-enable-testing",
+      "-j3",
+      "-DSWIFT_PACKAGE",
+      "-DDEBUG",
+      "-module-cache-path",
+      "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/ModuleCache",
+      "-parseable-output",
+      "-parse-as-library",
+      "-emit-objc-header",
+      "-emit-objc-header-path",
+      "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/CBOR.build/CBOR-Swift.h",
+      "-swift-version",
+      "6",
+      "-I",
+      "/Users/runner/hostedtoolcache/swift-macOS/6.0/arm64/usr/lib/swift/macosx/testing",
+      "-L",
+      "/Users/runner/hostedtoolcache/swift-macOS/6.0/arm64/usr/lib/swift/macosx/testing",
+      "-plugin-path",
+      "/Users/runner/hostedtoolcache/swift-macOS/6.0/arm64/usr/lib/swift/host/plugins/testing",
+      "-sdk",
+      "/Applications/Xcode_15.4.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.5.sdk",
+      "-F",
+      "/Applications/Xcode_15.4.app/Contents/Developer/Platforms/MacOSX.platform/Developer/Library/Frameworks",
+      "-I",
+      "/Applications/Xcode_15.4.app/Contents/Developer/Platforms/MacOSX.platform/Developer/usr/lib",
+      "-L",
+      "/Applications/Xcode_15.4.app/Contents/Developer/Platforms/MacOSX.platform/Developer/usr/lib",
+      "-g",
+      "-Xcc",
+      "-isysroot",
+      "-Xcc",
+      "/Applications/Xcode_15.4.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.5.sdk",
+      "-Xcc",
+      "-F",
+      "-Xcc",
+      "/Applications/Xcode_15.4.app/Contents/Developer/Platforms/MacOSX.platform/Developer/Library/Frameworks",
+      "-Xcc",
+      "-fPIC",
+      "-Xcc",
+      "-g",
+      "-package-name",
+      "cbor",
+      "-driver-use-frontend-path",
+      "/Users/runner/hostedtoolcache/swift-macOS/6.0/arm64/usr/bin/swiftc"
+    ],
+    "CBORPackageTests" : [
+      "/Users/runner/hostedtoolcache/swift-macOS/6.0/arm64/usr/bin/swiftc",
+      "-module-name",
+      "CBORPackageTests",
+      "-package-name",
+      "cbor",
+      "-incremental",
+      "-c",
+      "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/CBORPackageTests.derived/runner.swift",
+      "-I",
+      "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/Modules",
+      "-target",
+      "arm64-apple-macosx10.15",
+      "-enable-batch-mode",
+      "-index-store-path",
+      "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/index/store",
+      "-Onone",
+      "-enable-testing",
+      "-j3",
+      "-DSWIFT_PACKAGE",
+      "-DDEBUG",
+      "-module-cache-path",
+      "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/ModuleCache",
+      "-parseable-output",
+      "-parse-as-library",
+      "-emit-objc-header",
+      "-emit-objc-header-path",
+      "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/CBORPackageTests.build/CBORPackageTests-Swift.h",
+      "-I",
+      "/Users/runner/hostedtoolcache/swift-macOS/6.0/arm64/usr/lib/swift/macosx/testing",
+      "-L",
+      "/Users/runner/hostedtoolcache/swift-macOS/6.0/arm64/usr/lib/swift/macosx/testing",
+      "-plugin-path",
+      "/Users/runner/hostedtoolcache/swift-macOS/6.0/arm64/usr/lib/swift/host/plugins/testing",
+      "-sdk",
+      "/Applications/Xcode_15.4.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.5.sdk",
+      "-F",
+      "/Applications/Xcode_15.4.app/Contents/Developer/Platforms/MacOSX.platform/Developer/Library/Frameworks",
+      "-I",
+      "/Applications/Xcode_15.4.app/Contents/Developer/Platforms/MacOSX.platform/Developer/usr/lib",
+      "-L",
+      "/Applications/Xcode_15.4.app/Contents/Developer/Platforms/MacOSX.platform/Developer/usr/lib",
+      "-g",
+      "-Xcc",
+      "-isysroot",
+      "-Xcc",
+      "/Applications/Xcode_15.4.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.5.sdk",
+      "-Xcc",
+      "-F",
+      "-Xcc",
+      "/Applications/Xcode_15.4.app/Contents/Developer/Platforms/MacOSX.platform/Developer/Library/Frameworks",
+      "-Xcc",
+      "-fPIC",
+      "-Xcc",
+      "-g",
+      "-package-name",
+      "cbor",
+      "-driver-use-frontend-path",
+      "/Users/runner/hostedtoolcache/swift-macOS/6.0/arm64/usr/bin/swiftc"
+    ],
+    "CBORTests" : [
+      "/Users/runner/hostedtoolcache/swift-macOS/6.0/arm64/usr/bin/swiftc",
+      "-module-name",
+      "CBORTests",
+      "-package-name",
+      "cbor",
+      "-incremental",
+      "-c",
+      "/Users/runner/work/cbor/cbor/Tests/CBORTests/CBORBasicTests.swift",
+      "/Users/runner/work/cbor/cbor/Tests/CBORTests/CBORCodableTests.swift",
+      "/Users/runner/work/cbor/cbor/Tests/CBORTests/CBORErrorTests.swift",
+      "-I",
+      "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/Modules",
+      "-target",
+      "arm64-apple-macosx13.0",
+      "-enable-batch-mode",
+      "-index-store-path",
+      "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/index/store",
+      "-Onone",
+      "-enable-testing",
+      "-j3",
+      "-DSWIFT_PACKAGE",
+      "-DDEBUG",
+      "-module-cache-path",
+      "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/ModuleCache",
+      "-parseable-output",
+      "-parse-as-library",
+      "-swift-version",
+      "6",
+      "-I",
+      "/Users/runner/hostedtoolcache/swift-macOS/6.0/arm64/usr/lib/swift/macosx/testing",
+      "-L",
+      "/Users/runner/hostedtoolcache/swift-macOS/6.0/arm64/usr/lib/swift/macosx/testing",
+      "-plugin-path",
+      "/Users/runner/hostedtoolcache/swift-macOS/6.0/arm64/usr/lib/swift/host/plugins/testing",
+      "-sdk",
+      "/Applications/Xcode_15.4.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.5.sdk",
+      "-F",
+      "/Applications/Xcode_15.4.app/Contents/Developer/Platforms/MacOSX.platform/Developer/Library/Frameworks",
+      "-I",
+      "/Applications/Xcode_15.4.app/Contents/Developer/Platforms/MacOSX.platform/Developer/usr/lib",
+      "-L",
+      "/Applications/Xcode_15.4.app/Contents/Developer/Platforms/MacOSX.platform/Developer/usr/lib",
+      "-g",
+      "-Xcc",
+      "-isysroot",
+      "-Xcc",
+      "/Applications/Xcode_15.4.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.5.sdk",
+      "-Xcc",
+      "-F",
+      "-Xcc",
+      "/Applications/Xcode_15.4.app/Contents/Developer/Platforms/MacOSX.platform/Developer/Library/Frameworks",
+      "-Xcc",
+      "-fPIC",
+      "-Xcc",
+      "-g",
+      "-package-name",
+      "cbor",
+      "-driver-use-frontend-path",
+      "/Users/runner/hostedtoolcache/swift-macOS/6.0/arm64/usr/bin/swiftc"
+    ],
+    "snippet_extract" : [
+      "/Users/runner/hostedtoolcache/swift-macOS/6.0/arm64/usr/bin/swiftc",
+      "-module-name",
+      "snippet_extract",
+      "-incremental",
+      "-c",
+      "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-plugin/Sources/snippet-extract/SnippetBuildCommand.swift",
+      "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-plugin/Sources/snippet-extract/Utility/SymbolGraph+Snippet.swift",
+      "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-plugin/Sources/snippet-extract/Utility/URL+Status.swift",
+      "-I",
+      "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/Modules",
+      "-target",
+      "arm64-apple-macosx10.15.4",
+      "-enable-batch-mode",
+      "-index-store-path",
+      "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/index/store",
+      "-Onone",
+      "-enable-testing",
+      "-j3",
+      "-DSWIFT_PACKAGE",
+      "-DDEBUG",
+      "-module-cache-path",
+      "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/ModuleCache",
+      "-parseable-output",
+      "-Xfrontend",
+      "-entry-point-function-name",
+      "-Xfrontend",
+      "snippet_extract_main",
+      "-swift-version",
+      "5",
+      "-I",
+      "/Users/runner/hostedtoolcache/swift-macOS/6.0/arm64/usr/lib/swift/macosx/testing",
+      "-L",
+      "/Users/runner/hostedtoolcache/swift-macOS/6.0/arm64/usr/lib/swift/macosx/testing",
+      "-plugin-path",
+      "/Users/runner/hostedtoolcache/swift-macOS/6.0/arm64/usr/lib/swift/host/plugins/testing",
+      "-sdk",
+      "/Applications/Xcode_15.4.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.5.sdk",
+      "-F",
+      "/Applications/Xcode_15.4.app/Contents/Developer/Platforms/MacOSX.platform/Developer/Library/Frameworks",
+      "-I",
+      "/Applications/Xcode_15.4.app/Contents/Developer/Platforms/MacOSX.platform/Developer/usr/lib",
+      "-L",
+      "/Applications/Xcode_15.4.app/Contents/Developer/Platforms/MacOSX.platform/Developer/usr/lib",
+      "-g",
+      "-Xcc",
+      "-isysroot",
+      "-Xcc",
+      "/Applications/Xcode_15.4.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.5.sdk",
+      "-Xcc",
+      "-F",
+      "-Xcc",
+      "/Applications/Xcode_15.4.app/Contents/Developer/Platforms/MacOSX.platform/Developer/Library/Frameworks",
+      "-Xcc",
+      "-fPIC",
+      "-Xcc",
+      "-g",
+      "-suppress-warnings",
+      "-driver-use-frontend-path",
+      "/Users/runner/hostedtoolcache/swift-macOS/6.0/arm64/usr/bin/swiftc"
+    ],
+    "Snippets" : [
+      "/Users/runner/hostedtoolcache/swift-macOS/6.0/arm64/usr/bin/swiftc",
+      "-module-name",
+      "Snippets",
+      "-incremental",
+      "-c",
+      "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-plugin/Sources/Snippets/Model/Snippet.swift",
+      "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-plugin/Sources/Snippets/Parsing/SnippetParser.swift",
+      "-I",
+      "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/Modules",
+      "-target",
+      "arm64-apple-macosx10.15.4",
+      "-enable-batch-mode",
+      "-index-store-path",
+      "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/index/store",
+      "-Onone",
+      "-enable-testing",
+      "-j3",
+      "-DSWIFT_PACKAGE",
+      "-DDEBUG",
+      "-module-cache-path",
+      "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/ModuleCache",
+      "-parseable-output",
+      "-parse-as-library",
+      "-emit-objc-header",
+      "-emit-objc-header-path",
+      "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/Snippets.build/Snippets-Swift.h",
+      "-swift-version",
+      "5",
+      "-I",
+      "/Users/runner/hostedtoolcache/swift-macOS/6.0/arm64/usr/lib/swift/macosx/testing",
+      "-L",
+      "/Users/runner/hostedtoolcache/swift-macOS/6.0/arm64/usr/lib/swift/macosx/testing",
+      "-plugin-path",
+      "/Users/runner/hostedtoolcache/swift-macOS/6.0/arm64/usr/lib/swift/host/plugins/testing",
+      "-sdk",
+      "/Applications/Xcode_15.4.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.5.sdk",
+      "-F",
+      "/Applications/Xcode_15.4.app/Contents/Developer/Platforms/MacOSX.platform/Developer/Library/Frameworks",
+      "-I",
+      "/Applications/Xcode_15.4.app/Contents/Developer/Platforms/MacOSX.platform/Developer/usr/lib",
+      "-L",
+      "/Applications/Xcode_15.4.app/Contents/Developer/Platforms/MacOSX.platform/Developer/usr/lib",
+      "-g",
+      "-Xcc",
+      "-isysroot",
+      "-Xcc",
+      "/Applications/Xcode_15.4.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.5.sdk",
+      "-Xcc",
+      "-F",
+      "-Xcc",
+      "/Applications/Xcode_15.4.app/Contents/Developer/Platforms/MacOSX.platform/Developer/Library/Frameworks",
+      "-Xcc",
+      "-fPIC",
+      "-Xcc",
+      "-g",
+      "-suppress-warnings",
+      "-driver-use-frontend-path",
+      "/Users/runner/hostedtoolcache/swift-macOS/6.0/arm64/usr/bin/swiftc"
+    ],
+    "SymbolKit" : [
+      "/Users/runner/hostedtoolcache/swift-macOS/6.0/arm64/usr/bin/swiftc",
+      "-module-name",
+      "SymbolKit",
+      "-incremental",
+      "-c",
+      "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-symbolkit/Sources/SymbolKit/Mixin/Mixin+Equals.swift",
+      "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-symbolkit/Sources/SymbolKit/Mixin/Mixin+Hash.swift",
+      "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-symbolkit/Sources/SymbolKit/Mixin/Mixin.swift",
+      "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-symbolkit/Sources/SymbolKit/SymbolGraph/LineList/LineList.swift",
+      "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-symbolkit/Sources/SymbolKit/SymbolGraph/LineList/SourceRange/Position.swift",
+      "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-symbolkit/Sources/SymbolKit/SymbolGraph/LineList/SourceRange/SourceRange.swift",
+      "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-symbolkit/Sources/SymbolKit/SymbolGraph/Metadata.swift",
+      "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-symbolkit/Sources/SymbolKit/SymbolGraph/Module.swift",
+      "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-symbolkit/Sources/SymbolKit/SymbolGraph/OperatingSystem.swift",
+      "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-symbolkit/Sources/SymbolKit/SymbolGraph/Platform.swift",
+      "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-symbolkit/Sources/SymbolKit/SymbolGraph/Relationship/Relationship.swift",
+      "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-symbolkit/Sources/SymbolKit/SymbolGraph/Relationship/RelationshipKind.swift",
+      "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-symbolkit/Sources/SymbolKit/SymbolGraph/Relationship/SourceOrigin.swift",
+      "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-symbolkit/Sources/SymbolKit/SymbolGraph/Relationship/Swift/GenericConstraints.swift",
+      "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-symbolkit/Sources/SymbolKit/SymbolGraph/Relationship/Swift/Swift.swift",
+      "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-symbolkit/Sources/SymbolKit/SymbolGraph/SemanticVersion.swift",
+      "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-symbolkit/Sources/SymbolKit/SymbolGraph/Symbol/AccessControl.swift",
+      "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-symbolkit/Sources/SymbolKit/SymbolGraph/Symbol/Availability/Availability.swift",
+      "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-symbolkit/Sources/SymbolKit/SymbolGraph/Symbol/Availability/AvailabilityItem.swift",
+      "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-symbolkit/Sources/SymbolKit/SymbolGraph/Symbol/Availability/Domain.swift",
+      "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-symbolkit/Sources/SymbolKit/SymbolGraph/Symbol/DeclarationFragments/DeclarationFragments.swift",
+      "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-symbolkit/Sources/SymbolKit/SymbolGraph/Symbol/DeclarationFragments/Fragment/Fragment.swift",
+      "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-symbolkit/Sources/SymbolKit/SymbolGraph/Symbol/DeclarationFragments/Fragment/FragmentKind.swift",
+      "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-symbolkit/Sources/SymbolKit/SymbolGraph/Symbol/FunctionSignature/FunctionParameter.swift",
+      "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-symbolkit/Sources/SymbolKit/SymbolGraph/Symbol/FunctionSignature/FunctionSignature.swift",
+      "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-symbolkit/Sources/SymbolKit/SymbolGraph/Symbol/Identifier.swift",
+      "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-symbolkit/Sources/SymbolKit/SymbolGraph/Symbol/KindIdentifier.swift",
+      "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-symbolkit/Sources/SymbolKit/SymbolGraph/Symbol/Location.swift",
+      "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-symbolkit/Sources/SymbolKit/SymbolGraph/Symbol/Mutability.swift",
+      "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-symbolkit/Sources/SymbolKit/SymbolGraph/Symbol/Names.swift",
+      "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-symbolkit/Sources/SymbolKit/SymbolGraph/Symbol/SPI.swift",
+      "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-symbolkit/Sources/SymbolKit/SymbolGraph/Symbol/Snippet.swift",
+      "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-symbolkit/Sources/SymbolKit/SymbolGraph/Symbol/Swift/Extension.swift",
+      "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-symbolkit/Sources/SymbolKit/SymbolGraph/Symbol/Swift/GenericConstraint.swift",
+      "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-symbolkit/Sources/SymbolKit/SymbolGraph/Symbol/Swift/GenericParameter.swift",
+      "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-symbolkit/Sources/SymbolKit/SymbolGraph/Symbol/Swift/Generics.swift",
+      "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-symbolkit/Sources/SymbolKit/SymbolGraph/Symbol/Swift/Namespace.swift",
+      "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-symbolkit/Sources/SymbolKit/SymbolGraph/Symbol/Symbol.swift",
+      "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-symbolkit/Sources/SymbolKit/SymbolGraph/Symbol/SymbolKind.swift",
+      "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-symbolkit/Sources/SymbolKit/SymbolGraph/SymbolGraph.swift",
+      "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-symbolkit/Sources/SymbolKit/UnifiedSymbolGraph/GraphCollector.swift",
+      "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-symbolkit/Sources/SymbolKit/UnifiedSymbolGraph/UnifiedSymbol+Encodable.swift",
+      "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-symbolkit/Sources/SymbolKit/UnifiedSymbolGraph/UnifiedSymbol.swift",
+      "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-symbolkit/Sources/SymbolKit/UnifiedSymbolGraph/UnifiedSymbolGraph+Encodable.swift",
+      "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-symbolkit/Sources/SymbolKit/UnifiedSymbolGraph/UnifiedSymbolGraph.swift",
+      "-I",
+      "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/Modules",
+      "-target",
+      "arm64-apple-macosx10.13",
+      "-enable-batch-mode",
+      "-index-store-path",
+      "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/index/store",
+      "-Onone",
+      "-enable-testing",
+      "-j3",
+      "-DSWIFT_PACKAGE",
+      "-DDEBUG",
+      "-module-cache-path",
+      "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/ModuleCache",
+      "-parseable-output",
+      "-parse-as-library",
+      "-emit-objc-header",
+      "-emit-objc-header-path",
+      "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/SymbolKit.build/SymbolKit-Swift.h",
+      "-swift-version",
+      "5",
+      "-I",
+      "/Users/runner/hostedtoolcache/swift-macOS/6.0/arm64/usr/lib/swift/macosx/testing",
+      "-L",
+      "/Users/runner/hostedtoolcache/swift-macOS/6.0/arm64/usr/lib/swift/macosx/testing",
+      "-plugin-path",
+      "/Users/runner/hostedtoolcache/swift-macOS/6.0/arm64/usr/lib/swift/host/plugins/testing",
+      "-sdk",
+      "/Applications/Xcode_15.4.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.5.sdk",
+      "-F",
+      "/Applications/Xcode_15.4.app/Contents/Developer/Platforms/MacOSX.platform/Developer/Library/Frameworks",
+      "-I",
+      "/Applications/Xcode_15.4.app/Contents/Developer/Platforms/MacOSX.platform/Developer/usr/lib",
+      "-L",
+      "/Applications/Xcode_15.4.app/Contents/Developer/Platforms/MacOSX.platform/Developer/usr/lib",
+      "-g",
+      "-Xcc",
+      "-isysroot",
+      "-Xcc",
+      "/Applications/Xcode_15.4.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.5.sdk",
+      "-Xcc",
+      "-F",
+      "-Xcc",
+      "/Applications/Xcode_15.4.app/Contents/Developer/Platforms/MacOSX.platform/Developer/Library/Frameworks",
+      "-Xcc",
+      "-fPIC",
+      "-Xcc",
+      "-g",
+      "-suppress-warnings",
+      "-driver-use-frontend-path",
+      "/Users/runner/hostedtoolcache/swift-macOS/6.0/arm64/usr/bin/swiftc"
+    ]
+  },
+  "targetDependencyMap" : {
+    "CBOR" : [
+
+    ],
+    "CBORPackageTests" : [
+      "CBORTests",
+      "CBOR"
+    ],
+    "CBORTests" : [
+      "CBOR"
+    ],
+    "snippet_extract" : [
+      "SymbolKit",
+      "Snippets"
+    ],
+    "Snippets" : [
+
+    ],
+    "SymbolKit" : [
+
+    ]
+  },
+  "testDiscoveryCommands" : {
+
+  },
+  "testEntryPointCommands" : {
+    "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/CBORPackageTests.derived/runner.swift" : {
+      "inputs" : [
+
+      ],
+      "outputs" : [
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/CBORPackageTests.derived/runner.swift"
+        }
+      ]
+    }
+  },
+  "writeCommands" : {
+    "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/CBOR.build/sources" : {
+      "alwaysOutOfDate" : false,
+      "inputs" : [
+        {
+          "kind" : "virtual",
+          "name" : "<sources-file-list>"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/Sources/CBOR/CBOR.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/Sources/CBOR/CBORCodable.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/Sources/CBOR/CBORDecoder.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/Sources/CBOR/CBOREncoder.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/Sources/CBOR/CBORError.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/Sources/CBOR/CBORReader.swift"
+        }
+      ],
+      "outputFilePath" : "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/CBOR.build/sources"
+    },
+    "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/CBORPackageTests.build/sources" : {
+      "alwaysOutOfDate" : false,
+      "inputs" : [
+        {
+          "kind" : "virtual",
+          "name" : "<sources-file-list>"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/CBORPackageTests.derived/runner.swift"
+        }
+      ],
+      "outputFilePath" : "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/CBORPackageTests.build/sources"
+    },
+    "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/CBORPackageTests.product/Objects.LinkFileList" : {
+      "alwaysOutOfDate" : false,
+      "inputs" : [
+        {
+          "kind" : "virtual",
+          "name" : "<link-file-list>"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/CBOR.build/CBOR.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/CBOR.build/CBORCodable.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/CBOR.build/CBORDecoder.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/CBOR.build/CBOREncoder.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/CBOR.build/CBORError.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/CBOR.build/CBORReader.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/CBORPackageTests.build/runner.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/CBORTests.build/CBORBasicTests.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/CBORTests.build/CBORCodableTests.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/CBORTests.build/CBORErrorTests.swift.o"
+        }
+      ],
+      "outputFilePath" : "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/CBORPackageTests.product/Objects.LinkFileList"
+    },
+    "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/CBORTests.build/sources" : {
+      "alwaysOutOfDate" : false,
+      "inputs" : [
+        {
+          "kind" : "virtual",
+          "name" : "<sources-file-list>"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/Tests/CBORTests/CBORBasicTests.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/Tests/CBORTests/CBORCodableTests.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/Tests/CBORTests/CBORErrorTests.swift"
+        }
+      ],
+      "outputFilePath" : "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/CBORTests.build/sources"
+    },
+    "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/snippet_extract-tool.build/sources" : {
+      "alwaysOutOfDate" : false,
+      "inputs" : [
+        {
+          "kind" : "virtual",
+          "name" : "<sources-file-list>"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-plugin/Sources/snippet-extract/SnippetBuildCommand.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-plugin/Sources/snippet-extract/Utility/SymbolGraph+Snippet.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-plugin/Sources/snippet-extract/Utility/URL+Status.swift"
+        }
+      ],
+      "outputFilePath" : "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/snippet_extract-tool.build/sources"
+    },
+    "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/snippet_extract.build/sources" : {
+      "alwaysOutOfDate" : false,
+      "inputs" : [
+        {
+          "kind" : "virtual",
+          "name" : "<sources-file-list>"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-plugin/Sources/snippet-extract/SnippetBuildCommand.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-plugin/Sources/snippet-extract/Utility/SymbolGraph+Snippet.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-plugin/Sources/snippet-extract/Utility/URL+Status.swift"
+        }
+      ],
+      "outputFilePath" : "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/snippet_extract.build/sources"
+    },
+    "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/snippet-extract-entitlement.plist" : {
+      "alwaysOutOfDate" : false,
+      "inputs" : [
+        {
+          "kind" : "virtual",
+          "name" : "<entitlement-plist>"
+        },
+        {
+          "kind" : "virtual",
+          "name" : "<com.apple.security.get-task-allow>"
+        }
+      ],
+      "outputFilePath" : "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/snippet-extract-entitlement.plist"
+    },
+    "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/snippet-extract-tool-entitlement.plist" : {
+      "alwaysOutOfDate" : false,
+      "inputs" : [
+        {
+          "kind" : "virtual",
+          "name" : "<entitlement-plist>"
+        },
+        {
+          "kind" : "virtual",
+          "name" : "<com.apple.security.get-task-allow>"
+        }
+      ],
+      "outputFilePath" : "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/snippet-extract-tool-entitlement.plist"
+    },
+    "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/snippet-extract-tool.product/Objects.LinkFileList" : {
+      "alwaysOutOfDate" : false,
+      "inputs" : [
+        {
+          "kind" : "virtual",
+          "name" : "<link-file-list>"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/Snippets-tool.build/Snippet.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/Snippets-tool.build/SnippetParser.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/SymbolKit-tool.build/AccessControl.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/SymbolKit-tool.build/Availability.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/SymbolKit-tool.build/AvailabilityItem.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/SymbolKit-tool.build/DeclarationFragments.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/SymbolKit-tool.build/Domain.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/SymbolKit-tool.build/Extension.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/SymbolKit-tool.build/Fragment.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/SymbolKit-tool.build/FragmentKind.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/SymbolKit-tool.build/FunctionParameter.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/SymbolKit-tool.build/FunctionSignature.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/SymbolKit-tool.build/GenericConstraint.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/SymbolKit-tool.build/GenericConstraints.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/SymbolKit-tool.build/GenericParameter.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/SymbolKit-tool.build/Generics.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/SymbolKit-tool.build/GraphCollector.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/SymbolKit-tool.build/Identifier.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/SymbolKit-tool.build/KindIdentifier.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/SymbolKit-tool.build/LineList.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/SymbolKit-tool.build/Location.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/SymbolKit-tool.build/Metadata.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/SymbolKit-tool.build/Mixin+Equals.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/SymbolKit-tool.build/Mixin+Hash.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/SymbolKit-tool.build/Mixin.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/SymbolKit-tool.build/Module.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/SymbolKit-tool.build/Mutability.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/SymbolKit-tool.build/Names.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/SymbolKit-tool.build/Namespace.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/SymbolKit-tool.build/OperatingSystem.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/SymbolKit-tool.build/Platform.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/SymbolKit-tool.build/Position.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/SymbolKit-tool.build/Relationship.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/SymbolKit-tool.build/RelationshipKind.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/SymbolKit-tool.build/SPI.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/SymbolKit-tool.build/SemanticVersion.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/SymbolKit-tool.build/Snippet.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/SymbolKit-tool.build/SourceOrigin.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/SymbolKit-tool.build/SourceRange.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/SymbolKit-tool.build/Swift.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/SymbolKit-tool.build/Symbol.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/SymbolKit-tool.build/SymbolGraph.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/SymbolKit-tool.build/SymbolKind.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/SymbolKit-tool.build/UnifiedSymbol+Encodable.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/SymbolKit-tool.build/UnifiedSymbol.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/SymbolKit-tool.build/UnifiedSymbolGraph+Encodable.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/SymbolKit-tool.build/UnifiedSymbolGraph.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/snippet_extract-tool.build/SnippetBuildCommand.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/snippet_extract-tool.build/SymbolGraph+Snippet.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/snippet_extract-tool.build/URL+Status.swift.o"
+        }
+      ],
+      "outputFilePath" : "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/snippet-extract-tool.product/Objects.LinkFileList"
+    },
+    "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/snippet-extract.product/Objects.LinkFileList" : {
+      "alwaysOutOfDate" : false,
+      "inputs" : [
+        {
+          "kind" : "virtual",
+          "name" : "<link-file-list>"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/Snippets.build/Snippet.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/Snippets.build/SnippetParser.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/SymbolKit.build/AccessControl.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/SymbolKit.build/Availability.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/SymbolKit.build/AvailabilityItem.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/SymbolKit.build/DeclarationFragments.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/SymbolKit.build/Domain.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/SymbolKit.build/Extension.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/SymbolKit.build/Fragment.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/SymbolKit.build/FragmentKind.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/SymbolKit.build/FunctionParameter.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/SymbolKit.build/FunctionSignature.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/SymbolKit.build/GenericConstraint.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/SymbolKit.build/GenericConstraints.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/SymbolKit.build/GenericParameter.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/SymbolKit.build/Generics.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/SymbolKit.build/GraphCollector.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/SymbolKit.build/Identifier.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/SymbolKit.build/KindIdentifier.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/SymbolKit.build/LineList.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/SymbolKit.build/Location.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/SymbolKit.build/Metadata.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/SymbolKit.build/Mixin+Equals.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/SymbolKit.build/Mixin+Hash.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/SymbolKit.build/Mixin.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/SymbolKit.build/Module.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/SymbolKit.build/Mutability.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/SymbolKit.build/Names.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/SymbolKit.build/Namespace.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/SymbolKit.build/OperatingSystem.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/SymbolKit.build/Platform.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/SymbolKit.build/Position.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/SymbolKit.build/Relationship.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/SymbolKit.build/RelationshipKind.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/SymbolKit.build/SPI.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/SymbolKit.build/SemanticVersion.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/SymbolKit.build/Snippet.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/SymbolKit.build/SourceOrigin.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/SymbolKit.build/SourceRange.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/SymbolKit.build/Swift.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/SymbolKit.build/Symbol.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/SymbolKit.build/SymbolGraph.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/SymbolKit.build/SymbolKind.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/SymbolKit.build/UnifiedSymbol+Encodable.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/SymbolKit.build/UnifiedSymbol.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/SymbolKit.build/UnifiedSymbolGraph+Encodable.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/SymbolKit.build/UnifiedSymbolGraph.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/snippet_extract.build/SnippetBuildCommand.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/snippet_extract.build/SymbolGraph+Snippet.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/snippet_extract.build/URL+Status.swift.o"
+        }
+      ],
+      "outputFilePath" : "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/snippet-extract.product/Objects.LinkFileList"
+    },
+    "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/Snippets-tool.build/sources" : {
+      "alwaysOutOfDate" : false,
+      "inputs" : [
+        {
+          "kind" : "virtual",
+          "name" : "<sources-file-list>"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-plugin/Sources/Snippets/Model/Snippet.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-plugin/Sources/Snippets/Parsing/SnippetParser.swift"
+        }
+      ],
+      "outputFilePath" : "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/Snippets-tool.build/sources"
+    },
+    "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/Snippets.build/sources" : {
+      "alwaysOutOfDate" : false,
+      "inputs" : [
+        {
+          "kind" : "virtual",
+          "name" : "<sources-file-list>"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-plugin/Sources/Snippets/Model/Snippet.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-plugin/Sources/Snippets/Parsing/SnippetParser.swift"
+        }
+      ],
+      "outputFilePath" : "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/Snippets.build/sources"
+    },
+    "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/swift-version--55D1F9F952A18E34.txt" : {
+      "alwaysOutOfDate" : true,
+      "inputs" : [
+        {
+          "kind" : "virtual",
+          "name" : "<swift-get-version>"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/hostedtoolcache/swift-macOS/6.0/arm64/usr/bin/swiftc"
+        }
+      ],
+      "outputFilePath" : "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/swift-version--55D1F9F952A18E34.txt"
+    },
+    "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/SymbolKit-tool.build/sources" : {
+      "alwaysOutOfDate" : false,
+      "inputs" : [
+        {
+          "kind" : "virtual",
+          "name" : "<sources-file-list>"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-symbolkit/Sources/SymbolKit/Mixin/Mixin+Equals.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-symbolkit/Sources/SymbolKit/Mixin/Mixin+Hash.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-symbolkit/Sources/SymbolKit/Mixin/Mixin.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-symbolkit/Sources/SymbolKit/SymbolGraph/LineList/LineList.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-symbolkit/Sources/SymbolKit/SymbolGraph/LineList/SourceRange/Position.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-symbolkit/Sources/SymbolKit/SymbolGraph/LineList/SourceRange/SourceRange.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-symbolkit/Sources/SymbolKit/SymbolGraph/Metadata.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-symbolkit/Sources/SymbolKit/SymbolGraph/Module.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-symbolkit/Sources/SymbolKit/SymbolGraph/OperatingSystem.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-symbolkit/Sources/SymbolKit/SymbolGraph/Platform.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-symbolkit/Sources/SymbolKit/SymbolGraph/Relationship/Relationship.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-symbolkit/Sources/SymbolKit/SymbolGraph/Relationship/RelationshipKind.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-symbolkit/Sources/SymbolKit/SymbolGraph/Relationship/SourceOrigin.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-symbolkit/Sources/SymbolKit/SymbolGraph/Relationship/Swift/GenericConstraints.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-symbolkit/Sources/SymbolKit/SymbolGraph/Relationship/Swift/Swift.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-symbolkit/Sources/SymbolKit/SymbolGraph/SemanticVersion.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-symbolkit/Sources/SymbolKit/SymbolGraph/Symbol/AccessControl.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-symbolkit/Sources/SymbolKit/SymbolGraph/Symbol/Availability/Availability.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-symbolkit/Sources/SymbolKit/SymbolGraph/Symbol/Availability/AvailabilityItem.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-symbolkit/Sources/SymbolKit/SymbolGraph/Symbol/Availability/Domain.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-symbolkit/Sources/SymbolKit/SymbolGraph/Symbol/DeclarationFragments/DeclarationFragments.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-symbolkit/Sources/SymbolKit/SymbolGraph/Symbol/DeclarationFragments/Fragment/Fragment.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-symbolkit/Sources/SymbolKit/SymbolGraph/Symbol/DeclarationFragments/Fragment/FragmentKind.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-symbolkit/Sources/SymbolKit/SymbolGraph/Symbol/FunctionSignature/FunctionParameter.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-symbolkit/Sources/SymbolKit/SymbolGraph/Symbol/FunctionSignature/FunctionSignature.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-symbolkit/Sources/SymbolKit/SymbolGraph/Symbol/Identifier.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-symbolkit/Sources/SymbolKit/SymbolGraph/Symbol/KindIdentifier.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-symbolkit/Sources/SymbolKit/SymbolGraph/Symbol/Location.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-symbolkit/Sources/SymbolKit/SymbolGraph/Symbol/Mutability.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-symbolkit/Sources/SymbolKit/SymbolGraph/Symbol/Names.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-symbolkit/Sources/SymbolKit/SymbolGraph/Symbol/SPI.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-symbolkit/Sources/SymbolKit/SymbolGraph/Symbol/Snippet.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-symbolkit/Sources/SymbolKit/SymbolGraph/Symbol/Swift/Extension.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-symbolkit/Sources/SymbolKit/SymbolGraph/Symbol/Swift/GenericConstraint.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-symbolkit/Sources/SymbolKit/SymbolGraph/Symbol/Swift/GenericParameter.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-symbolkit/Sources/SymbolKit/SymbolGraph/Symbol/Swift/Generics.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-symbolkit/Sources/SymbolKit/SymbolGraph/Symbol/Swift/Namespace.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-symbolkit/Sources/SymbolKit/SymbolGraph/Symbol/Symbol.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-symbolkit/Sources/SymbolKit/SymbolGraph/Symbol/SymbolKind.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-symbolkit/Sources/SymbolKit/SymbolGraph/SymbolGraph.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-symbolkit/Sources/SymbolKit/UnifiedSymbolGraph/GraphCollector.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-symbolkit/Sources/SymbolKit/UnifiedSymbolGraph/UnifiedSymbol+Encodable.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-symbolkit/Sources/SymbolKit/UnifiedSymbolGraph/UnifiedSymbol.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-symbolkit/Sources/SymbolKit/UnifiedSymbolGraph/UnifiedSymbolGraph+Encodable.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-symbolkit/Sources/SymbolKit/UnifiedSymbolGraph/UnifiedSymbolGraph.swift"
+        }
+      ],
+      "outputFilePath" : "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/SymbolKit-tool.build/sources"
+    },
+    "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/SymbolKit.build/sources" : {
+      "alwaysOutOfDate" : false,
+      "inputs" : [
+        {
+          "kind" : "virtual",
+          "name" : "<sources-file-list>"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-symbolkit/Sources/SymbolKit/Mixin/Mixin+Equals.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-symbolkit/Sources/SymbolKit/Mixin/Mixin+Hash.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-symbolkit/Sources/SymbolKit/Mixin/Mixin.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-symbolkit/Sources/SymbolKit/SymbolGraph/LineList/LineList.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-symbolkit/Sources/SymbolKit/SymbolGraph/LineList/SourceRange/Position.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-symbolkit/Sources/SymbolKit/SymbolGraph/LineList/SourceRange/SourceRange.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-symbolkit/Sources/SymbolKit/SymbolGraph/Metadata.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-symbolkit/Sources/SymbolKit/SymbolGraph/Module.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-symbolkit/Sources/SymbolKit/SymbolGraph/OperatingSystem.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-symbolkit/Sources/SymbolKit/SymbolGraph/Platform.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-symbolkit/Sources/SymbolKit/SymbolGraph/Relationship/Relationship.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-symbolkit/Sources/SymbolKit/SymbolGraph/Relationship/RelationshipKind.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-symbolkit/Sources/SymbolKit/SymbolGraph/Relationship/SourceOrigin.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-symbolkit/Sources/SymbolKit/SymbolGraph/Relationship/Swift/GenericConstraints.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-symbolkit/Sources/SymbolKit/SymbolGraph/Relationship/Swift/Swift.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-symbolkit/Sources/SymbolKit/SymbolGraph/SemanticVersion.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-symbolkit/Sources/SymbolKit/SymbolGraph/Symbol/AccessControl.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-symbolkit/Sources/SymbolKit/SymbolGraph/Symbol/Availability/Availability.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-symbolkit/Sources/SymbolKit/SymbolGraph/Symbol/Availability/AvailabilityItem.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-symbolkit/Sources/SymbolKit/SymbolGraph/Symbol/Availability/Domain.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-symbolkit/Sources/SymbolKit/SymbolGraph/Symbol/DeclarationFragments/DeclarationFragments.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-symbolkit/Sources/SymbolKit/SymbolGraph/Symbol/DeclarationFragments/Fragment/Fragment.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-symbolkit/Sources/SymbolKit/SymbolGraph/Symbol/DeclarationFragments/Fragment/FragmentKind.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-symbolkit/Sources/SymbolKit/SymbolGraph/Symbol/FunctionSignature/FunctionParameter.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-symbolkit/Sources/SymbolKit/SymbolGraph/Symbol/FunctionSignature/FunctionSignature.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-symbolkit/Sources/SymbolKit/SymbolGraph/Symbol/Identifier.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-symbolkit/Sources/SymbolKit/SymbolGraph/Symbol/KindIdentifier.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-symbolkit/Sources/SymbolKit/SymbolGraph/Symbol/Location.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-symbolkit/Sources/SymbolKit/SymbolGraph/Symbol/Mutability.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-symbolkit/Sources/SymbolKit/SymbolGraph/Symbol/Names.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-symbolkit/Sources/SymbolKit/SymbolGraph/Symbol/SPI.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-symbolkit/Sources/SymbolKit/SymbolGraph/Symbol/Snippet.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-symbolkit/Sources/SymbolKit/SymbolGraph/Symbol/Swift/Extension.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-symbolkit/Sources/SymbolKit/SymbolGraph/Symbol/Swift/GenericConstraint.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-symbolkit/Sources/SymbolKit/SymbolGraph/Symbol/Swift/GenericParameter.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-symbolkit/Sources/SymbolKit/SymbolGraph/Symbol/Swift/Generics.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-symbolkit/Sources/SymbolKit/SymbolGraph/Symbol/Swift/Namespace.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-symbolkit/Sources/SymbolKit/SymbolGraph/Symbol/Symbol.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-symbolkit/Sources/SymbolKit/SymbolGraph/Symbol/SymbolKind.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-symbolkit/Sources/SymbolKit/SymbolGraph/SymbolGraph.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-symbolkit/Sources/SymbolKit/UnifiedSymbolGraph/GraphCollector.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-symbolkit/Sources/SymbolKit/UnifiedSymbolGraph/UnifiedSymbol+Encodable.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-symbolkit/Sources/SymbolKit/UnifiedSymbolGraph/UnifiedSymbol.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-symbolkit/Sources/SymbolKit/UnifiedSymbolGraph/UnifiedSymbolGraph+Encodable.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-symbolkit/Sources/SymbolKit/UnifiedSymbolGraph/UnifiedSymbolGraph.swift"
+        }
+      ],
+      "outputFilePath" : "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/SymbolKit.build/sources"
+    }
+  }
+}

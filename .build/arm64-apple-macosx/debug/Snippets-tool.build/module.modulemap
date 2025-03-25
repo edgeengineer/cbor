@@ -1,0 +1,4 @@
+module Snippets {
+    header "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/Snippets-tool.build/Snippets-Swift.h"
+    requires objc
+}

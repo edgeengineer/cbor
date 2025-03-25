@@ -1,0 +1,17 @@
+{
+  "": {
+    "swift-dependencies": "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/Snippets-tool.build/master.swiftdeps"
+  },
+  "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-plugin/Sources/Snippets/Model/Snippet.swift": {
+    "dependencies": "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/Snippets-tool.build/Snippet.d",
+    "object": "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/Snippets-tool.build/Snippet.swift.o",
+    "swiftmodule": "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/Snippets-tool.build/Snippet~partial.swiftmodule",
+    "swift-dependencies": "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/Snippets-tool.build/Snippet.swiftdeps"
+  },
+  "/Users/runner/work/cbor/cbor/.build/checkouts/swift-docc-plugin/Sources/Snippets/Parsing/SnippetParser.swift": {
+    "dependencies": "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/Snippets-tool.build/SnippetParser.d",
+    "object": "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/Snippets-tool.build/SnippetParser.swift.o",
+    "swiftmodule": "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/Snippets-tool.build/SnippetParser~partial.swiftmodule",
+    "swift-dependencies": "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/Snippets-tool.build/SnippetParser.swiftdeps"
+  }
+}

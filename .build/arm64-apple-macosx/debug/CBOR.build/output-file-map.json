@@ -1,0 +1,41 @@
+{
+  "": {
+    "swift-dependencies": "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/CBOR.build/master.swiftdeps"
+  },
+  "/Users/runner/work/cbor/cbor/Sources/CBOR/CBOR.swift": {
+    "dependencies": "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/CBOR.build/CBOR.d",
+    "object": "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/CBOR.build/CBOR.swift.o",
+    "swiftmodule": "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/CBOR.build/CBOR~partial.swiftmodule",
+    "swift-dependencies": "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/CBOR.build/CBOR.swiftdeps"
+  },
+  "/Users/runner/work/cbor/cbor/Sources/CBOR/CBORCodable.swift": {
+    "dependencies": "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/CBOR.build/CBORCodable.d",
+    "object": "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/CBOR.build/CBORCodable.swift.o",
+    "swiftmodule": "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/CBOR.build/CBORCodable~partial.swiftmodule",
+    "swift-dependencies": "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/CBOR.build/CBORCodable.swiftdeps"
+  },
+  "/Users/runner/work/cbor/cbor/Sources/CBOR/CBORDecoder.swift": {
+    "dependencies": "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/CBOR.build/CBORDecoder.d",
+    "object": "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/CBOR.build/CBORDecoder.swift.o",
+    "swiftmodule": "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/CBOR.build/CBORDecoder~partial.swiftmodule",
+    "swift-dependencies": "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/CBOR.build/CBORDecoder.swiftdeps"
+  },
+  "/Users/runner/work/cbor/cbor/Sources/CBOR/CBOREncoder.swift": {
+    "dependencies": "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/CBOR.build/CBOREncoder.d",
+    "object": "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/CBOR.build/CBOREncoder.swift.o",
+    "swiftmodule": "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/CBOR.build/CBOREncoder~partial.swiftmodule",
+    "swift-dependencies": "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/CBOR.build/CBOREncoder.swiftdeps"
+  },
+  "/Users/runner/work/cbor/cbor/Sources/CBOR/CBORError.swift": {
+    "dependencies": "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/CBOR.build/CBORError.d",
+    "object": "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/CBOR.build/CBORError.swift.o",
+    "swiftmodule": "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/CBOR.build/CBORError~partial.swiftmodule",
+    "swift-dependencies": "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/CBOR.build/CBORError.swiftdeps"
+  },
+  "/Users/runner/work/cbor/cbor/Sources/CBOR/CBORReader.swift": {
+    "dependencies": "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/CBOR.build/CBORReader.d",
+    "object": "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/CBOR.build/CBORReader.swift.o",
+    "swiftmodule": "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/CBOR.build/CBORReader~partial.swiftmodule",
+    "swift-dependencies": "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/CBOR.build/CBORReader.swiftdeps"
+  }
+}

@@ -1,0 +1,4 @@
+module CBOR {
+    header "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/CBOR.build/CBOR-Swift.h"
+    requires objc
+}

@@ -1,0 +1,4 @@
+module CBORPackageTests {
+    header "/Users/runner/work/cbor/cbor/.build/arm64-apple-macosx/debug/CBORPackageTests.build/CBORPackageTests-Swift.h"
+    requires objc
+}
