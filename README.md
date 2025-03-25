@@ -1,6 +1,5 @@
 # CBOR
 
-[![Swift 6 CI](https://github.com/username/cbor/actions/workflows/swift.yml/badge.svg)](https://github.com/username/cbor/actions/workflows/swift.yml)
 [![Swift 6.0](https://img.shields.io/badge/Swift-6.0-orange.svg)](https://swift.org)
 [![Platforms](https://img.shields.io/badge/Platforms-macOS%20|%20Linux%20|%20Windows%20|%20Android-blue.svg)](https://swift.org)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
@@ -25,6 +24,32 @@ CBOR is a lightweight implementation of the [CBOR](https://tools.ietf.org/html/r
 
 - **Error Handling:**  
   Detailed error types (`CBORError`) to help you diagnose encoding/decoding issues.
+
+## Installation
+
+### Swift Package Manager
+
+Add the CBOR package to your Swift package dependencies:
+
+```swift
+// swift-tools-version:6.0
+import PackageDescription
+
+let package = Package(
+    name: "YourProject",
+    dependencies: [
+        .package(url: "https://github.com/apache-edge/cbor.git", from: "0.0.1")
+    ],
+    targets: [
+        .target(
+            name: "YourTarget",
+            dependencies: [
+                .product(name: "CBOR", package: "cbor")
+            ]
+        )
+    ]
+)
+```
 
 ## Quick Start 
 
