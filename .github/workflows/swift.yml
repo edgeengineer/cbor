@@ -34,7 +34,7 @@ jobs:
     if: github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master')
     # Sets permissions of the GITHUB_TOKEN to allow deployment to GitHub Pages
     permissions:
-      contents: read
+      contents: write     # This is needed to push to gh-pages branch
       pages: write
       id-token: write
     # Allow only one concurrent deployment
@@ -48,6 +48,8 @@ jobs:
     steps:
     - name: Checkout
       uses: actions/checkout@v4
+      with:
+        fetch-depth: 0    # We need the full history for branch creation
     - name: Setup Swift
       uses: swift-actions/setup-swift@v2
       with:
@@ -73,11 +75,12 @@ jobs:
         # Create .nojekyll file to disable Jekyll processing
         touch _site/.nojekyll
         # Deploy to GitHub Pages using gh-pages branch
-        git config --global user.name "GitHub Actions"
-        git config --global user.email "actions@github.com"
+        git config --global user.name "github-actions[bot]"
+        git config --global user.email "github-actions[bot]@users.noreply.github.com"
         git checkout --orphan gh-pages
         git reset --hard
         cp -R _site/* .
+        touch .nojekyll
         git add .
         git commit -m "Deploy documentation to GitHub Pages"
         git push -f origin gh-pages
