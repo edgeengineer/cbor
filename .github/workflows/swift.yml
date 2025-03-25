@@ -47,10 +47,12 @@ jobs:
           --transform-for-static-hosting \
           --hosting-base-path cbor \
           --output-path ./docs
-    - name: Upload Documentation
-      uses: actions/upload-pages-artifact@v2
+    - name: Upload artifact
+      uses: actions/upload-artifact@v3
       with:
+        name: github-pages
         path: ./docs
+        if-no-files-found: error
 
   # Deploy documentation to GitHub Pages
   deploy:
