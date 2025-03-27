@@ -2,7 +2,7 @@
 
 [![Swift 6.0](https://img.shields.io/badge/Swift-6.0-orange.svg)](https://swift.org)
 [![Platforms](https://img.shields.io/badge/Platforms-macOS%20|%20Linux%20|%20Windows%20|%20Android-blue.svg)](https://swift.org)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://www.apache.org/licenses/LICENSE-2.0)
 [![Build](https://github.com/apache-edge/cbor/actions/workflows/swift.yml/badge.svg)](https://github.com/apache-edge/cbor/actions/workflows/swift.yml)
 [![Documentation](https://img.shields.io/badge/Documentation-DocC-blue)](https://apache-edge.github.io/cbor/documentation/cbor/)
 
@@ -23,6 +23,9 @@ CBOR is a lightweight implementation of the [CBOR](https://tools.ietf.org/html/r
   - Unkeyed containers (for arrays)
   - Nested containers
   - Custom encoding/decoding
+  - Sets and other collection types
+  - Optionals and deeply nested optionals
+  - Non-String dictionary keys
 
 - **Error Handling:**  
   Detailed error types (`CBORError`) to help you diagnose encoding/decoding issues.
@@ -201,76 +204,131 @@ struct Member: Codable {
 struct Statistics: Codable {
     let projectsCompleted: Int
     let averageRating: Double
-    let activeProjects: [Project]
+    let activeYears: [Int]
 }
 
-struct Project: Codable {
-    let name: String
-    let deadline: Date
-    let milestones: [String: Date]
-}
-
-// Create a complex instance
+// Create and encode a team
 let team = Team(
     name: "Dream Team",
     members: [
-        Member(
-            id: 1,
-            name: "Alice",
-            roles: [.developer, .manager]
-        ),
-        Member(
-            id: 2,
-            name: "Bob",
-            roles: [.designer]
-        )
+        Member(id: 1, name: "Alice", roles: [.developer, .manager]),
+        Member(id: 2, name: "Bob", roles: [.designer])
     ],
     stats: Statistics(
-        projectsCompleted: 10,
+        projectsCompleted: 12,
         averageRating: 4.8,
-        activeProjects: [
-            Project(
-                name: "CBOR Implementation",
-                deadline: Date(),
-                milestones: [
-                    "Design": Date(),
-                    "Implementation": Date()
-                ]
-            )
-        ]
+        activeYears: [2020, 2021, 2022]
     ),
     tags: ["innovative", "agile", "productive"]
 )
 
-// Encode and decode
-do {
-    let encoder = CBOREncoder()
-    let encoded = try encoder.encode(team)
-    
-    let decoder = CBORDecoder()
-    let decoded = try decoder.decode(Team.self, from: encoded)
-    
-    // Verify the round trip
-    print("Team name: \(decoded.name)")
-    print("Number of members: \(decoded.members.count)")
-    print("First member roles: \(decoded.members[0].roles)")
-    print("Active projects: \(decoded.stats.activeProjects.map { $0.name })")
-    print("Team tags: \(decoded.tags)")
-} catch {
-    print("Error: \(error)")
+let encoder = CBOREncoder()
+let cborData = try encoder.encode(team)
+```
+
+### 6. Working with Sets
+
+```swift
+import CBOR
+
+// Define a struct with Set properties
+struct SetContainer: Codable, Equatable {
+    let stringSet: Set<String>
+    let intSet: Set<Int>
 }
+
+// Create an instance with sets
+let setExample = SetContainer(
+    stringSet: Set(["apple", "banana", "cherry"]),
+    intSet: Set([1, 2, 3, 4, 5])
+)
+
+// Encode to CBOR
+let encoder = CBOREncoder()
+let encoded = try encoder.encode(setExample)
+
+// Decode from CBOR
+let decoder = CBORDecoder()
+let decoded = try decoder.decode(SetContainer.self, from: encoded)
+
+// Verify sets are preserved
+assert(decoded.stringSet.contains("apple"))
+assert(decoded.intSet.contains(3))
 ```
 
-### 6. Tagged Values and Simple Values
+### 7. Working with Optionals and Nested Optionals
 
-```swift 
-// A tagged value (e.g., tagging a date string)
-let taggedValue: CBOR = .tagged(0, .textString("2025-02-13T12:34:56Z"))
-let taggedEncoded = taggedValue.encode()
+```swift
+import CBOR
 
-// A simple value
-let simpleValue: CBOR = .simple(16)
-let simpleEncoded = simpleValue.encode()
+// Define a struct with optional and nested optional properties
+struct OptionalExample: Codable, Equatable {
+    let simpleOptional: String?
+    let nestedOptional: Int??
+    let optionalArray: [Double?]?
+    let optionalDict: [String: Bool?]?
+}
+
+// Create an instance with various optional values
+let optionalExample = OptionalExample(
+    simpleOptional: "present",
+    nestedOptional: nil,
+    optionalArray: [1.0, nil, 3.0],
+    optionalDict: ["yes": true, "no": false, "maybe": nil]
+)
+
+// Encode to CBOR
+let encoder = CBOREncoder()
+let encoded = try encoder.encode(optionalExample)
+
+// Decode from CBOR
+let decoder = CBORDecoder()
+let decoded = try decoder.decode(OptionalExample.self, from: encoded)
+
+// Verify optionals are preserved
+assert(decoded.simpleOptional == "present")
+assert(decoded.nestedOptional == nil)
+assert(decoded.optionalArray?[1] == nil)
+assert(decoded.optionalDict?["maybe"] == nil)
 ```
 
-The library provides a complete implementation of the CBOR format (RFC 8949) with full support for Swift's Codable protocol, making it suitable for both direct CBOR manipulation and seamless integration with Swift's type system.
+### 8. Non-String Dictionary Keys
+
+```swift
+import CBOR
+
+// Define an enum to use as dictionary keys
+enum Color: String, Codable, Hashable {
+    case red
+    case green
+    case blue
+}
+
+struct EnumKeyDict: Codable, Equatable {
+    let colorValues: [Color: Int]
+}
+
+// Create an instance with enum keys
+let colorDict = EnumKeyDict(colorValues: [
+    .red: 1,
+    .green: 2,
+    .blue: 3
+])
+
+// Encode to CBOR
+let encoder = CBOREncoder()
+let encoded = try encoder.encode(colorDict)
+
+// Decode from CBOR
+let decoder = CBORDecoder()
+let decoded = try decoder.decode(EnumKeyDict.self, from: encoded)
+
+// Verify dictionary with enum keys is preserved
+assert(decoded.colorValues[.red] == 1)
+assert(decoded.colorValues[.green] == 2)
+assert(decoded.colorValues[.blue] == 3)
+```
+
+## License
+
+This project is licensed under the Apache License 2.0 - see the [LICENSE](LICENSE) file for details.
