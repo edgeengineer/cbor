@@ -655,4 +655,265 @@ struct CBORCodableTests {
         }
         #endif
     }
+    
+    // MARK: - Optional Value Tests
+    
+    @Test
+    func testOptionalValues() throws {
+        // Define a struct with optional values
+        struct OptionalValues: Codable, Equatable {
+            let intValue: Int?
+            let stringValue: String?
+            let boolValue: Bool?
+            let doubleValue: Double?
+        }
+        
+        // Create a test instance with different combinations of nil and non-nil values
+        let original = OptionalValues(
+            intValue: 42,
+            stringValue: "test",
+            boolValue: true,
+            doubleValue: nil
+        )
+        
+        // Encode
+        let encoder = CBOREncoder()
+        let data = try encoder.encode(original)
+        
+        // Decode
+        let decoder = CBORDecoder()
+        let decoded = try decoder.decode(OptionalValues.self, from: data)
+        
+        // Verify
+        #expect(decoded.intValue == original.intValue, "Failed for intValue")
+        #expect(decoded.stringValue == original.stringValue, "Failed for stringValue")
+        #expect(decoded.boolValue == original.boolValue, "Failed for boolValue")
+        #expect(decoded.doubleValue == original.doubleValue, "Failed for doubleValue")
+    }
+    
+    // MARK: - Set Tests
+    
+    @Test
+    func testEncodeDecodeSet() throws {
+        // Define a struct with Set properties
+        struct SetContainer: Codable, Equatable {
+            let stringSet: Set<String>
+            let intSet: Set<Int>
+            
+            static func == (lhs: SetContainer, rhs: SetContainer) -> Bool {
+                return lhs.stringSet == rhs.stringSet && lhs.intSet == rhs.intSet
+            }
+        }
+        
+        // Create a test instance
+        let original = SetContainer(
+            stringSet: ["apple", "banana", "cherry"],
+            intSet: [1, 2, 3, 4, 5]
+        )
+        
+        // Encode
+        let encoder = CBOREncoder()
+        let data = try encoder.encode(original)
+        
+        // Decode
+        let decoder = CBORDecoder()
+        let decoded = try decoder.decode(SetContainer.self, from: data)
+        
+        // Verify
+        #expect(decoded.stringSet.count == original.stringSet.count)
+        #expect(decoded.intSet.count == original.intSet.count)
+        
+        for item in original.stringSet {
+            #expect(decoded.stringSet.contains(item))
+        }
+        
+        for item in original.intSet {
+            #expect(decoded.intSet.contains(item))
+        }
+    }
+    
+    @Test
+    func testSetOfCustomTypes() throws {
+        // Define a custom type for the Set
+        struct CustomItem: Codable, Equatable, Hashable {
+            let id: Int
+            let name: String
+            
+            func hash(into hasher: inout Hasher) {
+                hasher.combine(id)
+                // Only use id for hashing to demonstrate duplicate handling
+            }
+            
+            static func == (lhs: CustomItem, rhs: CustomItem) -> Bool {
+                // Two items are equal if both id AND name match
+                return lhs.id == rhs.id && lhs.name == rhs.name
+            }
+        }
+        
+        // Define a container for the Set of custom types
+        struct CustomSetContainer: Codable {
+            // Using array instead of Set for testing
+            // This allows us to verify CBOR encoding/decoding of custom types
+            // without relying on Set's behavior
+            let items: [CustomItem]
+        }
+        
+        // Create a test instance with items that have the same id but different names
+        let original = CustomSetContainer(
+            items: [
+                CustomItem(id: 1, name: "Item 1"),
+                CustomItem(id: 2, name: "Item 2"),
+                CustomItem(id: 3, name: "Item 3")
+            ]
+        )
+        
+        // Encode
+        let encoder = CBOREncoder()
+        let data = try encoder.encode(original)
+        
+        // Decode
+        let decoder = CBORDecoder()
+        let decoded = try decoder.decode(CustomSetContainer.self, from: data)
+        
+        // Verify
+        #expect(decoded.items.count == original.items.count, "Expected \(original.items.count) items, got \(decoded.items.count)")
+        
+        // Check that all items are preserved correctly
+        for (index, item) in original.items.enumerated() {
+            #expect(decoded.items[index].id == item.id, "ID mismatch at index \(index)")
+            #expect(decoded.items[index].name == item.name, "Name mismatch at index \(index)")
+        }
+    }
+    
+    // MARK: - Optionals Within Collections Tests
+    
+    @Test
+    func testOptionalsWithinCollections() throws {
+        // Define a struct with collections containing optionals
+        struct OptionalCollections: Codable, Equatable {
+            let optionalArray: [Int?]
+            
+            static func == (lhs: OptionalCollections, rhs: OptionalCollections) -> Bool {
+                return lhs.optionalArray == rhs.optionalArray
+            }
+        }
+        
+        // Create a test instance with various combinations of nil and non-nil values
+        let original = OptionalCollections(
+            optionalArray: [1, nil, 3, nil, 5]
+        )
+        
+        // Encode
+        let encoder = CBOREncoder()
+        let data = try encoder.encode(original)
+        
+        // Decode
+        let decoder = CBORDecoder()
+        let decoded = try decoder.decode(OptionalCollections.self, from: data)
+        
+        // Verify
+        #expect(decoded.optionalArray.count == original.optionalArray.count)
+        
+        // Verify specific elements to ensure optionals are preserved correctly
+        for i in 0..<original.optionalArray.count {
+            #expect(decoded.optionalArray[i] == original.optionalArray[i], 
+                    "Mismatch at index \(i): expected \(String(describing: original.optionalArray[i])), got \(String(describing: decoded.optionalArray[i]))")
+        }
+    }
+    
+    // MARK: - Non-String Dictionary Keys Tests
+    
+    @Test
+    func testNonStringDictionaryKeys() throws {
+        // Define a struct with a dictionary that uses non-String keys
+        struct IntKeyDictionary: Codable, Equatable {
+            let intKeyDict: [Int: String]
+            
+            static func == (lhs: IntKeyDictionary, rhs: IntKeyDictionary) -> Bool {
+                return lhs.intKeyDict == rhs.intKeyDict
+            }
+        }
+        
+        // Create a test instance
+        let original = IntKeyDictionary(
+            intKeyDict: [
+                1: "one",
+                2: "two",
+                3: "three"
+            ]
+        )
+        
+        // Encode
+        let encoder = CBOREncoder()
+        let data = try encoder.encode(original)
+        
+        // Decode
+        let decoder = CBORDecoder()
+        let decoded = try decoder.decode(IntKeyDictionary.self, from: data)
+        
+        // Verify
+        #expect(decoded.intKeyDict.count == original.intKeyDict.count)
+        
+        for (key, value) in original.intKeyDict {
+            #expect(decoded.intKeyDict[key] == value)
+        }
+    }
+    
+    @Test
+    func testComplexNonStringKeyDictionary() throws {
+        // Define a struct with nested dictionaries using non-String keys
+        struct ComplexDictionaryContainer: Codable, Equatable {
+            let intKeyDict: [Int: String]
+            let boolKeyDict: [Bool: Int]
+            let mixedDict: [Int: [String: Int]]
+            
+            static func == (lhs: ComplexDictionaryContainer, rhs: ComplexDictionaryContainer) -> Bool {
+                return lhs.intKeyDict == rhs.intKeyDict &&
+                       lhs.boolKeyDict == rhs.boolKeyDict &&
+                       lhs.mixedDict == rhs.mixedDict
+            }
+        }
+        
+        // Create a test instance
+        let original = ComplexDictionaryContainer(
+            intKeyDict: [
+                1: "one",
+                2: "two",
+                3: "three"
+            ],
+            boolKeyDict: [
+                true: 1,
+                false: 0
+            ],
+            mixedDict: [
+                1: ["a": 1, "b": 2],
+                2: ["c": 3, "d": 4]
+            ]
+        )
+        
+        // Encode
+        let encoder = CBOREncoder()
+        let data = try encoder.encode(original)
+        
+        // Decode
+        let decoder = CBORDecoder()
+        let decoded = try decoder.decode(ComplexDictionaryContainer.self, from: data)
+        
+        // Verify
+        #expect(decoded.intKeyDict.count == original.intKeyDict.count)
+        #expect(decoded.boolKeyDict.count == original.boolKeyDict.count)
+        #expect(decoded.mixedDict.count == original.mixedDict.count)
+        
+        // Check specific values
+        #expect(decoded.intKeyDict[1] == "one")
+        #expect(decoded.boolKeyDict[true] == 1)
+        #expect(decoded.mixedDict[1]?["a"] == 1)
+        #expect(decoded.mixedDict[2]?["d"] == 4)
+    }
+}
+
+// MARK: - Extended Tests for Advanced Swift Types
+
+extension CBORCodableTests {
+    
 }

@@ -61,19 +61,172 @@ struct CBORErrorTests {
     
     @Test
     func testInvalidUTF8Error() {
-        // Test invalid UTF-8 in text string
-        let invalidUTF8: [UInt8] = [
+        // Test various categories of invalid UTF-8 sequences in text strings
+        // Based on RFC 8949 and RFC 3629
+        
+        // MARK: - Category 1: Simple invalid bytes
+        // Test with simple invalid UTF-8 bytes (0xFF is never valid in UTF-8)
+        let simpleInvalidUTF8: [UInt8] = [
             0x63, // Text string of length 3
             0xFF, 0xFF, 0xFF // Invalid UTF-8 bytes
         ]
         
         do {
-            let _ = try CBOR.decode(invalidUTF8)
-            Issue.record("Expected decoding to fail with CBORError")
+            let _ = try CBOR.decode(simpleInvalidUTF8)
+            Issue.record("Expected decoding to fail with CBORError for simple invalid UTF-8")
         } catch is CBORError {
             // This is the expected error
         } catch {
-            Issue.record("Expected CBORError but got \(error)")
+            Issue.record("Expected CBORError but got \(error) for simple invalid UTF-8")
+        }
+        
+        // MARK: - Category 2: Overlong encodings
+        // Test with overlong encodings (using more bytes than necessary)
+        // Per RFC 3629, the sequence C0 80 is an overlong encoding of U+0000 (NUL)
+        let overlongUTF8: [UInt8] = [
+            0x62, // Text string of length 2
+            0xC0, 0x80 // Overlong encoding of NUL character
+        ]
+        
+        do {
+            let _ = try CBOR.decode(overlongUTF8)
+            Issue.record("Expected decoding to fail with CBORError for overlong UTF-8")
+        } catch is CBORError {
+            // This is the expected error
+        } catch {
+            Issue.record("Expected CBORError but got \(error) for overlong UTF-8")
+        }
+        
+        // Another overlong encoding example: E0 80 80 is an overlong encoding of U+0000
+        let overlongUTF8_2: [UInt8] = [
+            0x63, // Text string of length 3
+            0xE0, 0x80, 0x80 // 3-byte overlong encoding of NUL character
+        ]
+        
+        do {
+            let _ = try CBOR.decode(overlongUTF8_2)
+            Issue.record("Expected decoding to fail with CBORError for 3-byte overlong UTF-8")
+        } catch is CBORError {
+            // This is the expected error
+        } catch {
+            Issue.record("Expected CBORError but got \(error) for 3-byte overlong UTF-8")
+        }
+        
+        // MARK: - Category 3: Surrogate code points
+        // Test with surrogate code points (U+D800 to U+DFFF)
+        // These are reserved for UTF-16 and invalid in UTF-8
+        // ED A0 80 is the UTF-8 encoding of U+D800 (first surrogate code point)
+        let surrogateUTF8: [UInt8] = [
+            0x63, // Text string of length 3
+            0xED, 0xA0, 0x80 // UTF-8 encoding of U+D800 (surrogate)
+        ]
+        
+        do {
+            let _ = try CBOR.decode(surrogateUTF8)
+            Issue.record("Expected decoding to fail with CBORError for surrogate code point")
+        } catch is CBORError {
+            // This is the expected error
+        } catch {
+            Issue.record("Expected CBORError but got \(error) for surrogate code point")
+        }
+        
+        // ED B0 80 is the UTF-8 encoding of U+DC00 (low surrogate)
+        let lowSurrogateUTF8: [UInt8] = [
+            0x63, // Text string of length 3
+            0xED, 0xB0, 0x80 // UTF-8 encoding of U+DC00 (low surrogate)
+        ]
+        
+        do {
+            let _ = try CBOR.decode(lowSurrogateUTF8)
+            Issue.record("Expected decoding to fail with CBORError for low surrogate code point")
+        } catch is CBORError {
+            // This is the expected error
+        } catch {
+            Issue.record("Expected CBORError but got \(error) for low surrogate code point")
+        }
+        
+        // MARK: - Category 4: Incomplete sequences
+        // Test with incomplete UTF-8 sequences
+        let incompleteUTF8: [UInt8] = [
+            0x62, // Text string of length 2
+            0xE2, 0x82 // Incomplete 3-byte sequence (missing third byte)
+        ]
+        
+        do {
+            let _ = try CBOR.decode(incompleteUTF8)
+            Issue.record("Expected decoding to fail with CBORError for incomplete UTF-8 sequence")
+        } catch is CBORError {
+            // This is the expected error
+        } catch {
+            Issue.record("Expected CBORError but got \(error) for incomplete UTF-8 sequence")
+        }
+        
+        // MARK: - Category 5: Invalid continuation bytes
+        // Test with invalid continuation bytes
+        let invalidContinuationUTF8: [UInt8] = [
+            0x63, // Text string of length 3
+            0xE2, 0x28, 0x82 // Second byte is not a valid continuation byte (should be 0x80-0xBF)
+        ]
+        
+        do {
+            let _ = try CBOR.decode(invalidContinuationUTF8)
+            Issue.record("Expected decoding to fail with CBORError for invalid continuation byte")
+        } catch is CBORError {
+            // This is the expected error
+        } catch {
+            Issue.record("Expected CBORError but got \(error) for invalid continuation byte")
+        }
+        
+        // MARK: - Category 6: Code points beyond U+10FFFF
+        // Test with code points beyond U+10FFFF (the highest valid Unicode code point)
+        // F5 80 80 80 would encode a code point beyond U+10FFFF
+        let beyondMaxUTF8: [UInt8] = [
+            0x64, // Text string of length 4
+            0xF5, 0x80, 0x80, 0x80 // Encoding a code point beyond U+10FFFF
+        ]
+        
+        do {
+            let _ = try CBOR.decode(beyondMaxUTF8)
+            Issue.record("Expected decoding to fail with CBORError for code point beyond U+10FFFF")
+        } catch is CBORError {
+            // This is the expected error
+        } catch {
+            Issue.record("Expected CBORError but got \(error) for code point beyond U+10FFFF")
+        }
+        
+        // MARK: - Category 7: Mixed valid and invalid sequences
+        // Test with a mix of valid and invalid UTF-8 sequences
+        let mixedUTF8: [UInt8] = [
+            0x65, // Text string of length 5
+            0x41, // Valid ASCII 'A'
+            0xC2, 0xA9, // Valid UTF-8 for copyright symbol 
+            0xED, 0xA0 // Invalid surrogate (incomplete)
+        ]
+        
+        do {
+            let _ = try CBOR.decode(mixedUTF8)
+            Issue.record("Expected decoding to fail with CBORError for mixed valid/invalid UTF-8")
+        } catch is CBORError {
+            // This is the expected error
+        } catch {
+            Issue.record("Expected CBORError but got \(error) for mixed valid/invalid UTF-8")
+        }
+        
+        // MARK: - Category 8: Unexpected continuation bytes
+        // Test with unexpected continuation bytes
+        let unexpectedContinuationUTF8: [UInt8] = [
+            0x63, // Text string of length 3
+            0x41, // Valid ASCII 'A'
+            0x80, 0x80 // Unexpected continuation bytes without a leading byte
+        ]
+        
+        do {
+            let _ = try CBOR.decode(unexpectedContinuationUTF8)
+            Issue.record("Expected decoding to fail with CBORError for unexpected continuation bytes")
+        } catch is CBORError {
+            // This is the expected error
+        } catch {
+            Issue.record("Expected CBORError but got \(error) for unexpected continuation bytes")
         }
     }
     
