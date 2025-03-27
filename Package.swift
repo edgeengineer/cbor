@@ -25,6 +25,5 @@ let package = Package(
         .testTarget(
             name: "CBORTests",
             dependencies: ["CBOR"]),
-    ],
-    swiftLanguageVersions: [.v6]
+    ]
 )
