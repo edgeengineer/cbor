@@ -910,10 +910,312 @@ struct CBORCodableTests {
         #expect(decoded.mixedDict[1]?["a"] == 1)
         #expect(decoded.mixedDict[2]?["d"] == 4)
     }
-}
-
-// MARK: - Extended Tests for Advanced Swift Types
-
-extension CBORCodableTests {
     
+    @Test
+    func testDeeplyNestedOptionals() throws {
+        // Define a struct with deeply nested optionals
+        struct DeepOptionals: Codable, Equatable {
+            let level1: String?
+            let level2: Int??
+            let level3: [String?]?
+        }
+        
+        // Test case 1: All values present
+        let test1 = DeepOptionals(
+            level1: "Hello",
+            level2: 42,
+            level3: ["a", nil, "c"]
+        )
+        
+        // Test case 2: Some nil values at different levels
+        let test2 = DeepOptionals(
+            level1: nil,
+            level2: nil,
+            level3: [nil, "b"]
+        )
+        
+        // Encode and decode each test case
+        let encoder = CBOREncoder()
+        let decoder = CBORDecoder()
+        
+        // Test case 1
+        let encoded1 = try encoder.encode(test1)
+        let decoded1 = try decoder.decode(DeepOptionals.self, from: encoded1)
+        
+        // Verify test case 1
+        #expect(decoded1.level1 == test1.level1)
+        #expect(decoded1.level2 == test1.level2)
+        #expect(decoded1.level3?.count == test1.level3?.count)
+        if let decodedArray = decoded1.level3, let testArray = test1.level3 {
+            for i in 0..<testArray.count {
+                #expect(decodedArray[i] == testArray[i])
+            }
+        }
+        
+        // Test case 2
+        let encoded2 = try encoder.encode(test2)
+        let decoded2 = try decoder.decode(DeepOptionals.self, from: encoded2)
+        
+        // Verify test case 2
+        #expect(decoded2.level1 == test2.level1)
+        #expect(decoded2.level2 == test2.level2)
+        #expect(decoded2.level3?.count == test2.level3?.count)
+        if let decodedArray = decoded2.level3, let testArray = test2.level3 {
+            for i in 0..<testArray.count {
+                #expect(decodedArray[i] == testArray[i])
+            }
+        }
+    }
+    
+    @Test
+    func testEnumKeyedDictionary() throws {
+        // Define an enum to use as dictionary keys
+        enum Color: String, Codable, Hashable {
+            case red
+            case green
+            case blue
+        }
+        
+        struct EnumKeyDict: Codable, Equatable {
+            let colorValues: [Color: Int]
+            
+            static func == (lhs: EnumKeyDict, rhs: EnumKeyDict) -> Bool {
+                return lhs.colorValues == rhs.colorValues
+            }
+        }
+        
+        let original = EnumKeyDict(colorValues: [
+            .red: 1,
+            .green: 2,
+            .blue: 3
+        ])
+        
+        // Encode
+        let encoder = CBOREncoder()
+        let data = try encoder.encode(original)
+        
+        // Decode
+        let decoder = CBORDecoder()
+        let decoded = try decoder.decode(EnumKeyDict.self, from: data)
+        
+        // Verify
+        #expect(decoded == original)
+        #expect(decoded.colorValues.count == 3)
+        #expect(decoded.colorValues[.red] == 1)
+        #expect(decoded.colorValues[.green] == 2)
+        #expect(decoded.colorValues[.blue] == 3)
+    }
+    
+    @Test
+    func testNestedOptionalsInCollections() throws {
+        // Define a struct with nested optionals in collections
+        struct NestedOptionalsCollection: Codable, Equatable {
+            let optionalArrays: [[Int?]]
+            let optionalDicts: [String: [String: Int]]
+        }
+        
+        // Test case with various combinations of nil and non-nil values
+        let testCase = NestedOptionalsCollection(
+            optionalArrays: [
+                [1, nil, 3],
+                [4, 5, 6]
+            ],
+            optionalDicts: [
+                "a": ["x": 1, "y": 2],
+                "b": ["z": 3]
+            ]
+        )
+        
+        // Encode
+        let encoder = CBOREncoder()
+        let data = try encoder.encode(testCase)
+        
+        // Decode
+        let decoder = CBORDecoder()
+        let decoded = try decoder.decode(NestedOptionalsCollection.self, from: data)
+        
+        // Verify the entire structure is equal
+        #expect(decoded == testCase)
+        
+        // Additional verification for optionalArrays
+        #expect(decoded.optionalArrays.count == testCase.optionalArrays.count)
+        
+        // Check first array with nil values
+        let firstTestArray = testCase.optionalArrays[0]
+        let firstDecodedArray = decoded.optionalArrays[0]
+        #expect(firstTestArray.count == firstDecodedArray.count)
+        #expect(firstTestArray[0] == firstDecodedArray[0])
+        #expect(firstTestArray[1] == firstDecodedArray[1])
+        #expect(firstTestArray[2] == firstDecodedArray[2])
+        
+        // Check second array with all non-nil values
+        let secondTestArray = testCase.optionalArrays[1]
+        let secondDecodedArray = decoded.optionalArrays[1]
+        #expect(secondTestArray.count == secondDecodedArray.count)
+        #expect(secondTestArray[0] == secondDecodedArray[0])
+        #expect(secondTestArray[1] == secondDecodedArray[1])
+        #expect(secondTestArray[2] == secondDecodedArray[2])
+        
+        // Additional verification for optionalDicts
+        #expect(decoded.optionalDicts.count == testCase.optionalDicts.count)
+        
+        // Check first dict
+        let firstTestDict = testCase.optionalDicts["a"]!
+        let firstDecodedDict = decoded.optionalDicts["a"]!
+        #expect(firstTestDict.count == firstDecodedDict.count)
+        #expect(firstTestDict["x"] == firstDecodedDict["x"])
+        #expect(firstTestDict["y"] == firstDecodedDict["y"])
+        
+        // Check second dict
+        let secondTestDict = testCase.optionalDicts["b"]!
+        let secondDecodedDict = decoded.optionalDicts["b"]!
+        #expect(secondTestDict.count == secondDecodedDict.count)
+        #expect(secondTestDict["z"] == secondDecodedDict["z"])
+    }
+    
+    @Test
+    func testComplexSetOperations() throws {
+        // Define a struct with a set of custom objects
+        struct CustomSetItem: Codable, Hashable {
+            let id: UUID
+            let name: String
+            let tags: Set<String>
+            
+            func hash(into hasher: inout Hasher) {
+                hasher.combine(id)
+            }
+            
+            static func == (lhs: CustomSetItem, rhs: CustomSetItem) -> Bool {
+                return lhs.id == rhs.id && lhs.name == rhs.name && lhs.tags == rhs.tags
+            }
+        }
+        
+        struct SetContainer: Codable, Equatable {
+            let items: Set<CustomSetItem>
+            
+            static func == (lhs: SetContainer, rhs: SetContainer) -> Bool {
+                return lhs.items == rhs.items
+            }
+        }
+        
+        // Create test data with unique items
+        let item1 = CustomSetItem(id: UUID(), name: "Item 1", tags: ["tag1", "tag2"])
+        let item2 = CustomSetItem(id: UUID(), name: "Item 2", tags: ["tag2", "tag3"])
+        let item3 = CustomSetItem(id: UUID(), name: "Item 3", tags: ["tag1", "tag3"])
+        
+        let original = SetContainer(items: [item1, item2, item3])
+        
+        // Encode
+        let encoder = CBOREncoder()
+        let data = try encoder.encode(original)
+        
+        // Decode
+        let decoder = CBORDecoder()
+        let decoded = try decoder.decode(SetContainer.self, from: data)
+        
+        // Verify
+        #expect(decoded == original)
+        #expect(decoded.items.count == 3)
+        
+        // Verify each item is in the decoded set
+        for item in original.items {
+            #expect(decoded.items.contains(item))
+        }
+    }
+    
+    @Test
+    func testNestedDictionaryWithComplexKeys() throws {
+        // Define a struct to use as a dictionary key
+        struct ComplexKey: Codable, Hashable {
+            let id: Int
+            let name: String
+            
+            func hash(into hasher: inout Hasher) {
+                hasher.combine(id)
+                hasher.combine(name)
+            }
+        }
+        
+        struct NestedDictionary: Codable, Equatable {
+            let outerDict: [ComplexKey: [String: Int]]
+            
+            static func == (lhs: NestedDictionary, rhs: NestedDictionary) -> Bool {
+                guard lhs.outerDict.count == rhs.outerDict.count else { return false }
+                
+                for (key, lhsValue) in lhs.outerDict {
+                    guard let rhsValue = rhs.outerDict[key] else { return false }
+                    guard lhsValue == rhsValue else { return false }
+                }
+                
+                return true
+            }
+        }
+        
+        // Create test data
+        let key1 = ComplexKey(id: 1, name: "Key 1")
+        let key2 = ComplexKey(id: 2, name: "Key 2")
+        
+        let original = NestedDictionary(outerDict: [
+            key1: ["a": 1, "b": 2],
+            key2: ["c": 3, "d": 4]
+        ])
+        
+        // Encode
+        let encoder = CBOREncoder()
+        let data = try encoder.encode(original)
+        
+        // Decode
+        let decoder = CBORDecoder()
+        let decoded = try decoder.decode(NestedDictionary.self, from: data)
+        
+        // Verify
+        #expect(decoded == original)
+        #expect(decoded.outerDict.count == 2)
+        
+        // Check that the keys and values match
+        for (key, value) in original.outerDict {
+            #expect(decoded.outerDict[key] == value)
+        }
+    }
+    
+    @Test
+    func testMixedCollectionTypes() throws {
+        // Define a struct with mixed collection types
+        struct MixedCollections: Codable, Equatable {
+            let arrayOfSets: [Set<Int>]
+            let setOfArrays: Set<[Int]>
+            let dictOfSets: [String: Set<String>]
+            let setOfDicts: Set<[String: Int]>
+            
+            static func == (lhs: MixedCollections, rhs: MixedCollections) -> Bool {
+                return lhs.arrayOfSets == rhs.arrayOfSets &&
+                       lhs.setOfArrays == rhs.setOfArrays &&
+                       lhs.dictOfSets == rhs.dictOfSets &&
+                       lhs.setOfDicts == rhs.setOfDicts
+            }
+        }
+        
+        // Create test data
+        let original = MixedCollections(
+            arrayOfSets: [Set([1, 2, 3]), Set([2, 3, 4]), Set([3, 4, 5])],
+            setOfArrays: Set([[1, 2], [3, 4], [5, 6]]),
+            dictOfSets: ["a": Set(["x", "y"]), "b": Set(["y", "z"])],
+            setOfDicts: Set([["a": 1], ["b": 2]])
+        )
+        
+        // Encode
+        let encoder = CBOREncoder()
+        let data = try encoder.encode(original)
+        
+        // Decode
+        let decoder = CBORDecoder()
+        let decoded = try decoder.decode(MixedCollections.self, from: data)
+        
+        // Verify
+        #expect(decoded == original)
+        #expect(decoded.arrayOfSets.count == 3)
+        #expect(decoded.setOfArrays.count == 3)
+        #expect(decoded.dictOfSets.count == 2)
+        #expect(decoded.setOfDicts.count == 2)
+    }
 }
