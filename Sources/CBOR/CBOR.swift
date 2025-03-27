@@ -1,13 +1,7 @@
 #if canImport(FoundationEssentials)
 import FoundationEssentials
-#if canImport(FoundationEssentials.Numerics)
-import FoundationEssentials.Numerics
-#endif
-#elseif canImport(Foundation)
+#else
 import Foundation
-#if canImport(Foundation.Numerics)
-import Foundation.Numerics
-#endif
 #endif
 
 #if canImport(Darwin)
