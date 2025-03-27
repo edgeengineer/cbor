@@ -3,7 +3,9 @@
 [![Swift 6.0](https://img.shields.io/badge/Swift-6.0-orange.svg)](https://swift.org)
 [![Platforms](https://img.shields.io/badge/Platforms-macOS%20|%20Linux%20|%20Windows%20|%20Android-blue.svg)](https://swift.org)
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://www.apache.org/licenses/LICENSE-2.0)
-[![Build](https://github.com/apache-edge/cbor/actions/workflows/swift.yml/badge.svg)](https://github.com/apache-edge/cbor/actions/workflows/swift.yml)
+[![macOS](https://img.shields.io/github/actions/workflow/status/apache-edge/cbor/swift.yml?branch=main&label=macOS)](https://github.com/apache-edge/cbor/actions/workflows/swift.yml)
+[![Linux](https://img.shields.io/github/actions/workflow/status/apache-edge/cbor/swift.yml?branch=main&label=Linux)](https://github.com/apache-edge/cbor/actions/workflows/swift.yml)
+[![Windows](https://img.shields.io/github/actions/workflow/status/apache-edge/cbor/swift.yml?branch=main&label=Windows)](https://github.com/apache-edge/cbor/actions/workflows/swift.yml)
 [![Documentation](https://img.shields.io/badge/Documentation-DocC-blue)](https://apache-edge.github.io/cbor/documentation/cbor/)
 
 CBOR is a lightweight implementation of the [CBOR](https://tools.ietf.org/html/rfc7049) (Concise Binary Object Representation) format in Swift. It allows you to encode and decode data to and from the CBOR format, work directly with the CBOR data model, and integrate with Swift's `Codable` protocol.
