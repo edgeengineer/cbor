@@ -15,7 +15,7 @@ struct CBORReader {
     }
     
     /// Read a single byte from the input
-    mutating func readByte() throws -> UInt8 {
+    mutating func readByte() throws(CBORError) -> UInt8 {
         guard index < data.count else {
             throw CBORError.prematureEnd
         }
@@ -25,7 +25,7 @@ struct CBORReader {
     }
     
     /// Read a specified number of bytes from the input
-    mutating func readBytes(_ count: Int) throws -> [UInt8] {
+    mutating func readBytes(_ count: Int) throws(CBORError) -> [UInt8] {
         guard index + count <= data.count else {
             throw CBORError.prematureEnd
         }
