@@ -1,9 +1,3 @@
-#if canImport(FoundationEssentials)
-import FoundationEssentials
-#elseif canImport(Foundation)
-import Foundation
-#endif
-
 // MARK: - Error Types
 
 /// Errors that can occur during CBOR encoding and decoding.
@@ -105,6 +99,7 @@ public enum CBORError: Error {
     case extraDataFound
 }
 
+@_unavailableInEmbedded
 extension CBORError: CustomStringConvertible {
     /// A human-readable description of the error.
     public var description: String {
@@ -139,6 +134,13 @@ extension CBORError: CustomStringConvertible {
     }
 }
 
+#if canImport(FoundationEssentials)
+import FoundationEssentials
+#elseif canImport(Foundation)
+import Foundation
+#endif
+
+@_unavailableInEmbedded
 extension CBORError: LocalizedError {
     public var errorDescription: String? {
         return description

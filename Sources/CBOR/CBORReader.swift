@@ -1,8 +1,3 @@
-#if canImport(FoundationEssentials)
-import FoundationEssentials
-#elseif canImport(Foundation)
-import Foundation
-#endif
 
 /// A helper struct for reading CBOR data byte by byte
 struct CBORReader {

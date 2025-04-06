@@ -74,7 +74,7 @@ struct CBORErrorTests {
         do {
             let _ = try CBOR.decode(simpleInvalidUTF8)
             Issue.record("Expected decoding to fail with CBORError for simple invalid UTF-8")
-        } catch CBORError.invalidInitialByte(31) {
+        } catch CBORError.invalidUTF8 {
             // This is the expected error
         } catch {
             Issue.record("Expected CBORError but got \(error) for simple invalid UTF-8")
@@ -91,7 +91,7 @@ struct CBORErrorTests {
         do {
             let _ = try CBOR.decode(overlongUTF8)
             Issue.record("Expected decoding to fail with CBORError for overlong UTF-8")
-        } catch CBORError.invalidInitialByte(31) {
+        } catch CBORError.invalidUTF8 {
             // This is the expected error
         } catch {
             Issue.record("Expected CBORError but got \(error) for overlong UTF-8")
@@ -106,7 +106,7 @@ struct CBORErrorTests {
         do {
             let _ = try CBOR.decode(overlongUTF8_2)
             Issue.record("Expected decoding to fail with CBORError for 3-byte overlong UTF-8")
-        } catch CBORError.invalidInitialByte(31) {
+        } catch CBORError.invalidUTF8 {
             // This is the expected error
         } catch {
             Issue.record("Expected CBORError but got \(error) for 3-byte overlong UTF-8")
@@ -124,7 +124,7 @@ struct CBORErrorTests {
         do {
             let _ = try CBOR.decode(surrogateUTF8)
             Issue.record("Expected decoding to fail with CBORError for surrogate code point")
-        } catch CBORError.invalidInitialByte(31) {
+        } catch CBORError.invalidUTF8 {
             // This is the expected error
         } catch {
             Issue.record("Expected CBORError but got \(error) for surrogate code point")
@@ -139,7 +139,7 @@ struct CBORErrorTests {
         do {
             let _ = try CBOR.decode(lowSurrogateUTF8)
             Issue.record("Expected decoding to fail with CBORError for low surrogate code point")
-        } catch CBORError.invalidInitialByte(31) {
+        } catch CBORError.invalidUTF8 {
             // This is the expected error
         } catch {
             Issue.record("Expected CBORError but got \(error) for low surrogate code point")
@@ -155,7 +155,7 @@ struct CBORErrorTests {
         do {
             let _ = try CBOR.decode(incompleteUTF8)
             Issue.record("Expected decoding to fail with CBORError for incomplete UTF-8 sequence")
-        } catch CBORError.invalidInitialByte(31) {
+        } catch CBORError.invalidUTF8 {
             // This is the expected error
         } catch {
             Issue.record("Expected CBORError but got \(error) for incomplete UTF-8 sequence")
@@ -171,7 +171,7 @@ struct CBORErrorTests {
         do {
             let _ = try CBOR.decode(invalidContinuationUTF8)
             Issue.record("Expected decoding to fail with CBORError for invalid continuation byte")
-        } catch CBORError.invalidInitialByte(31) {
+        } catch CBORError.invalidUTF8 {
             // This is the expected error
         } catch {
             Issue.record("Expected CBORError but got \(error) for invalid continuation byte")
@@ -188,7 +188,7 @@ struct CBORErrorTests {
         do {
             let _ = try CBOR.decode(beyondMaxUTF8)
             Issue.record("Expected decoding to fail with CBORError for code point beyond U+10FFFF")
-        } catch CBORError.invalidInitialByte(31) {
+        } catch CBORError.invalidUTF8 {
             // This is the expected error
         } catch {
             Issue.record("Expected CBORError but got \(error) for code point beyond U+10FFFF")

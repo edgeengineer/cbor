@@ -1,3 +1,4 @@
+#if !hasFeature(Embedded)
 #if canImport(FoundationEssentials)
 import FoundationEssentials
 #elseif canImport(Foundation)
@@ -155,3 +156,4 @@ struct CBORKey: CodingKey {
         self.intValue = index
     }
 }
+#endif

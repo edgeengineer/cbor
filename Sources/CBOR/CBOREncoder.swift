@@ -1,3 +1,4 @@
+#if !hasFeature(Embedded)
 #if canImport(FoundationEssentials)
 import FoundationEssentials
 #elseif canImport(Foundation)
@@ -771,3 +772,4 @@ private struct CBOREncoderSingleValueContainer: SingleValueEncodingContainer {
         try encoder.push(encoder.encodeCBOR(value))
     }
 }
+#endif

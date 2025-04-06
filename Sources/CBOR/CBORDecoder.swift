@@ -1,3 +1,4 @@
+#if !hasFeature(Embedded)
 #if canImport(FoundationEssentials)
 import FoundationEssentials
 #elseif canImport(Foundation)
@@ -1917,3 +1918,4 @@ private struct CBORSingleValueDecodingContainer: SingleValueDecodingContainer {
         return try T(from: decoder)
     }
 }
+#endif
