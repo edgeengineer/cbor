@@ -11,7 +11,7 @@ import ucrt
 // MARK: - CBOR Type
 
 /// A CBOR value
-public indirect enum CBOR: Equatable, Sendable {
+public enum CBOR: Equatable, Sendable {
     /// A positive unsigned integer
     case unsignedInt(UInt64)
     /// A negative integer
@@ -25,7 +25,7 @@ public indirect enum CBOR: Equatable, Sendable {
     /// A map of CBOR key-value pairs
     case map([CBORMapPair])
     /// A tagged CBOR value
-    case tagged(UInt64, CBOR)
+    indirect case tagged(UInt64, CBOR)
     /// A simple value
     case simple(UInt8)
     /// A boolean value
@@ -211,7 +211,7 @@ private func _decode(reader: inout CBORReader) throws(CBORError) -> CBOR {
             throw CBORError.lengthTooLarge(length)
         }
         
-        return .byteString(try reader.readBytes(Int(length)))
+        return .byteString(Array(try reader.readBytes(Int(length))))
         
     case 3: // text string
         let length = try readUIntValue(additional: additional, reader: &reader)
@@ -270,8 +270,7 @@ private func _decode(reader: inout CBORReader) throws(CBORError) -> CBOR {
             let simple = try reader.readByte()
             return .simple(simple)
         case 25: // IEEE 754 Half-Precision Float (16 bits)
-            let bytes = try reader.readBytes(2)
-            let bits = UInt16(bytes[0]) << 8 | UInt16(bytes[1])
+            let bits = try reader.readBigEndianInteger(UInt16.self)
             // Convert half-precision to double
             let sign = (bits & 0x8000) != 0
             let exponent = Int((bits & 0x7C00) >> 10)
@@ -289,15 +288,12 @@ private func _decode(reader: inout CBORReader) throws(CBORError) -> CBOR {
             return .float(sign ? -value : value)
             
         case 26: // IEEE 754 Single-Precision Float (32 bits)
-            let bytes = try reader.readBytes(4)
-            let bits = UInt32(bytes[0]) << 24 | UInt32(bytes[1]) << 16 | UInt32(bytes[2]) << 8 | UInt32(bytes[3])
+            let bits = try reader.readBigEndianInteger(UInt32.self)
             let float = Float(bitPattern: bits)
             return .float(Double(float))
             
         case 27: // IEEE 754 Double-Precision Float (64 bits)
-            let bytes = try reader.readBytes(8)
-            let bits = UInt64(bytes[0]) << 56 | UInt64(bytes[1]) << 48 | UInt64(bytes[2]) << 40 | UInt64(bytes[3]) << 32 |
-                       UInt64(bytes[4]) << 24 | UInt64(bytes[5]) << 16 | UInt64(bytes[6]) << 8 | UInt64(bytes[7])
+            let bits = try reader.readBigEndianInteger(UInt64.self)
             let double = Double(bitPattern: bits)
             return .float(double)
             
@@ -325,15 +321,11 @@ private func readUIntValue(additional: UInt8, reader: inout CBORReader) throws(C
     } else if additional == 24 {
         return UInt64(try reader.readByte())
     } else if additional == 25 {
-        let bytes = try reader.readBytes(2)
-        return UInt64(bytes[0]) << 8 | UInt64(bytes[1])
+        return try UInt64(reader.readBigEndianInteger(UInt16.self))
     } else if additional == 26 {
-        let bytes = try reader.readBytes(4)
-        return UInt64(bytes[0]) << 24 | UInt64(bytes[1]) << 16 | UInt64(bytes[2]) << 8 | UInt64(bytes[3])
+        return try UInt64(reader.readBigEndianInteger(UInt32.self))
     } else if additional == 27 {
-        let bytes = try reader.readBytes(8)
-        return UInt64(bytes[0]) << 56 | UInt64(bytes[1]) << 48 | UInt64(bytes[2]) << 40 | UInt64(bytes[3]) << 32 |
-               UInt64(bytes[4]) << 24 | UInt64(bytes[5]) << 16 | UInt64(bytes[6]) << 8 | UInt64(bytes[7])
+        return try reader.readBigEndianInteger(UInt64.self)
     } else {
         throw CBORError.invalidInitialByte(additional)
     }

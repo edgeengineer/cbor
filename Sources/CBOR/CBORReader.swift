@@ -20,13 +20,24 @@ struct CBORReader {
     }
     
     /// Read a specified number of bytes from the input
-    mutating func readBytes(_ count: Int) throws(CBORError) -> [UInt8] {
+    mutating func readBytes(_ count: Int) throws(CBORError) -> ArraySlice<UInt8> {
         guard index + count <= data.count else {
             throw CBORError.prematureEnd
         }
-        let result = Array(data[index..<index + count])
+        let result = data[index..<index + count]
         index += count
         return result
+    }
+
+    mutating func readBigEndianInteger<F: FixedWidthInteger>(_ type: F.Type) throws(CBORError) -> F {
+        let bytes = try readBytes(MemoryLayout<F>.size)
+        var value: F = 0
+        return bytes.withUnsafeBytes { buffer in
+            withUnsafeMutableBytes(of: &value) { valuePtr in
+                valuePtr.copyMemory(from: buffer)
+            }
+            return value.bigEndian
+        }
     }
     
     /// Check if there are more bytes to read
