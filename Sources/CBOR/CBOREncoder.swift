@@ -40,64 +40,33 @@ public final class CBOREncoder {
     
     public init() {}
     
-    public func encode<T: Encodable>(_ value: T) throws -> Data {
-        // Special case for Data
-        if let data = value as? Data {
-            let cbor = CBOR.byteString(Array(data))
-            return Data(cbor.encode())
+    public func encode<T: Encodable>(_ value: T) throws -> [UInt8] {
+        let cbor: CBOR
+        switch value {
+        case let data as Data:
+            cbor = CBOR.byteString(Array(data))
+        case let date as Date:
+            cbor = CBOR.tagged(1, CBOR.float(date.timeIntervalSince1970))
+        case let url as URL:
+            cbor = CBOR.textString(url.absoluteString)
+        case let array as [Int]:
+            cbor = CBOR.array(array.map { $0 < 0 ? CBOR.negativeInt(Int64(-1 - $0)) : CBOR.unsignedInt(UInt64($0)) })
+        case let array as [String]:
+            cbor = CBOR.array(array.map { CBOR.textString($0) })
+        case let array as [Bool]:
+            cbor = CBOR.array(array.map { CBOR.bool($0) })
+        case let array as [Double]:
+            cbor = CBOR.array(array.map { CBOR.float($0) })
+        case let array as [Float]:
+            cbor = CBOR.array(array.map { CBOR.float(Double($0)) })
+        case let array as [Data]:
+            cbor = CBOR.array(array.map { CBOR.byteString(Array($0)) })
+        default:
+            storage = Storage()
+            try value.encode(to: self)
+            cbor = storage.topValue
         }
-        
-        // Special case for Date
-        if let date = value as? Date {
-            let cbor = CBOR.tagged(1, CBOR.float(date.timeIntervalSince1970))
-            return Data(cbor.encode())
-        }
-        
-        // Special case for URL
-        if let url = value as? URL {
-            let cbor = CBOR.textString(url.absoluteString)
-            return Data(cbor.encode())
-        }
-        
-        // Special case for arrays of primitive types
-        if let array = value as? [Int] {
-            let cbor = CBOR.array(array.map { 
-                if $0 < 0 {
-                    return CBOR.negativeInt(Int64(-1 - $0))
-                } else {
-                    return CBOR.unsignedInt(UInt64($0))
-                }
-            })
-            return Data(cbor.encode())
-        }
-        if let array = value as? [String] {
-            let cbor = CBOR.array(array.map { CBOR.textString($0) })
-            return Data(cbor.encode())
-        }
-        if let array = value as? [Bool] {
-            let cbor = CBOR.array(array.map { CBOR.bool($0) })
-            return Data(cbor.encode())
-        }
-        if let array = value as? [Double] {
-            let cbor = CBOR.array(array.map { CBOR.float($0) })
-            return Data(cbor.encode())
-        }
-        if let array = value as? [Float] {
-            let cbor = CBOR.array(array.map { CBOR.float(Double($0)) })
-            return Data(cbor.encode())
-        }
-        if let array = value as? [Data] {
-            let cbor = CBOR.array(array.map { CBOR.byteString(Array($0)) })
-            return Data(cbor.encode())
-        }
-        
-        // For other types, use the Encodable protocol
-        storage = Storage() // Reset storage
-        try value.encode(to: self)
-        
-        // Get the encoded CBOR value and convert it to Data
-        let cbor = storage.topValue
-        return Data(cbor.encode())
+        return cbor.encode()
     }
     
     // MARK: - Internal API
@@ -109,53 +78,33 @@ public final class CBOREncoder {
     
     // Implementation of the encodeCBOR method that's referenced in the code
     fileprivate func encodeCBOR<T: Encodable>(_ value: T) throws -> CBOR {
-        // Special case for Data
-        if let data = value as? Data {
+        switch value {
+        case let data as Data:
             return CBOR.byteString(Array(data))
-        }
-        
-        // Special case for Date
-        if let date = value as? Date {
+        case let date as Date:
             return CBOR.tagged(1, CBOR.float(date.timeIntervalSince1970))
-        }
-        
-        // Special case for URL
-        if let url = value as? URL {
+        case let url as URL:
             return CBOR.textString(url.absoluteString)
-        }
-        
-        // Special case for arrays of primitive types
-        if let array = value as? [Int] {
-            return CBOR.array(array.map { 
-                if $0 < 0 {
-                    return CBOR.negativeInt(Int64(-1 - $0))
-                } else {
-                    return CBOR.unsignedInt(UInt64($0))
-                }
-            })
-        }
-        if let array = value as? [String] {
+        case let array as [Int]:
+            return CBOR.array(array.map { $0 < 0 ? CBOR.negativeInt(Int64(-1 - $0)) : CBOR.unsignedInt(UInt64($0)) })
+        case let array as [String]:
             return CBOR.array(array.map { CBOR.textString($0) })
-        }
-        if let array = value as? [Bool] {
+        case let array as [Bool]:
             return CBOR.array(array.map { CBOR.bool($0) })
-        }
-        if let array = value as? [Double] {
+        case let array as [Double]:
             return CBOR.array(array.map { CBOR.float($0) })
-        }
-        if let array = value as? [Float] {
+        case let array as [Float]:
             return CBOR.array(array.map { CBOR.float(Double($0)) })
-        }
-        if let array = value as? [Data] {
+        case let array as [Data]:
             return CBOR.array(array.map { CBOR.byteString(Array($0)) })
+        default:
+            // For other types, use the Encodable protocol
+            let tempEncoder = CBOREncoder()
+            try value.encode(to: tempEncoder)
+            
+            // Get the encoded CBOR value
+            return tempEncoder.storage.topValue
         }
-        
-        // For other types, use the Encodable protocol
-        let tempEncoder = CBOREncoder()
-        try value.encode(to: tempEncoder)
-        
-        // Get the encoded CBOR value
-        return tempEncoder.storage.topValue
     }
 }
 

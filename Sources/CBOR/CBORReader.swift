@@ -1,6 +1,6 @@
 
 /// A helper struct for reading CBOR data byte by byte
-struct CBORReader {
+struct CBORReader: ~Copyable {
     private let data: [UInt8]
     private(set) var index: Int
     
@@ -53,13 +53,5 @@ struct CBORReader {
     /// Get the total number of bytes
     var totalBytes: Int {
         return data.count
-    }
-    
-    /// Skip a specified number of bytes
-    mutating func skip(_ count: Int) throws(CBORError) {
-        guard index + count <= data.count else {
-            throw CBORError.prematureEnd
-        }
-        index += count
     }
 }
