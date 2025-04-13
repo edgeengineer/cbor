@@ -1,4 +1,3 @@
-
 /// A helper struct for reading CBOR data byte by byte
 struct CBORReader: ~Copyable {
     private let data: [UInt8]

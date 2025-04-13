@@ -38,9 +38,13 @@ public enum CBOR: Equatable, Sendable {
     case float(Double)
     
     /// Encodes the CBOR value to bytes
+    public func encode(into output: inout [UInt8]) {
+        _encode(self, into: &output)
+    }
+
     public func encode() -> [UInt8] {
         var output: [UInt8] = []
-        _encode(self, into: &output)
+        encode(into: &output)
         return output
     }
     
@@ -80,6 +84,7 @@ public struct CBORMapPair: Equatable, Sendable {
 /// - Parameters:
 ///   - value: The CBOR value to encode
 ///   - output: The output buffer to write the encoded bytes to
+@inline(__always)
 private func _encode(_ value: CBOR, into output: inout [UInt8]) {
     switch value {
     case .unsignedInt(let u):
