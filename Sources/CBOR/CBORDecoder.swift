@@ -8,7 +8,7 @@ import Foundation
 // MARK: - CBOR Decoder
 
 /// A decoder that converts CBOR data to Swift values
-public class CBORDecoder: Decoder {
+public final class CBORDecoder: Decoder {
     private var cbor: CBOR
     public var codingPath: [CodingKey]
     public var userInfo: [CodingUserInfoKey: Any] = [:]
@@ -1538,9 +1538,9 @@ private struct CBORUnkeyedDecodingContainer: UnkeyedDecodingContainer {
 
 // MARK: - CBOR Single Value Decoding Container
 
-private struct CBORSingleValueDecodingContainer: SingleValueDecodingContainer {
+internal struct CBORSingleValueDecodingContainer: SingleValueDecodingContainer {
     var codingPath: [CodingKey]
-    private let cbor: CBOR
+    internal let cbor: CBOR
     
     init(cbor: CBOR, codingPath: [CodingKey]) {
         self.cbor = cbor

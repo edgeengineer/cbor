@@ -7,7 +7,7 @@ import Foundation
 
 // MARK: - CBOR Encoder
 
-public class CBOREncoder {
+public final class CBOREncoder {
     // MARK: - Storage
     
     private class Storage {
@@ -102,7 +102,8 @@ public class CBOREncoder {
     
     // MARK: - Internal API
     
-    fileprivate func push(_ value: CBOR) {
+    @usableFromInline
+    internal func push(_ value: CBOR) {
         storage.push(value)
     }
     
@@ -691,9 +692,9 @@ private struct AnyCodingKey: CodingKey {
     }
 }
 
-private struct CBOREncoderSingleValueContainer: SingleValueEncodingContainer {
+internal struct CBOREncoderSingleValueContainer: SingleValueEncodingContainer {
     let codingPath: [CodingKey]
-    private let encoder: CBOREncoder
+    internal let encoder: CBOREncoder
     
     init(codingPath: [CodingKey], encoder: CBOREncoder) {
         self.codingPath = codingPath
