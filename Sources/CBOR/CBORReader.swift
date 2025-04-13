@@ -45,7 +45,7 @@ struct CBORReader {
     }
     
     /// Skip a specified number of bytes
-    mutating func skip(_ count: Int) throws {
+    mutating func skip(_ count: Int) throws(CBORError) {
         guard index + count <= data.count else {
             throw CBORError.prematureEnd
         }
