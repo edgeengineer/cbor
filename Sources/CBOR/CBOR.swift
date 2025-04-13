@@ -206,16 +206,16 @@ private func _decode(reader: inout CBORReader) throws(CBORError) -> CBOR {
         
     case 2: // byte string
         let length = value
-        guard length <= UInt64(Int.max) else {
-            throw CBORError.lengthTooLarge(length)
+        guard length <= reader.maximumStringLength else {
+            throw CBORError.lengthTooLarge(length, maximum: reader.maximumStringLength)
         }
         
         return .byteString(Array(try reader.readBytes(Int(length))))
         
     case 3: // text string
         let length = value
-        guard length <= UInt64(Int.max) else {
-            throw CBORError.lengthTooLarge(length)
+        guard length <= reader.maximumStringLength else {
+            throw CBORError.lengthTooLarge(length, maximum: reader.maximumStringLength)
         }
         
         let bytes = try reader.readBytes(Int(length))
@@ -228,12 +228,12 @@ private func _decode(reader: inout CBORReader) throws(CBORError) -> CBOR {
         
     case 4: // array
         let count = value
-        guard count <= UInt64(Int.max) else {
-            throw CBORError.lengthTooLarge(count)
+        guard count <= reader.maximumElementCount else {
+            throw CBORError.lengthTooLarge(count, maximum: reader.maximumElementCount)
         }
         
         var items: [CBOR] = []
-        for _ in 0..<Int(count) {
+        for _ in 0..<count {
             items.append(try _decode(reader: &reader))
         }
         
@@ -241,12 +241,12 @@ private func _decode(reader: inout CBORReader) throws(CBORError) -> CBOR {
         
     case 5: // map
         let count = value
-        guard count <= UInt64(Int.max) else {
-            throw CBORError.lengthTooLarge(count)
+        guard count <= reader.maximumElementCount else {
+            throw CBORError.lengthTooLarge(count, maximum: reader.maximumElementCount)
         }
         
         var pairs: [CBORMapPair] = []
-        for _ in 0..<Int(count) {
+        for _ in 0..<count {
             let key = try _decode(reader: &reader)
             let value = try _decode(reader: &reader)
             pairs.append(CBORMapPair(key: key, value: value))

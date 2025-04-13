@@ -352,7 +352,7 @@ struct CBORErrorTests {
             .invalidUTF8,
             .prematureEnd,
             .invalidInitialByte(0xFF),
-            .lengthTooLarge(UInt64.max),
+            .lengthTooLarge(UInt64.max, maximum: 16_384),
             .indefiniteLengthNotSupported,
             .extraDataFound
         ]
@@ -613,7 +613,7 @@ struct CBORErrorTests {
         do {
             let _ = try CBOR.decode(arrayTooLarge)
             Issue.record("Expected decoding to fail with CBORError for array length too large")
-        } catch CBORError.lengthTooLarge(UInt64.max) {
+        } catch CBORError.lengthTooLarge(UInt64.max, maximum: _) {
             // This is the expected error
         } catch {
             Issue.record("Expected CBORError but got \(error)")

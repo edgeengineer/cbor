@@ -3,6 +3,8 @@
 struct CBORReader: ~Copyable {
     private let data: [UInt8]
     private(set) var index: Int
+    internal var maximumStringLength: UInt64 = 65_536
+    internal var maximumElementCount: UInt64 = 16_384
     
     init(data: [UInt8]) {
         self.data = data

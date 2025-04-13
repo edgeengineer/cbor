@@ -38,7 +38,7 @@ public enum CBORError: Error, Equatable, Sendable {
     /// This error occurs when a CBOR string, array, or map has a length that is too large
     /// to be processed by the current implementation, typically due to memory constraints.
     /// - Parameter length: The length value that exceeded the implementation's limits
-    case lengthTooLarge(UInt64)
+    case lengthTooLarge(UInt64, maximum: UInt64)
     
     /// Indefinite length encoding is not supported for this type.
     /// 
@@ -67,8 +67,8 @@ extension CBORError: CustomStringConvertible {
             return "Unexpected end of data: reached the end of input before completing the CBOR value"
         case .invalidInitialByte(let byte):
             return "Invalid initial byte: 0x\(String(byte, radix: 16, uppercase: true)) is not a valid CBOR initial byte"
-        case .lengthTooLarge(let length):
-            return "Length too large: the specified length \(length) exceeds the implementation's limits"
+        case .lengthTooLarge(let length, let maximum):
+            return "Length too large: the specified length \(length) exceeds the implementation's limits of \(maximum)"
         case .indefiniteLengthNotSupported:
             return "Indefinite length encoding not supported: this implementation does not support indefinite length encoding for this type"
         case .extraDataFound:
