@@ -200,17 +200,18 @@ private func _decode(reader: inout CBORReader) throws(CBORError) -> CBOR {
     
     let majorType = initial >> 5
     let additional = initial & 0x1f
-    let value = try readUIntValue(additional: additional, reader: &reader)
     
     switch majorType {
     case 0: // unsigned integer
+        let value = try readUIntValue(additional: additional, reader: &reader)
         return .unsignedInt(value)
         
     case 1: // negative integer
+        let value = try readUIntValue(additional: additional, reader: &reader)
         return .negativeInt(Int64(-1 - Int64(value)))
         
     case 2: // byte string
-        let length = value
+        let length = try readUIntValue(additional: additional, reader: &reader)
         guard length <= reader.maximumStringLength else {
             throw CBORError.lengthTooLarge(length, maximum: reader.maximumStringLength)
         }
@@ -218,7 +219,7 @@ private func _decode(reader: inout CBORReader) throws(CBORError) -> CBOR {
         return .byteString(Array(try reader.readBytes(Int(length))))
         
     case 3: // text string
-        let length = value
+        let length = try readUIntValue(additional: additional, reader: &reader)
         guard length <= reader.maximumStringLength else {
             throw CBORError.lengthTooLarge(length, maximum: reader.maximumStringLength)
         }
@@ -232,7 +233,7 @@ private func _decode(reader: inout CBORReader) throws(CBORError) -> CBOR {
         return .textString(string)
         
     case 4: // array
-        let count = value
+        let count = try readUIntValue(additional: additional, reader: &reader)
         guard count <= reader.maximumElementCount else {
             throw CBORError.lengthTooLarge(count, maximum: reader.maximumElementCount)
         }
@@ -245,7 +246,7 @@ private func _decode(reader: inout CBORReader) throws(CBORError) -> CBOR {
         return .array(items)
         
     case 5: // map
-        let count = value
+        let count = try readUIntValue(additional: additional, reader: &reader)
         guard count <= reader.maximumElementCount else {
             throw CBORError.lengthTooLarge(count, maximum: reader.maximumElementCount)
         }
@@ -260,9 +261,9 @@ private func _decode(reader: inout CBORReader) throws(CBORError) -> CBOR {
         return .map(pairs)
         
     case 6: // tagged
-        let tag = value
-        let taggedValue = try _decode(reader: &reader)
-        return .tagged(tag, taggedValue)
+        let tag = try readUIntValue(additional: additional, reader: &reader)
+        let value = try _decode(reader: &reader)
+        return .tagged(tag, value)
         
     case 7: // simple values and floats
         switch additional {
