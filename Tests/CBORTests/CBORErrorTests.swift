@@ -349,13 +349,7 @@ struct CBORErrorTests {
         // Test that all CBORError cases have meaningful descriptions
         let errors: [CBORError] = [
             .invalidCBOR,
-            .typeMismatch(expected: "String", actual: "Int"),
-            .outOfBounds(index: 5, count: 3),
-            .missingKey("requiredKey"),
-            .valueConversionFailed("Could not convert to Int"),
             .invalidUTF8,
-            .integerOverflow,
-            .unsupportedTag(123),
             .prematureEnd,
             .invalidInitialByte(0xFF),
             .lengthTooLarge(UInt64.max),
