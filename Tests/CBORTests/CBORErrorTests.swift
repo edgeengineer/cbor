@@ -16,7 +16,7 @@ struct CBORErrorTests {
         do {
             let _ = try CBOR.decode(invalidData)
             Issue.record("Expected decoding to fail with CBORError")
-        } catch is CBORError {
+        } catch CBORError.invalidInitialByte(0xFF) {
             // This is the expected error
         } catch {
             Issue.record("Expected CBORError but got \(error)")
@@ -34,7 +34,7 @@ struct CBORErrorTests {
         do {
             let _ = try CBOR.decode(incompleteData)
             Issue.record("Expected decoding to fail with CBORError")
-        } catch is CBORError {
+        } catch CBORError.prematureEnd {
             // This is the expected error
         } catch {
             Issue.record("Expected CBORError but got \(error)")
@@ -52,7 +52,7 @@ struct CBORErrorTests {
         do {
             let _ = try CBOR.decode(dataWithExtra)
             Issue.record("Expected decoding to fail with CBORError")
-        } catch is CBORError {
+        } catch CBORError.extraDataFound {
             // This is the expected error
         } catch {
             Issue.record("Expected CBORError but got \(error)")
@@ -74,7 +74,7 @@ struct CBORErrorTests {
         do {
             let _ = try CBOR.decode(simpleInvalidUTF8)
             Issue.record("Expected decoding to fail with CBORError for simple invalid UTF-8")
-        } catch is CBORError {
+        } catch CBORError.invalidUTF8 {
             // This is the expected error
         } catch {
             Issue.record("Expected CBORError but got \(error) for simple invalid UTF-8")
@@ -91,7 +91,7 @@ struct CBORErrorTests {
         do {
             let _ = try CBOR.decode(overlongUTF8)
             Issue.record("Expected decoding to fail with CBORError for overlong UTF-8")
-        } catch is CBORError {
+        } catch CBORError.invalidUTF8 {
             // This is the expected error
         } catch {
             Issue.record("Expected CBORError but got \(error) for overlong UTF-8")
@@ -106,7 +106,7 @@ struct CBORErrorTests {
         do {
             let _ = try CBOR.decode(overlongUTF8_2)
             Issue.record("Expected decoding to fail with CBORError for 3-byte overlong UTF-8")
-        } catch is CBORError {
+        } catch CBORError.invalidUTF8 {
             // This is the expected error
         } catch {
             Issue.record("Expected CBORError but got \(error) for 3-byte overlong UTF-8")
@@ -124,7 +124,7 @@ struct CBORErrorTests {
         do {
             let _ = try CBOR.decode(surrogateUTF8)
             Issue.record("Expected decoding to fail with CBORError for surrogate code point")
-        } catch is CBORError {
+        } catch CBORError.invalidUTF8 {
             // This is the expected error
         } catch {
             Issue.record("Expected CBORError but got \(error) for surrogate code point")
@@ -139,7 +139,7 @@ struct CBORErrorTests {
         do {
             let _ = try CBOR.decode(lowSurrogateUTF8)
             Issue.record("Expected decoding to fail with CBORError for low surrogate code point")
-        } catch is CBORError {
+        } catch CBORError.invalidUTF8 {
             // This is the expected error
         } catch {
             Issue.record("Expected CBORError but got \(error) for low surrogate code point")
@@ -155,7 +155,7 @@ struct CBORErrorTests {
         do {
             let _ = try CBOR.decode(incompleteUTF8)
             Issue.record("Expected decoding to fail with CBORError for incomplete UTF-8 sequence")
-        } catch is CBORError {
+        } catch CBORError.invalidUTF8 {
             // This is the expected error
         } catch {
             Issue.record("Expected CBORError but got \(error) for incomplete UTF-8 sequence")
@@ -171,7 +171,7 @@ struct CBORErrorTests {
         do {
             let _ = try CBOR.decode(invalidContinuationUTF8)
             Issue.record("Expected decoding to fail with CBORError for invalid continuation byte")
-        } catch is CBORError {
+        } catch CBORError.invalidUTF8 {
             // This is the expected error
         } catch {
             Issue.record("Expected CBORError but got \(error) for invalid continuation byte")
@@ -188,7 +188,7 @@ struct CBORErrorTests {
         do {
             let _ = try CBOR.decode(beyondMaxUTF8)
             Issue.record("Expected decoding to fail with CBORError for code point beyond U+10FFFF")
-        } catch is CBORError {
+        } catch CBORError.invalidUTF8 {
             // This is the expected error
         } catch {
             Issue.record("Expected CBORError but got \(error) for code point beyond U+10FFFF")
@@ -206,7 +206,7 @@ struct CBORErrorTests {
         do {
             let _ = try CBOR.decode(mixedUTF8)
             Issue.record("Expected decoding to fail with CBORError for mixed valid/invalid UTF-8")
-        } catch is CBORError {
+        } catch CBORError.invalidUTF8 {
             // This is the expected error
         } catch {
             Issue.record("Expected CBORError but got \(error) for mixed valid/invalid UTF-8")
@@ -223,7 +223,7 @@ struct CBORErrorTests {
         do {
             let _ = try CBOR.decode(unexpectedContinuationUTF8)
             Issue.record("Expected decoding to fail with CBORError for unexpected continuation bytes")
-        } catch is CBORError {
+        } catch CBORError.invalidUTF8 {
             // This is the expected error
         } catch {
             Issue.record("Expected CBORError but got \(error) for unexpected continuation bytes")
@@ -243,7 +243,7 @@ struct CBORErrorTests {
         do {
             let _ = try decoder.decode(Int.self, from: Data(encoded))
             Issue.record("Expected decoding to fail with DecodingError")
-        } catch is DecodingError {
+        } catch DecodingError.dataCorrupted {
             // This is the expected error
         } catch {
             Issue.record("Expected DecodingError but got \(error)")
@@ -261,7 +261,7 @@ struct CBORErrorTests {
         do {
             let _ = try decoder.decode(Int.self, from: Data(encoded))
             Issue.record("Expected decoding to fail with DecodingError")
-        } catch is DecodingError {
+        } catch DecodingError.typeMismatch {
             // This is the expected error
         } catch {
             Issue.record("Expected DecodingError but got \(error)")
@@ -283,7 +283,7 @@ struct CBORErrorTests {
         do {
             let _ = try decoder.decode(RequiredKeyStruct.self, from: Data(encoded))
             Issue.record("Expected decoding to fail with DecodingError")
-        } catch is DecodingError {
+        } catch DecodingError.keyNotFound {
             // This is the expected error
         } catch {
             Issue.record("Expected DecodingError but got \(error)")
@@ -301,7 +301,7 @@ struct CBORErrorTests {
         do {
             let _ = try decoder.decode(URL.self, from: Data(encoded))
             Issue.record("Expected decoding to fail with DecodingError")
-        } catch is DecodingError {
+        } catch DecodingError.dataCorrupted {
             // This is the expected error
         } catch {
             Issue.record("Expected DecodingError but got \(error)")
@@ -320,7 +320,7 @@ struct CBORErrorTests {
         do {
             let _ = try CBOR.decode(incompleteData)
             Issue.record("Expected decoding to fail with CBORError")
-        } catch is CBORError {
+        } catch CBORError.prematureEnd {
             // This is the expected error
         } catch {
             Issue.record("Expected CBORError but got \(error)")
@@ -335,7 +335,7 @@ struct CBORErrorTests {
         do {
             let _ = try CBOR.decode(dataWithExtra)
             Issue.record("Expected decoding to fail with CBORError")
-        } catch is CBORError {
+        } catch CBORError.extraDataFound {
             // This is the expected error
         } catch {
             Issue.record("Expected CBORError but got \(error)")
@@ -349,13 +349,7 @@ struct CBORErrorTests {
         // Test that all CBORError cases have meaningful descriptions
         let errors: [CBORError] = [
             .invalidCBOR,
-            .typeMismatch(expected: "String", actual: "Int"),
-            .outOfBounds(index: 5, count: 3),
-            .missingKey("requiredKey"),
-            .valueConversionFailed("Could not convert to Int"),
             .invalidUTF8,
-            .integerOverflow,
-            .unsupportedTag(123),
             .prematureEnd,
             .invalidInitialByte(0xFF),
             .lengthTooLarge(UInt64.max),
@@ -417,7 +411,7 @@ struct CBORErrorTests {
         do {
             let _ = try shortReader.readByte() // This should fail (no more data)
             Issue.record("Expected reading to fail with CBORError")
-        } catch is CBORError {
+        } catch CBORError.prematureEnd {
             // This is the expected error
         } catch {
             Issue.record("Expected CBORError but got \(error)")
@@ -437,7 +431,7 @@ struct CBORErrorTests {
             do {
                 let _ = try multiByteReader.readByte() // Should fail after reading all bytes
                 Issue.record("Expected reading to fail with CBORError")
-            } catch is CBORError {
+            } catch CBORError.prematureEnd {
                 // This is the expected error
             } catch {
                 Issue.record("Expected CBORError but got \(error)")
@@ -462,7 +456,7 @@ struct CBORErrorTests {
         do {
             let _ = try CBOR.decode(invalidArrayItem)
             Issue.record("Expected decoding to fail with CBORError")
-        } catch is CBORError {
+        } catch CBORError.indefiniteLengthNotSupported {
             // This is the expected error
         } catch {
             Issue.record("Expected CBORError but got \(error)")
@@ -478,7 +472,7 @@ struct CBORErrorTests {
         do {
             let _ = try CBOR.decode(invalidMapValue)
             Issue.record("Expected decoding to fail with CBORError")
-        } catch is CBORError {
+        } catch CBORError.indefiniteLengthNotSupported {
             // This is the expected error
         } catch {
             Issue.record("Expected CBORError but got \(error)")
@@ -522,7 +516,7 @@ struct CBORErrorTests {
         do {
             let _ = try CBOR.decode(invalidUnsignedIntAdditionalInfo)
             Issue.record("Expected decoding to fail with CBORError for invalid unsigned int additional info")
-        } catch is CBORError {
+        } catch CBORError.indefiniteLengthNotSupported {
             // This is the expected error
         } catch {
             Issue.record("Expected CBORError but got \(error)")
@@ -539,7 +533,7 @@ struct CBORErrorTests {
         do {
             let _ = try CBOR.decode(unexpectedBreak)
             Issue.record("Expected decoding to fail with CBORError for unexpected break code")
-        } catch is CBORError {
+        } catch CBORError.invalidInitialByte(0xFF) {
             // This is the expected error
         } catch {
             Issue.record("Expected CBORError but got \(error)")
@@ -556,7 +550,7 @@ struct CBORErrorTests {
         do {
             let _ = try CBOR.decode(unexpectedBreakInArray)
             Issue.record("Expected decoding to fail with CBORError for unexpected break in array")
-        } catch is CBORError {
+        } catch CBORError.invalidInitialByte(0xFF) {
             // This is the expected error
         } catch {
             Issue.record("Expected CBORError but got \(error)")
@@ -606,10 +600,8 @@ struct CBORErrorTests {
         do {
             let _ = try CBOR.decode(lengthTooLarge)
             Issue.record("Expected decoding to fail with CBORError for length too large")
-        } catch is CBORError {
-            // This is the expected error
         } catch {
-            Issue.record("Expected CBORError but got \(error)")
+            // This is the expected error
         }
         
         // Test array with length that exceeds available memory
@@ -621,7 +613,7 @@ struct CBORErrorTests {
         do {
             let _ = try CBOR.decode(arrayTooLarge)
             Issue.record("Expected decoding to fail with CBORError for array length too large")
-        } catch is CBORError {
+        } catch CBORError.lengthTooLarge(UInt64.max) {
             // This is the expected error
         } catch {
             Issue.record("Expected CBORError but got \(error)")

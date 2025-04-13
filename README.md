@@ -92,7 +92,6 @@ do {
 
 ```swift
 import CBOR
-import Foundation
 
 // Define your data structures
 struct Person: Codable {

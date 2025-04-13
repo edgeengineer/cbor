@@ -1,13 +1,9 @@
-#if canImport(FoundationEssentials)
-import FoundationEssentials
-#else
-import Foundation
-#endif
-
 #if canImport(Darwin)
 import Darwin
 #elseif canImport(Glibc)
 import Glibc
+#elseif canImport(Musl)
+import Musl
 #elseif os(Windows)
 import ucrt
 #endif
@@ -15,7 +11,7 @@ import ucrt
 // MARK: - CBOR Type
 
 /// A CBOR value
-public indirect enum CBOR: Equatable {
+public indirect enum CBOR: Equatable, Sendable {
     /// A positive unsigned integer
     case unsignedInt(UInt64)
     /// A negative integer
@@ -49,7 +45,7 @@ public indirect enum CBOR: Equatable {
     }
     
     /// Decodes a CBOR value from bytes
-    public static func decode(_ bytes: [UInt8]) throws -> CBOR {
+    public static func decode(_ bytes: [UInt8]) throws(CBORError) -> CBOR {
         var reader = CBORReader(data: bytes)
         let value = try _decode(reader: &reader)
         
@@ -67,7 +63,7 @@ public indirect enum CBOR: Equatable {
 /// - Parameters:
 ///   - key: The key of the pair
 ///   - value: The value of the pair
-public struct CBORMapPair: Equatable {
+public struct CBORMapPair: Equatable, Sendable {
     public let key: CBOR
     public let value: CBOR
     
@@ -103,11 +99,9 @@ private func _encode(_ value: CBOR, into output: inout [UInt8]) {
         encodeUnsigned(major: 2, value: UInt64(bytes.count), into: &output)
         output.append(contentsOf: bytes)
     case .textString(let string):
-        if let utf8 = string.data(using: .utf8) {
-            let bytes = [UInt8](utf8)
-            encodeUnsigned(major: 3, value: UInt64(bytes.count), into: &output)
-            output.append(contentsOf: bytes)
-        }
+        let bytes = [UInt8](string.utf8)
+        encodeUnsigned(major: 3, value: UInt64(bytes.count), into: &output)
+        output.append(contentsOf: bytes)
     case .array(let array):
         encodeUnsigned(major: 4, value: UInt64(array.count), into: &output)
         for item in array {
@@ -138,8 +132,7 @@ private func _encode(_ value: CBOR, into output: inout [UInt8]) {
     case .float(let f):
         // Encode as IEEE 754 double-precision float
         output.append(0xfb)
-        var value = f
-        withUnsafeBytes(of: &value) { bytes in
+        withUnsafeBytes(of: f) { bytes in
             // Append bytes in big-endian order
             for i in (0..<8).reversed() {
                 output.append(bytes[i])
@@ -192,7 +185,7 @@ private func encodeUnsigned(major: UInt8, value: UInt64, into output: inout [UIn
 ///   - reader: The reader to decode from
 /// - Returns: The decoded CBOR value
 /// - Throws: A `CBORError` if the decoding fails
-private func _decode(reader: inout CBORReader) throws -> CBOR {
+private func _decode(reader: inout CBORReader) throws(CBORError) -> CBOR {
     let initial = try reader.readByte()
     
     // Check for break marker (0xff)
@@ -321,7 +314,7 @@ private func _decode(reader: inout CBORReader) throws -> CBOR {
 }
 
 /// Reads an unsigned integer value based on the additional information.
-private func readUIntValue(additional: UInt8, reader: inout CBORReader) throws -> UInt64 {
+private func readUIntValue(additional: UInt8, reader: inout CBORReader) throws(CBORError) -> UInt64 {
     // Check for indefinite length first
     if additional == 31 {
         throw CBORError.indefiniteLengthNotSupported
