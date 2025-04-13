@@ -241,7 +241,7 @@ struct CBORErrorTests {
         // Try to decode it as Int (should fail with overflow)
         let decoder = CBORDecoder()
         do {
-            let _ = try decoder.decode(Int.self, from: Data(encoded))
+            let _ = try decoder.decode(Int.self, from: encoded)
             Issue.record("Expected decoding to fail with DecodingError")
         } catch DecodingError.dataCorrupted {
             // This is the expected error
@@ -259,7 +259,7 @@ struct CBORErrorTests {
         // Try to decode it as Int (should fail with type mismatch)
         let decoder = CBORDecoder()
         do {
-            let _ = try decoder.decode(Int.self, from: Data(encoded))
+            let _ = try decoder.decode(Int.self, from: encoded)
             Issue.record("Expected decoding to fail with DecodingError")
         } catch DecodingError.typeMismatch {
             // This is the expected error
@@ -281,7 +281,7 @@ struct CBORErrorTests {
         // Try to decode it (should fail with key not found)
         let decoder = CBORDecoder()
         do {
-            let _ = try decoder.decode(RequiredKeyStruct.self, from: Data(encoded))
+            let _ = try decoder.decode(RequiredKeyStruct.self, from: encoded)
             Issue.record("Expected decoding to fail with DecodingError")
         } catch DecodingError.keyNotFound {
             // This is the expected error
@@ -299,7 +299,7 @@ struct CBORErrorTests {
         // Try to decode it as URL (should fail with data corrupted)
         let decoder = CBORDecoder()
         do {
-            let _ = try decoder.decode(URL.self, from: Data(encoded))
+            let _ = try decoder.decode(URL.self, from: encoded)
             Issue.record("Expected decoding to fail with DecodingError")
         } catch DecodingError.dataCorrupted {
             // This is the expected error
@@ -352,7 +352,7 @@ struct CBORErrorTests {
             .invalidUTF8,
             .prematureEnd,
             .invalidInitialByte(0xFF),
-            .lengthTooLarge(UInt64.max),
+            .lengthTooLarge(UInt64.max, maximum: 16_384),
             .indefiniteLengthNotSupported,
             .extraDataFound
         ]
@@ -574,7 +574,7 @@ struct CBORErrorTests {
         // Try to decode it (should fail with key not found)
         let decoder = CBORDecoder()
         do {
-            let _ = try decoder.decode(RequiredKeyStruct.self, from: Data(encoded))
+            let _ = try decoder.decode(RequiredKeyStruct.self, from: encoded)
             Issue.record("Expected decoding to fail with DecodingError.keyNotFound")
         } catch let error as DecodingError {
             switch error {
@@ -613,7 +613,7 @@ struct CBORErrorTests {
         do {
             let _ = try CBOR.decode(arrayTooLarge)
             Issue.record("Expected decoding to fail with CBORError for array length too large")
-        } catch CBORError.lengthTooLarge(UInt64.max) {
+        } catch CBORError.lengthTooLarge(UInt64.max, maximum: _) {
             // This is the expected error
         } catch {
             Issue.record("Expected CBORError but got \(error)")
@@ -649,7 +649,7 @@ struct CBORErrorTests {
         
         let decoder = CBORDecoder()
         do {
-            let _ = try decoder.decode(Int.self, from: Data(encoded))
+            let _ = try decoder.decode(Int.self, from: encoded)
             Issue.record("Expected decoding a string as Int to fail")
         } catch is DecodingError {
             // This is the expected error

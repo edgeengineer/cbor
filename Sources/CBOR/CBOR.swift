@@ -11,7 +11,7 @@ import ucrt
 // MARK: - CBOR Type
 
 /// A CBOR value
-public indirect enum CBOR: Equatable, Sendable {
+public enum CBOR: Equatable, Sendable {
     /// A positive unsigned integer
     case unsignedInt(UInt64)
     /// A negative integer
@@ -25,7 +25,7 @@ public indirect enum CBOR: Equatable, Sendable {
     /// A map of CBOR key-value pairs
     case map([CBORMapPair])
     /// A tagged CBOR value
-    case tagged(UInt64, CBOR)
+    indirect case tagged(UInt64, CBOR)
     /// A simple value
     case simple(UInt8)
     /// A boolean value
@@ -38,9 +38,13 @@ public indirect enum CBOR: Equatable, Sendable {
     case float(Double)
     
     /// Encodes the CBOR value to bytes
+    public func encode(into output: inout [UInt8]) {
+        _encode(self, into: &output)
+    }
+
     public func encode() -> [UInt8] {
         var output: [UInt8] = []
-        _encode(self, into: &output)
+        encode(into: &output)
         return output
     }
     
@@ -80,6 +84,7 @@ public struct CBORMapPair: Equatable, Sendable {
 /// - Parameters:
 ///   - value: The CBOR value to encode
 ///   - output: The output buffer to write the encoded bytes to
+@inline(__always)
 private func _encode(_ value: CBOR, into output: inout [UInt8]) {
     switch value {
     case .unsignedInt(let u):
@@ -207,16 +212,16 @@ private func _decode(reader: inout CBORReader) throws(CBORError) -> CBOR {
         
     case 2: // byte string
         let length = try readUIntValue(additional: additional, reader: &reader)
-        guard length <= UInt64(Int.max) else {
-            throw CBORError.lengthTooLarge(length)
+        guard length <= reader.maximumStringLength else {
+            throw CBORError.lengthTooLarge(length, maximum: reader.maximumStringLength)
         }
         
-        return .byteString(try reader.readBytes(Int(length)))
+        return .byteString(Array(try reader.readBytes(Int(length))))
         
     case 3: // text string
         let length = try readUIntValue(additional: additional, reader: &reader)
-        guard length <= UInt64(Int.max) else {
-            throw CBORError.lengthTooLarge(length)
+        guard length <= reader.maximumStringLength else {
+            throw CBORError.lengthTooLarge(length, maximum: reader.maximumStringLength)
         }
         
         let bytes = try reader.readBytes(Int(length))
@@ -229,12 +234,12 @@ private func _decode(reader: inout CBORReader) throws(CBORError) -> CBOR {
         
     case 4: // array
         let count = try readUIntValue(additional: additional, reader: &reader)
-        guard count <= UInt64(Int.max) else {
-            throw CBORError.lengthTooLarge(count)
+        guard count <= reader.maximumElementCount else {
+            throw CBORError.lengthTooLarge(count, maximum: reader.maximumElementCount)
         }
         
         var items: [CBOR] = []
-        for _ in 0..<Int(count) {
+        for _ in 0..<count {
             items.append(try _decode(reader: &reader))
         }
         
@@ -242,12 +247,12 @@ private func _decode(reader: inout CBORReader) throws(CBORError) -> CBOR {
         
     case 5: // map
         let count = try readUIntValue(additional: additional, reader: &reader)
-        guard count <= UInt64(Int.max) else {
-            throw CBORError.lengthTooLarge(count)
+        guard count <= reader.maximumElementCount else {
+            throw CBORError.lengthTooLarge(count, maximum: reader.maximumElementCount)
         }
         
         var pairs: [CBORMapPair] = []
-        for _ in 0..<Int(count) {
+        for _ in 0..<count {
             let key = try _decode(reader: &reader)
             let value = try _decode(reader: &reader)
             pairs.append(CBORMapPair(key: key, value: value))
@@ -270,8 +275,7 @@ private func _decode(reader: inout CBORReader) throws(CBORError) -> CBOR {
             let simple = try reader.readByte()
             return .simple(simple)
         case 25: // IEEE 754 Half-Precision Float (16 bits)
-            let bytes = try reader.readBytes(2)
-            let bits = UInt16(bytes[0]) << 8 | UInt16(bytes[1])
+            let bits = try reader.readBigEndianInteger(UInt16.self)
             // Convert half-precision to double
             let sign = (bits & 0x8000) != 0
             let exponent = Int((bits & 0x7C00) >> 10)
@@ -289,15 +293,12 @@ private func _decode(reader: inout CBORReader) throws(CBORError) -> CBOR {
             return .float(sign ? -value : value)
             
         case 26: // IEEE 754 Single-Precision Float (32 bits)
-            let bytes = try reader.readBytes(4)
-            let bits = UInt32(bytes[0]) << 24 | UInt32(bytes[1]) << 16 | UInt32(bytes[2]) << 8 | UInt32(bytes[3])
+            let bits = try reader.readBigEndianInteger(UInt32.self)
             let float = Float(bitPattern: bits)
             return .float(Double(float))
             
         case 27: // IEEE 754 Double-Precision Float (64 bits)
-            let bytes = try reader.readBytes(8)
-            let bits = UInt64(bytes[0]) << 56 | UInt64(bytes[1]) << 48 | UInt64(bytes[2]) << 40 | UInt64(bytes[3]) << 32 |
-                       UInt64(bytes[4]) << 24 | UInt64(bytes[5]) << 16 | UInt64(bytes[6]) << 8 | UInt64(bytes[7])
+            let bits = try reader.readBigEndianInteger(UInt64.self)
             let double = Double(bitPattern: bits)
             return .float(double)
             
@@ -315,26 +316,20 @@ private func _decode(reader: inout CBORReader) throws(CBORError) -> CBOR {
 
 /// Reads an unsigned integer value based on the additional information.
 private func readUIntValue(additional: UInt8, reader: inout CBORReader) throws(CBORError) -> UInt64 {
-    // Check for indefinite length first
-    if additional == 31 {
-        throw CBORError.indefiniteLengthNotSupported
-    }
-    
-    if additional < 24 {
+    switch additional {
+    case 0...23:
         return UInt64(additional)
-    } else if additional == 24 {
+    case 24:
         return UInt64(try reader.readByte())
-    } else if additional == 25 {
-        let bytes = try reader.readBytes(2)
-        return UInt64(bytes[0]) << 8 | UInt64(bytes[1])
-    } else if additional == 26 {
-        let bytes = try reader.readBytes(4)
-        return UInt64(bytes[0]) << 24 | UInt64(bytes[1]) << 16 | UInt64(bytes[2]) << 8 | UInt64(bytes[3])
-    } else if additional == 27 {
-        let bytes = try reader.readBytes(8)
-        return UInt64(bytes[0]) << 56 | UInt64(bytes[1]) << 48 | UInt64(bytes[2]) << 40 | UInt64(bytes[3]) << 32 |
-               UInt64(bytes[4]) << 24 | UInt64(bytes[5]) << 16 | UInt64(bytes[6]) << 8 | UInt64(bytes[7])
-    } else {
+    case 25:
+        return try UInt64(reader.readBigEndianInteger(UInt16.self))
+    case 26:
+        return try UInt64(reader.readBigEndianInteger(UInt32.self))
+    case 27:
+        return try reader.readBigEndianInteger(UInt64.self)
+    case 31:
+        throw CBORError.indefiniteLengthNotSupported
+    default:
         throw CBORError.invalidInitialByte(additional)
     }
 }

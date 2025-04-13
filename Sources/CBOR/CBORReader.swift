@@ -1,8 +1,9 @@
-
 /// A helper struct for reading CBOR data byte by byte
-struct CBORReader {
+struct CBORReader: ~Copyable {
     private let data: [UInt8]
     private(set) var index: Int
+    internal var maximumStringLength: UInt64 = 65_536
+    internal var maximumElementCount: UInt64 = 16_384
     
     init(data: [UInt8]) {
         self.data = data
@@ -20,13 +21,24 @@ struct CBORReader {
     }
     
     /// Read a specified number of bytes from the input
-    mutating func readBytes(_ count: Int) throws(CBORError) -> [UInt8] {
+    mutating func readBytes(_ count: Int) throws(CBORError) -> ArraySlice<UInt8> {
         guard index + count <= data.count else {
             throw CBORError.prematureEnd
         }
-        let result = Array(data[index..<index + count])
+        let result = data[index..<index + count]
         index += count
         return result
+    }
+
+    mutating func readBigEndianInteger<F: FixedWidthInteger>(_ type: F.Type) throws(CBORError) -> F {
+        let bytes = try readBytes(MemoryLayout<F>.size)
+        var value: F = 0
+        return bytes.withUnsafeBytes { buffer in
+            withUnsafeMutableBytes(of: &value) { valuePtr in
+                valuePtr.copyMemory(from: buffer)
+            }
+            return value.bigEndian
+        }
     }
     
     /// Check if there are more bytes to read
@@ -42,13 +54,5 @@ struct CBORReader {
     /// Get the total number of bytes
     var totalBytes: Int {
         return data.count
-    }
-    
-    /// Skip a specified number of bytes
-    mutating func skip(_ count: Int) throws(CBORError) {
-        guard index + count <= data.count else {
-            throw CBORError.prematureEnd
-        }
-        index += count
     }
 }

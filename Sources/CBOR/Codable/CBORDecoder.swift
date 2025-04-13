@@ -8,7 +8,7 @@ import Foundation
 // MARK: - CBOR Decoder
 
 /// A decoder that converts CBOR data to Swift values
-public class CBORDecoder: Decoder {
+public final class CBORDecoder: Decoder {
     private var cbor: CBOR
     public var codingPath: [CodingKey]
     public var userInfo: [CodingUserInfoKey: Any] = [:]
@@ -18,18 +18,16 @@ public class CBORDecoder: Decoder {
         self.codingPath = []
     }
     
-    public func decode<T>(_ type: T.Type, from data: Data) throws -> T where T: Decodable {
+    public func decode<T>(_ type: T.Type, from data: [UInt8]) throws -> T where T: Decodable {
         // First decode the CBOR value from the data
-        let cbor = try CBOR.decode([UInt8](data))
+        let cbor = try CBOR.decode(data)
         
         // Special case for arrays
-        if type == [Data].self {
-            if case .byteString = cbor {
-                // If we're trying to decode a byteString as an array of Data,
-                // wrap it in an array with a single element
-                let dataArray = [Data([UInt8](data))]
-                return dataArray as! T
-            }
+        if type == [Data].self, case .byteString = cbor {
+            // If we're trying to decode a byteString as an array of Data,
+            // wrap it in an array with a single element
+            let dataArray = [Data(data)]
+            return dataArray as! T
         }
         
         // Then use the regular decoder to decode the value
@@ -1538,9 +1536,9 @@ private struct CBORUnkeyedDecodingContainer: UnkeyedDecodingContainer {
 
 // MARK: - CBOR Single Value Decoding Container
 
-private struct CBORSingleValueDecodingContainer: SingleValueDecodingContainer {
+internal struct CBORSingleValueDecodingContainer: SingleValueDecodingContainer {
     var codingPath: [CodingKey]
-    private let cbor: CBOR
+    internal let cbor: CBOR
     
     init(cbor: CBOR, codingPath: [CodingKey]) {
         self.cbor = cbor

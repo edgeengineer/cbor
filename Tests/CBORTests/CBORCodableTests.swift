@@ -336,7 +336,7 @@ struct CBORCodableTests {
         
         // Test decoding invalid data
         do {
-            let invalidData = Data([0xFF, 0xFF, 0xFF]) // Invalid CBOR data
+            let invalidData: [UInt8] = [0xFF, 0xFF, 0xFF] // Invalid CBOR data
             let decoder = CBORDecoder()
             #expect(throws: CBORError.self) {
                 try decoder.decode(Person.self, from: invalidData)
