@@ -19,7 +19,7 @@ public class CBORDecoder: Decoder {
     
     public func decode<T>(_ type: T.Type, from data: Data) throws -> T where T: Decodable {
         // First decode the CBOR value from the data
-        let cbor = try CBOR.decode([UInt8](data))
+        let cbor = try CBOR.decode(ArraySlice([UInt8](data)))
         
         // Special case for arrays
         if type == [Data].self {
@@ -48,24 +48,30 @@ public class CBORDecoder: Decoder {
     }
     
     public func container<Key>(keyedBy type: Key.Type) throws -> KeyedDecodingContainer<Key> where Key: CodingKey {
-        guard case .map(let pairs) = cbor else {
+        guard case .map(_) = cbor else {
             throw DecodingError.typeMismatch([String: Any].self, DecodingError.Context(
                 codingPath: codingPath,
                 debugDescription: "Expected to decode a map but found \(cbor)"
             ))
         }
         
+        // Decode the map bytes to get the pairs
+        let pairs = try cbor.mapValue() ?? []
+        
         let container = CBORKeyedDecodingContainer<Key>(pairs: pairs, codingPath: codingPath)
         return KeyedDecodingContainer(container)
     }
     
     public func unkeyedContainer() throws -> UnkeyedDecodingContainer {
-        guard case .array(let elements) = cbor else {
+        guard case .array(_) = cbor else {
             throw DecodingError.typeMismatch([Any].self, DecodingError.Context(
                 codingPath: codingPath,
                 debugDescription: "Expected to decode an array but found \(cbor)"
             ))
         }
+        
+        // Decode the array bytes to get the elements
+        let elements = try cbor.arrayValue() ?? []
         
         return CBORUnkeyedDecodingContainer(elements: elements, codingPath: codingPath)
     }
@@ -89,15 +95,27 @@ public class CBORDecoder: Decoder {
         return boolValue
     }
     
+    // Helper method to convert CBOR text string bytes to a Swift String
+    static func bytesToString(_ bytes: ArraySlice<UInt8>) throws -> String {
+        guard let string = String(data: Data(bytes), encoding: .utf8) else {
+            throw DecodingError.dataCorrupted(DecodingError.Context(
+                codingPath: [],
+                debugDescription: "Invalid UTF-8 data in CBOR text string"
+            ))
+        }
+        return string
+    }
+    
     public func decode(_ type: String.Type) throws -> String {
-        guard case .textString(let stringValue) = cbor else {
+        switch cbor {
+        case .textString(let bytes):
+            return try CBORDecoder.bytesToString(bytes)
+        default:
             throw DecodingError.typeMismatch(type, DecodingError.Context(
                 codingPath: codingPath,
                 debugDescription: "Expected to decode String but found \(cbor)"
             ))
         }
-        
-        return stringValue
     }
     
     public func decode(_ type: Double.Type) throws -> Double {
@@ -247,7 +265,7 @@ public class CBORDecoder: Decoder {
             }
             return Int64(uintValue)
         case .negativeInt(let intValue):
-            return Int64(intValue)
+            return intValue
         default:
             throw DecodingError.typeMismatch(type, DecodingError.Context(
                 codingPath: codingPath,
@@ -344,100 +362,111 @@ public class CBORDecoder: Decoder {
         // Special case for Data
         if type == Data.self {
             if case .byteString(let bytes) = cbor {
-                return Data(bytes) as! T
+                return Data(Array(bytes)) as! T
             }
-            
-            // If we're trying to decode an array of bytes as Data
-            if case .array(let elements) = cbor {
-                // Check if all elements are integers
-                var bytes: [UInt8] = []
-                for element in elements {
-                    if case .unsignedInt(let value) = element, value <= UInt64(UInt8.max) {
-                        bytes.append(UInt8(value))
-                    } else {
-                        throw DecodingError.typeMismatch(type, DecodingError.Context(
-                            codingPath: codingPath,
-                            debugDescription: "Expected to decode Data but found array with non-byte element: \(element)"
-                        ))
-                    }
-                }
-                return Data(bytes) as! T
-            }
-            
-            throw DecodingError.typeMismatch(type, DecodingError.Context(
-                codingPath: codingPath,
-                debugDescription: "Expected to decode Data but found \(cbor)"
-            ))
-        }
-        
-        // Special case for arrays of Data
-        if type == [Data].self {
-            guard case .array(let elements) = cbor else {
-                throw DecodingError.typeMismatch(type, DecodingError.Context(
-                    codingPath: codingPath,
-                    debugDescription: "Expected to decode an array but found \(cbor)"
-                ))
-            }
-            
-            var dataArray: [Data] = []
-            for element in elements {
-                if case .byteString(let bytes) = element {
-                    dataArray.append(Data(bytes))
-                } else {
-                    throw DecodingError.typeMismatch(type, DecodingError.Context(
-                        codingPath: codingPath,
-                        debugDescription: "Expected to decode an array of Data but found \(element)"
-                    ))
-                }
-            }
-            return dataArray as! T
         }
         
         // Special case for Date
         if type == Date.self {
             // First check for tagged date value (tag 1)
-            if case .tagged(1, let taggedValue) = cbor {
-                if case .float(let timeInterval) = taggedValue {
-                    return Date(timeIntervalSince1970: timeInterval) as! T
-                } else if case .unsignedInt(let timestamp) = taggedValue {
-                    return Date(timeIntervalSince1970: TimeInterval(timestamp)) as! T
-                } else if case .negativeInt(let timestamp) = taggedValue {
-                    return Date(timeIntervalSince1970: TimeInterval(timestamp)) as! T
+            if case .tagged(let tag, let valueBytes) = cbor {
+                if tag == 1 {
+                    // Decode the tagged value
+                    if let taggedValue = try? CBOR.decode(valueBytes) {
+                        if case .unsignedInt(let timestamp) = taggedValue {
+                            // RFC 8949 section 3.4.1: Tag 1 is for epoch timestamp
+                            return Date(timeIntervalSince1970: TimeInterval(timestamp)) as! T
+                        } else if case .negativeInt(let timestamp) = taggedValue {
+                            // Handle negative timestamps
+                            return Date(timeIntervalSince1970: TimeInterval(timestamp)) as! T
+                        } else if case .float(let timestamp) = taggedValue {
+                            // Handle floating-point timestamps
+                            return Date(timeIntervalSince1970: timestamp) as! T
+                        }
+                    }
                 }
             }
             
-            // Also try to handle untagged float as a date for backward compatibility
-            if case .float(let timeInterval) = cbor {
-                return Date(timeIntervalSince1970: timeInterval) as! T
-            } else if case .unsignedInt(let timestamp) = cbor {
-                return Date(timeIntervalSince1970: TimeInterval(timestamp)) as! T
-            } else if case .negativeInt(let timestamp) = cbor {
-                return Date(timeIntervalSince1970: TimeInterval(timestamp)) as! T
+            // Try ISO8601 string
+            if case .textString(let bytes) = cbor {
+                if let string = try? CBORDecoder.bytesToString(bytes) {
+                    let formatter = ISO8601DateFormatter()
+                    if let date = formatter.date(from: string) {
+                        return date as! T
+                    }
+                }
             }
-            
-            throw DecodingError.typeMismatch(type, DecodingError.Context(
-                codingPath: codingPath,
-                debugDescription: "Expected to decode Date but found \(cbor)"
-            ))
         }
         
         // Special case for URL
         if type == URL.self {
-            guard case .textString(let urlString) = cbor else {
-                throw DecodingError.typeMismatch(type, DecodingError.Context(
-                    codingPath: codingPath,
-                    debugDescription: "Expected to decode URL but found \(cbor)"
-                ))
+            if case .textString(let bytes) = cbor {
+                if let string = try? CBORDecoder.bytesToString(bytes) {
+                    if let url = URL(string: string) {
+                        return url as! T
+                    } else {
+                        throw DecodingError.dataCorrupted(DecodingError.Context(
+                            codingPath: codingPath,
+                            debugDescription: "Invalid URL string: \(string)"
+                        ))
+                    }
+                }
+            }
+        }
+        
+        // Special case for arrays of primitive types
+        if type == [UInt8].self {
+            if case .byteString(let bytes) = cbor {
+                return Array(bytes) as! T
             }
             
-            guard let url = URL(string: urlString) else {
-                throw DecodingError.dataCorrupted(DecodingError.Context(
-                    codingPath: codingPath,
-                    debugDescription: "Invalid URL string: \(urlString)"
-                ))
+            if case .array(_) = cbor {
+                // Decode the array
+                if let array = try cbor.arrayValue() {
+                    var bytes: [UInt8] = []
+                    for element in array {
+                        if case .unsignedInt(let value) = element, value <= UInt64(UInt8.max) {
+                            bytes.append(UInt8(value))
+                        } else {
+                            throw DecodingError.typeMismatch(type, DecodingError.Context(
+                                codingPath: codingPath,
+                                debugDescription: "Expected to decode [UInt8] but array contains non-UInt8 values"
+                            ))
+                        }
+                    }
+                    return bytes as! T
+                }
             }
             
-            return url as! T
+            throw DecodingError.typeMismatch(type, DecodingError.Context(
+                codingPath: codingPath,
+                debugDescription: "Expected to decode [UInt8] but found \(cbor)"
+            ))
+        }
+        
+        if type == [Data].self {
+            if case .array(_) = cbor {
+                // Decode the array
+                if let array = try cbor.arrayValue() {
+                    var dataArray: [Data] = []
+                    for element in array {
+                        if case .byteString(let bytes) = element {
+                            dataArray.append(Data(Array(bytes)))
+                        } else {
+                            throw DecodingError.typeMismatch(type, DecodingError.Context(
+                                codingPath: codingPath,
+                                debugDescription: "Expected to decode [Data] but array contains non-byteString values"
+                            ))
+                        }
+                    }
+                    return dataArray as! T
+                }
+            }
+            
+            throw DecodingError.typeMismatch(type, DecodingError.Context(
+                codingPath: codingPath,
+                debugDescription: "Expected to decode [Data] but found \(cbor)"
+            ))
         }
         
         // For other Decodable types, use a nested decoder
@@ -452,8 +481,10 @@ private struct CBORKeyedDecodingContainer<K: CodingKey>: KeyedDecodingContainerP
     var codingPath: [CodingKey]
     var allKeys: [K] {
         return pairs.compactMap { pair in
-            if case .textString(let key) = pair.key {
-                return K(stringValue: key)
+            if case .textString(let bytes) = pair.key {
+                if let string = try? CBORDecoder.bytesToString(bytes) {
+                    return K(stringValue: string)
+                }
             }
             return nil
         }
@@ -468,8 +499,12 @@ private struct CBORKeyedDecodingContainer<K: CodingKey>: KeyedDecodingContainerP
     
     private func getValue(forKey key: K) -> CBOR? {
         for pair in pairs {
-            if case .textString(let keyString) = pair.key, keyString == key.stringValue {
-                return pair.value
+            if case .textString(let keyString) = pair.key {
+                if let string = try? CBORDecoder.bytesToString(keyString) {
+                    if string == key.stringValue {
+                        return pair.value
+                    }
+                }
             }
         }
         return nil
@@ -523,7 +558,7 @@ private struct CBORKeyedDecodingContainer<K: CodingKey>: KeyedDecodingContainerP
             ))
         }
         
-        return stringValue
+        return try CBORDecoder.bytesToString(stringValue)
     }
     
     func decode(_ type: Double.Type, forKey key: K) throws -> Double {
@@ -722,7 +757,7 @@ private struct CBORKeyedDecodingContainer<K: CodingKey>: KeyedDecodingContainerP
             }
             return Int64(uintValue)
         case .negativeInt(let intValue):
-            return Int64(intValue)
+            return intValue
         default:
             throw DecodingError.typeMismatch(type, DecodingError.Context(
                 codingPath: codingPath + [key],
@@ -861,100 +896,61 @@ private struct CBORKeyedDecodingContainer<K: CodingKey>: KeyedDecodingContainerP
         // Special case for Data
         if type == Data.self {
             if case .byteString(let bytes) = value {
-                return Data(bytes) as! T
+                return Data(Array(bytes)) as! T
             }
-            
-            // If we're trying to decode an array of bytes as Data
-            if case .array(let elements) = value {
-                // Check if all elements are integers
-                var bytes: [UInt8] = []
-                for element in elements {
-                    if case .unsignedInt(let value) = element, value <= UInt64(UInt8.max) {
-                        bytes.append(UInt8(value))
-                    } else {
-                        throw DecodingError.typeMismatch(type, DecodingError.Context(
-                            codingPath: codingPath + [key],
-                            debugDescription: "Expected to decode Data but found array with non-byte element: \(element)"
-                        ))
-                    }
-                }
-                return Data(bytes) as! T
-            }
-            
-            throw DecodingError.typeMismatch(type, DecodingError.Context(
-                codingPath: codingPath + [key],
-                debugDescription: "Expected to decode Data but found \(value)"
-            ))
-        }
-        
-        // Special case for arrays of Data
-        if type == [Data].self {
-            guard case .array(let elements) = value else {
-                throw DecodingError.typeMismatch(type, DecodingError.Context(
-                    codingPath: codingPath + [key],
-                    debugDescription: "Expected to decode an array but found \(value)"
-                ))
-            }
-            
-            var dataArray: [Data] = []
-            for element in elements {
-                if case .byteString(let bytes) = element {
-                    dataArray.append(Data(bytes))
-                } else {
-                    throw DecodingError.typeMismatch(type, DecodingError.Context(
-                        codingPath: codingPath + [key],
-                        debugDescription: "Expected to decode an array of Data but found \(element)"
-                    ))
-                }
-            }
-            return dataArray as! T
         }
         
         // Special case for Date
         if type == Date.self {
             // First check for tagged date value (tag 1)
-            if case .tagged(1, let taggedValue) = value {
-                if case .float(let timeInterval) = taggedValue {
-                    return Date(timeIntervalSince1970: timeInterval) as! T
-                } else if case .unsignedInt(let timestamp) = taggedValue {
-                    return Date(timeIntervalSince1970: TimeInterval(timestamp)) as! T
-                } else if case .negativeInt(let timestamp) = taggedValue {
-                    return Date(timeIntervalSince1970: TimeInterval(timestamp)) as! T
+            if case .tagged(let tag, let valueBytes) = value {
+                if tag == 1 {
+                    // Decode the tagged value
+                    if let taggedValue = try? CBOR.decode(valueBytes) {
+                        if case .unsignedInt(let timestamp) = taggedValue {
+                            // RFC 8949 section 3.4.1: Tag 1 is for epoch timestamp
+                            return Date(timeIntervalSince1970: TimeInterval(timestamp)) as! T
+                        } else if case .negativeInt(let timestamp) = taggedValue {
+                            // Handle negative timestamps
+                            return Date(timeIntervalSince1970: TimeInterval(timestamp)) as! T
+                        } else if case .float(let timestamp) = taggedValue {
+                            // Handle floating-point timestamps
+                            return Date(timeIntervalSince1970: timestamp) as! T
+                        }
+                    }
                 }
             }
             
-            // Also try to handle untagged float as a date for backward compatibility
-            if case .float(let timeInterval) = value {
-                return Date(timeIntervalSince1970: timeInterval) as! T
-            } else if case .unsignedInt(let timestamp) = value {
-                return Date(timeIntervalSince1970: TimeInterval(timestamp)) as! T
-            } else if case .negativeInt(let timestamp) = value {
-                return Date(timeIntervalSince1970: TimeInterval(timestamp)) as! T
+            // Try ISO8601 string
+            if case .textString(let bytes) = value {
+                if let string = try? CBORDecoder.bytesToString(bytes) {
+                    let formatter = ISO8601DateFormatter()
+                    if let date = formatter.date(from: string) {
+                        return date as! T
+                    }
+                }
             }
-            
-            throw DecodingError.typeMismatch(type, DecodingError.Context(
-                codingPath: codingPath + [key],
-                debugDescription: "Expected to decode Date but found \(value)"
-            ))
         }
         
         // Special case for URL
         if type == URL.self {
-            guard case .textString(let urlString) = value else {
+            if case .textString(let bytes) = value {
+                if let string = try? CBORDecoder.bytesToString(bytes) {
+                    if let url = URL(string: string) {
+                        return url as! T
+                    } else {
+                        throw DecodingError.dataCorrupted(DecodingError.Context(
+                            codingPath: codingPath + [key],
+                            debugDescription: "Invalid URL string: \(string)"
+                        ))
+                    }
+                }
+            } else {
                 throw DecodingError.typeMismatch(type, DecodingError.Context(
                     codingPath: codingPath + [key],
                     debugDescription: "Expected to decode URL but found \(value)"
                 ))
             }
-            
-            guard let url = URL(string: urlString) else {
-                throw DecodingError.dataCorrupted(DecodingError.Context(
-                    codingPath: codingPath + [key],
-                    debugDescription: "Invalid URL string: \(urlString)"
-                ))
-            }
-            
-            return url as! T
         }
         
         // For other Decodable types, use a nested decoder
@@ -970,12 +966,15 @@ private struct CBORKeyedDecodingContainer<K: CodingKey>: KeyedDecodingContainerP
             ))
         }
         
-        guard case .map(let pairs) = value else {
+        guard case .map(_) = value else {
             throw DecodingError.typeMismatch([String: Any].self, DecodingError.Context(
                 codingPath: codingPath + [key],
                 debugDescription: "Expected to decode a map but found \(value)"
             ))
         }
+        
+        // Decode the map bytes to get the pairs
+        let pairs = try value.mapValue() ?? []
         
         let container = CBORKeyedDecodingContainer<NestedKey>(pairs: pairs, codingPath: codingPath + [key])
         return KeyedDecodingContainer(container)
@@ -989,18 +988,68 @@ private struct CBORKeyedDecodingContainer<K: CodingKey>: KeyedDecodingContainerP
             ))
         }
         
-        guard case .array(let elements) = value else {
+        guard case .array(_) = value else {
             throw DecodingError.typeMismatch([Any].self, DecodingError.Context(
                 codingPath: codingPath + [key],
                 debugDescription: "Expected to decode an array but found \(value)"
             ))
         }
         
+        // Decode the array bytes to get the elements
+        let elements = try value.arrayValue() ?? []
+        
         return CBORUnkeyedDecodingContainer(elements: elements, codingPath: codingPath + [key])
     }
     
     func superDecoder() throws -> Decoder {
-        return CBORDecoder(cbor: .map(pairs), codingPath: codingPath)
+        // Encode the map pairs into a byte array
+        var encodedBytes: [UInt8] = []
+        // Add map header
+        encodeUnsigned(major: 5, value: UInt64(pairs.count), into: &encodedBytes)
+        
+        // Add each key-value pair
+        for pair in pairs {
+            encodedBytes.append(contentsOf: pair.key.encode())
+            encodedBytes.append(contentsOf: pair.value.encode())
+        }
+        
+        return CBORDecoder(cbor: .map(ArraySlice(encodedBytes)), codingPath: codingPath)
+    }
+    
+    /// Encodes an unsigned integer with the given major type
+    ///
+    /// - Parameters:
+    ///   - major: The major type of the integer
+    ///   - value: The unsigned integer value
+    ///   - output: The output buffer to write the encoded bytes to
+    private func encodeUnsigned(major: UInt8, value: UInt64, into output: inout [UInt8]) {
+        let majorByte = major << 5
+        if value < 24 {
+            output.append(majorByte | UInt8(value))
+        } else if value <= UInt8.max {
+            output.append(majorByte | 24)
+            output.append(UInt8(value))
+        } else if value <= UInt16.max {
+            output.append(majorByte | 25)
+            output.append(UInt8(value >> 8))
+            output.append(UInt8(value & 0xff))
+        } else if value <= UInt32.max {
+            output.append(majorByte | 26)
+            output.append(UInt8(value >> 24))
+            output.append(UInt8((value >> 16) & 0xff))
+            output.append(UInt8((value >> 8) & 0xff))
+            output.append(UInt8(value & 0xff))
+        } else {
+            output.append(majorByte | 27)
+            output.append(UInt8(value >> 56))
+            output.append(UInt8((value >> 48) & 0xff))
+            output.append(UInt8((value >> 40) & 0xff))
+            output.append(UInt8((value >> 32) & 0xff))
+            output.append(UInt8((value >> 24) & 0xff))
+            output.append(UInt8((value >> 16) & 0xff))
+            output.append(UInt8((value >> 8) & 0xff))
+            output.append(UInt8(value & 0xff))
+        }
     }
     
     func superDecoder(forKey key: K) throws -> Decoder {
@@ -1071,7 +1120,7 @@ private struct CBORUnkeyedDecodingContainer: UnkeyedDecodingContainer {
     mutating func decode(_ type: String.Type) throws -> String {
         try checkIndex()
         
-        guard case .textString(let stringValue) = elements[currentIndex] else {
+        guard case .textString(let bytes) = elements[currentIndex] else {
             throw DecodingError.typeMismatch(type, DecodingError.Context(
                 codingPath: codingPath,
                 debugDescription: "Expected to decode String but found \(elements[currentIndex])"
@@ -1079,7 +1128,7 @@ private struct CBORUnkeyedDecodingContainer: UnkeyedDecodingContainer {
         }
         
         currentIndex += 1
-        return stringValue
+        return try CBORDecoder.bytesToString(bytes)
     }
     
     mutating func decode(_ type: Double.Type) throws -> Double {
@@ -1391,100 +1440,111 @@ private struct CBORUnkeyedDecodingContainer: UnkeyedDecodingContainer {
         // Special case for Data
         if type == Data.self {
             if case .byteString(let bytes) = value {
-                return Data(bytes) as! T
+                return Data(Array(bytes)) as! T
             }
-            
-            // If we're trying to decode an array of bytes as Data
-            if case .array(let elements) = value {
-                // Check if all elements are integers
-                var bytes: [UInt8] = []
-                for element in elements {
-                    if case .unsignedInt(let value) = element, value <= UInt64(UInt8.max) {
-                        bytes.append(UInt8(value))
-                    } else {
-                        throw DecodingError.typeMismatch(type, DecodingError.Context(
-                            codingPath: codingPath,
-                            debugDescription: "Expected to decode Data but found array with non-byte element: \(element)"
-                        ))
-                    }
-                }
-                return Data(bytes) as! T
-            }
-            
-            throw DecodingError.typeMismatch(type, DecodingError.Context(
-                codingPath: codingPath,
-                debugDescription: "Expected to decode Data but found \(value)"
-            ))
-        }
-        
-        // Special case for arrays of Data
-        if type == [Data].self {
-            guard case .array(let elements) = value else {
-                throw DecodingError.typeMismatch(type, DecodingError.Context(
-                    codingPath: codingPath,
-                    debugDescription: "Expected to decode an array but found \(value)"
-                ))
-            }
-            
-            var dataArray: [Data] = []
-            for element in elements {
-                if case .byteString(let bytes) = element {
-                    dataArray.append(Data(bytes))
-                } else {
-                    throw DecodingError.typeMismatch(type, DecodingError.Context(
-                        codingPath: codingPath,
-                        debugDescription: "Expected to decode an array of Data but found \(element)"
-                    ))
-                }
-            }
-            return dataArray as! T
         }
         
         // Special case for Date
         if type == Date.self {
             // First check for tagged date value (tag 1)
-            if case .tagged(1, let taggedValue) = value {
-                if case .float(let timeInterval) = taggedValue {
-                    return Date(timeIntervalSince1970: timeInterval) as! T
-                } else if case .unsignedInt(let timestamp) = taggedValue {
-                    return Date(timeIntervalSince1970: TimeInterval(timestamp)) as! T
-                } else if case .negativeInt(let timestamp) = taggedValue {
-                    return Date(timeIntervalSince1970: TimeInterval(timestamp)) as! T
+            if case .tagged(let tag, let valueBytes) = value {
+                if tag == 1 {
+                    // Decode the tagged value
+                    if let taggedValue = try? CBOR.decode(valueBytes) {
+                        if case .unsignedInt(let timestamp) = taggedValue {
+                            // RFC 8949 section 3.4.1: Tag 1 is for epoch timestamp
+                            return Date(timeIntervalSince1970: TimeInterval(timestamp)) as! T
+                        } else if case .negativeInt(let timestamp) = taggedValue {
+                            // Handle negative timestamps
+                            return Date(timeIntervalSince1970: TimeInterval(timestamp)) as! T
+                        } else if case .float(let timestamp) = taggedValue {
+                            // Handle floating-point timestamps
+                            return Date(timeIntervalSince1970: timestamp) as! T
+                        }
+                    }
                 }
             }
             
-            // Also try to handle untagged float as a date for backward compatibility
-            if case .float(let timeInterval) = value {
-                return Date(timeIntervalSince1970: timeInterval) as! T
-            } else if case .unsignedInt(let timestamp) = value {
-                return Date(timeIntervalSince1970: TimeInterval(timestamp)) as! T
-            } else if case .negativeInt(let timestamp) = value {
-                return Date(timeIntervalSince1970: TimeInterval(timestamp)) as! T
+            // Try ISO8601 string
+            if case .textString(let bytes) = value {
+                if let string = try? CBORDecoder.bytesToString(bytes) {
+                    let formatter = ISO8601DateFormatter()
+                    if let date = formatter.date(from: string) {
+                        return date as! T
+                    }
+                }
             }
-            
-            throw DecodingError.typeMismatch(type, DecodingError.Context(
-                codingPath: codingPath,
-                debugDescription: "Expected to decode Date but found \(value)"
-            ))
         }
         
         // Special case for URL
         if type == URL.self {
-            guard case .textString(let urlString) = value else {
-                throw DecodingError.typeMismatch(type, DecodingError.Context(
-                    codingPath: codingPath,
-                    debugDescription: "Expected to decode URL but found \(value)"
-                ))
+            if case .textString(let bytes) = value {
+                if let string = try? CBORDecoder.bytesToString(bytes) {
+                    if let url = URL(string: string) {
+                        return url as! T
+                    } else {
+                        throw DecodingError.dataCorrupted(DecodingError.Context(
+                            codingPath: codingPath,
+                            debugDescription: "Invalid URL string"
+                        ))
+                    }
+                }
+            }
+        }
+        
+        // Special case for arrays of primitive types
+        if type == [UInt8].self {
+            if case .byteString(let bytes) = value {
+                return Array(bytes) as! T
             }
             
-            guard let url = URL(string: urlString) else {
-                throw DecodingError.dataCorrupted(DecodingError.Context(
-                    codingPath: codingPath,
-                    debugDescription: "Invalid URL string: \(urlString)"
-                ))
+            if case .array(_) = value {
+                // Decode the array
+                if let array = try value.arrayValue() {
+                    var bytes: [UInt8] = []
+                    for element in array {
+                        if case .unsignedInt(let value) = element, value <= UInt64(UInt8.max) {
+                            bytes.append(UInt8(value))
+                        } else {
+                            throw DecodingError.typeMismatch(type, DecodingError.Context(
+                                codingPath: codingPath,
+                                debugDescription: "Expected to decode [UInt8] but array contains non-UInt8 values"
+                            ))
+                        }
+                    }
+                    return bytes as! T
+                }
             }
             
-            return url as! T
+            throw DecodingError.typeMismatch(type, DecodingError.Context(
+                codingPath: codingPath,
+                debugDescription: "Expected to decode [UInt8] but found \(value)"
+            ))
+        }
+        
+        if type == [Data].self {
+            if case .array(_) = value {
+                // Decode the array
+                if let array = try value.arrayValue() {
+                    var dataArray: [Data] = []
+                    for element in array {
+                        if case .byteString(let bytes) = element {
+                            dataArray.append(Data(Array(bytes)))
+                        } else {
+                            throw DecodingError.typeMismatch(type, DecodingError.Context(
+                                codingPath: codingPath,
+                                debugDescription: "Expected to decode [Data] but array contains non-byteString values"
+                            ))
+                        }
+                    }
+                    return dataArray as! T
+                }
+            }
+            
+            throw DecodingError.typeMismatch(type, DecodingError.Context(
+                codingPath: codingPath,
+                debugDescription: "Expected to decode [Data] but found \(value)"
+            ))
         }
         
         // For other Decodable types, use a nested decoder
@@ -1498,12 +1558,15 @@ private struct CBORUnkeyedDecodingContainer: UnkeyedDecodingContainer {
         let value = elements[currentIndex]
         currentIndex += 1
         
-        guard case .map(let pairs) = value else {
+        guard case .map(_) = value else {
             throw DecodingError.typeMismatch([String: Any].self, DecodingError.Context(
                 codingPath: codingPath,
                 debugDescription: "Expected to decode a map but found \(value)"
             ))
         }
+        
+        // Decode the map bytes to get the pairs
+        let pairs = try value.mapValue() ?? []
         
         let container = CBORKeyedDecodingContainer<NestedKey>(pairs: pairs, codingPath: codingPath)
         return KeyedDecodingContainer(container)
@@ -1515,12 +1578,15 @@ private struct CBORUnkeyedDecodingContainer: UnkeyedDecodingContainer {
         let value = elements[currentIndex]
         currentIndex += 1
         
-        guard case .array(let elements) = value else {
+        guard case .array(_) = value else {
             throw DecodingError.typeMismatch([Any].self, DecodingError.Context(
                 codingPath: codingPath,
                 debugDescription: "Expected to decode an array but found \(value)"
             ))
         }
+        
+        // Decode the array bytes to get the elements
+        let elements = try value.arrayValue() ?? []
         
         return CBORUnkeyedDecodingContainer(elements: elements, codingPath: codingPath)
     }
@@ -1562,14 +1628,14 @@ private struct CBORSingleValueDecodingContainer: SingleValueDecodingContainer {
     }
     
     func decode(_ type: String.Type) throws -> String {
-        guard case .textString(let stringValue) = cbor else {
+        guard case .textString(let bytes) = cbor else {
             throw DecodingError.typeMismatch(type, DecodingError.Context(
                 codingPath: codingPath,
                 debugDescription: "Expected to decode String but found \(cbor)"
             ))
         }
         
-        return stringValue
+        return try CBORDecoder.bytesToString(bytes)
     }
     
     func decode(_ type: Double.Type) throws -> Double {
@@ -1816,75 +1882,39 @@ private struct CBORSingleValueDecodingContainer: SingleValueDecodingContainer {
         // Special case for Data
         if type == Data.self {
             if case .byteString(let bytes) = cbor {
-                return Data(bytes) as! T
+                return Data(Array(bytes)) as! T
             }
-            
-            // If we're trying to decode an array of bytes as Data
-            if case .array(let elements) = cbor {
-                // Check if all elements are integers
-                var bytes: [UInt8] = []
-                for element in elements {
-                    if case .unsignedInt(let value) = element, value <= UInt64(UInt8.max) {
-                        bytes.append(UInt8(value))
-                    } else {
-                        throw DecodingError.typeMismatch(type, DecodingError.Context(
-                            codingPath: codingPath,
-                            debugDescription: "Expected to decode Data but found array with non-byte element: \(element)"
-                        ))
-                    }
-                }
-                return Data(bytes) as! T
-            }
-            
-            throw DecodingError.typeMismatch(type, DecodingError.Context(
-                codingPath: codingPath,
-                debugDescription: "Expected to decode Data but found \(cbor)"
-            ))
-        }
-        
-        // Special case for arrays of Data
-        if type == [Data].self {
-            guard case .array(let elements) = cbor else {
-                throw DecodingError.typeMismatch(type, DecodingError.Context(
-                    codingPath: codingPath,
-                    debugDescription: "Expected to decode an array but found \(cbor)"
-                ))
-            }
-            
-            var dataArray: [Data] = []
-            for element in elements {
-                if case .byteString(let bytes) = element {
-                    dataArray.append(Data(bytes))
-                } else {
-                    throw DecodingError.typeMismatch(type, DecodingError.Context(
-                        codingPath: codingPath,
-                        debugDescription: "Expected to decode an array of Data but found \(element)"
-                    ))
-                }
-            }
-            return dataArray as! T
         }
         
         // Special case for Date
         if type == Date.self {
             // First check for tagged date value (tag 1)
-            if case .tagged(1, let taggedValue) = cbor {
-                if case .float(let timeInterval) = taggedValue {
-                    return Date(timeIntervalSince1970: timeInterval) as! T
-                } else if case .unsignedInt(let timestamp) = taggedValue {
-                    return Date(timeIntervalSince1970: TimeInterval(timestamp)) as! T
-                } else if case .negativeInt(let timestamp) = taggedValue {
-                    return Date(timeIntervalSince1970: TimeInterval(timestamp)) as! T
+            if case .tagged(let tag, let valueBytes) = cbor {
+                if tag == 1 {
+                    // Decode the tagged value
+                    if let taggedValue = try? CBOR.decode(valueBytes) {
+                        if case .unsignedInt(let timestamp) = taggedValue {
+                            // RFC 8949 section 3.4.1: Tag 1 is for epoch timestamp
+                            return Date(timeIntervalSince1970: TimeInterval(timestamp)) as! T
+                        } else if case .negativeInt(let timestamp) = taggedValue {
+                            // Handle negative timestamps
+                            return Date(timeIntervalSince1970: TimeInterval(timestamp)) as! T
+                        } else if case .float(let timestamp) = taggedValue {
+                            // Handle floating-point timestamps
+                            return Date(timeIntervalSince1970: timestamp) as! T
+                        }
+                    }
                 }
             }
             
-            // Also try to handle untagged float as a date for backward compatibility
-            if case .float(let timeInterval) = cbor {
-                return Date(timeIntervalSince1970: timeInterval) as! T
-            } else if case .unsignedInt(let timestamp) = cbor {
-                return Date(timeIntervalSince1970: TimeInterval(timestamp)) as! T
-            } else if case .negativeInt(let timestamp) = cbor {
-                return Date(timeIntervalSince1970: TimeInterval(timestamp)) as! T
+            // Try ISO8601 string
+            if case .textString(let bytes) = cbor {
+                if let string = try? CBORDecoder.bytesToString(bytes) {
+                    let formatter = ISO8601DateFormatter()
+                    if let date = formatter.date(from: string) {
+                        return date as! T
+                    }
+                }
             }
             
             throw DecodingError.typeMismatch(type, DecodingError.Context(
@@ -1895,21 +1925,23 @@ private struct CBORSingleValueDecodingContainer: SingleValueDecodingContainer {
         
         // Special case for URL
         if type == URL.self {
-            guard case .textString(let urlString) = cbor else {
-                throw DecodingError.typeMismatch(type, DecodingError.Context(
-                    codingPath: codingPath,
-                    debugDescription: "Expected to decode URL but found \(cbor)"
-                ))
+            if case .textString(let bytes) = cbor {
+                if let string = try? CBORDecoder.bytesToString(bytes) {
+                    if let url = URL(string: string) {
+                        return url as! T
+                    } else {
+                        throw DecodingError.dataCorrupted(DecodingError.Context(
+                            codingPath: codingPath,
+                            debugDescription: "Invalid URL string: \(string)"
+                        ))
+                    }
+                }
             }
             
-            guard let url = URL(string: urlString) else {
-                throw DecodingError.dataCorrupted(DecodingError.Context(
-                    codingPath: codingPath,
-                    debugDescription: "Invalid URL string: \(urlString)"
-                ))
-            }
-            
-            return url as! T
+            throw DecodingError.typeMismatch(type, DecodingError.Context(
+                codingPath: codingPath,
+                debugDescription: "Expected to decode URL but found \(cbor)"
+            ))
         }
         
         // For other Decodable types, use a nested decoder

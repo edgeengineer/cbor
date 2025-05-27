@@ -1,13 +1,14 @@
 // swift-tools-version: 6.0
+
 import PackageDescription
 
 let package = Package(
     name: "CBOR",
     platforms: [
-        .macOS(.v10_15),
-        .iOS(.v13),
-        .tvOS(.v13),
-        .watchOS(.v6),
+        .macOS(.v13),
+        .iOS(.v16),
+        .tvOS(.v16),
+        .watchOS(.v9),
         .visionOS(.v1)
     ],
     products: [
@@ -16,7 +17,6 @@ let package = Package(
             targets: ["CBOR"]),
     ],
     dependencies: [
-        .package(url: "https://github.com/apple/swift-docc-plugin", from: "1.0.0")
     ],
     targets: [
         .target(
@@ -24,6 +24,7 @@ let package = Package(
             dependencies: []),
         .testTarget(
             name: "CBORTests",
-            dependencies: ["CBOR"]),
+            dependencies: ["CBOR"],
+            resources: [.copy("TestPlan.md")])
     ]
 )
