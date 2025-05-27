@@ -14,30 +14,103 @@ import ucrt
 
 // MARK: - CBOR Type
 
-/// A CBOR value
+/// A CBOR value optimized for low-memory usage in Embedded Swift
+///
+/// This enum uses `ArraySlice<UInt8>` for complex types to avoid heap allocations
+/// by referencing the original data instead of copying it. This makes parsing
+/// efficient for memory-constrained environments.
+///
+/// ## Usage Examples
+///
+/// ### Working with byte strings:
+/// ```swift
+/// let cbor = CBOR.byteString(ArraySlice([0x01, 0x02, 0x03]))
+/// 
+/// // Zero-copy access (recommended for Embedded Swift)
+/// if let slice = cbor.byteStringSlice() {
+///     // Work with slice directly without copying
+///     print("Length: \(slice.count)")
+/// }
+/// 
+/// // Copy to Array when needed
+/// if let bytes = cbor.byteStringValue() {
+///     print("Bytes: \(bytes)")
+/// }
+/// ```
+///
+/// ### Working with text strings:
+/// ```swift
+/// let text = "Hello, World!"
+/// let cbor = CBOR.textString(ArraySlice(text.utf8))
+/// 
+/// // Zero-copy access to UTF-8 bytes
+/// if let slice = cbor.textStringSlice() {
+///     if let string = String(bytes: slice, encoding: .utf8) {
+///         print("Text: \(string)")
+///     }
+/// }
+/// ```
+///
+/// ### Working with arrays and maps using iterators:
+/// ```swift
+/// // Use iterators to avoid allocating full arrays
+/// if let iterator = try cbor.arrayIterator() {
+///     for element in iterator {
+///         // Process each element without loading entire array
+///         print("Element: \(element)")
+///     }
+/// }
+/// ```
 public indirect enum CBOR: Equatable {
     /// A positive unsigned integer
     case unsignedInt(UInt64)
+    
     /// A negative integer
     case negativeInt(Int64)
-    /// A byte string
+    
+    /// A byte string stored as a reference to avoid copying
+    ///
+    /// Uses `ArraySlice<UInt8>` to reference original data without heap allocation.
+    /// Use `byteStringSlice()` for zero-copy access or `byteStringValue()` to get a copy.
     case byteString(ArraySlice<UInt8>)
-    /// A text string
+    
+    /// A UTF-8 text string stored as a reference to avoid copying
+    ///
+    /// Uses `ArraySlice<UInt8>` containing UTF-8 bytes to reference original data.
+    /// Use `textStringSlice()` for zero-copy access or `textStringValue()` to get a copy.
+    /// Convert to String with: `String(bytes: slice, encoding: .utf8)`
     case textString(ArraySlice<UInt8>)
-    /// An array of CBOR values
+    
+    /// An array of CBOR values stored as encoded bytes
+    ///
+    /// Uses `ArraySlice<UInt8>` containing the encoded array data.
+    /// Use `arrayIterator()` for memory-efficient iteration or `arrayValue()` to decode all elements.
     case array(ArraySlice<UInt8>)
-    /// A map of CBOR key-value pairs
+    
+    /// A map of CBOR key-value pairs stored as encoded bytes
+    ///
+    /// Uses `ArraySlice<UInt8>` containing the encoded map data.
+    /// Use `mapIterator()` for memory-efficient iteration or `mapValue()` to decode all pairs.
     case map(ArraySlice<UInt8>)
-    /// A tagged CBOR value
+    
+    /// A tagged CBOR value with lazy decoding
+    ///
+    /// The tagged value's data is stored as `ArraySlice<UInt8>` and decoded only when accessed.
+    /// Use `taggedValue()` to decode the contained value.
     case tagged(UInt64, ArraySlice<UInt8>)
-    /// A simple value
+    
+    /// A simple value (0-255)
     case simple(UInt8)
+    
     /// A boolean value
     case bool(Bool)
+    
     /// A null value
     case null
+    
     /// An undefined value
     case undefined
+    
     /// A floating-point number
     case float(Double)
     
@@ -82,29 +155,108 @@ public indirect enum CBOR: Equatable {
         return value
     }
     
-    /// Get the byte string value as ArraySlice to avoid copying
+    /// Get the byte string value as ArraySlice to avoid copying (recommended for Embedded Swift)
+    ///
+    /// This method provides zero-copy access to the byte string data, making it ideal
+    /// for memory-constrained environments. The returned slice references the original
+    /// data without heap allocation.
+    ///
+    /// ## Example Usage:
+    /// ```swift
+    /// let data: [UInt8] = [0x01, 0x02, 0x03, 0x04]
+    /// let cbor = CBOR.byteString(ArraySlice(data))
+    /// 
+    /// if let slice = cbor.byteStringSlice() {
+    ///     print("Length: \(slice.count)")
+    ///     print("First byte: 0x\(String(slice.first!, radix: 16))")
+    ///     
+    ///     // Work with slice directly - no copying
+    ///     for byte in slice {
+    ///         // Process each byte
+    ///     }
+    /// }
+    /// ```
+    ///
     /// - Returns: The byte string as ArraySlice<UInt8>, or nil if this is not a byte string
+    /// - Note: For memory efficiency, prefer this method over `byteStringValue()` in Embedded Swift
     public func byteStringSlice() -> ArraySlice<UInt8>? {
         guard case .byteString(let bytes) = self else { return nil }
         return bytes
     }
     
-    /// Get the byte string value
+    /// Get the byte string value as a copied Array
+    ///
+    /// This method creates a new Array by copying the byte string data. Use `byteStringSlice()`
+    /// instead for zero-copy access in memory-constrained environments.
+    ///
+    /// ## Example Usage:
+    /// ```swift
+    /// let cbor = CBOR.byteString(ArraySlice([0x01, 0x02, 0x03]))
+    /// 
+    /// if let bytes = cbor.byteStringValue() {
+    ///     // bytes is now a [UInt8] copy
+    ///     let hexString = bytes.map { String(format: "%02x", $0) }.joined()
+    ///     print("Hex: \(hexString)")
+    /// }
+    /// ```
+    ///
     /// - Returns: The byte string as [UInt8], or nil if this is not a byte string
+    /// - Note: This method allocates memory. Consider `byteStringSlice()` for better performance.
     public func byteStringValue() -> [UInt8]? {
         guard case .byteString(let bytes) = self else { return nil }
         return Array(bytes)
     }
     
-    /// Get the text string value as ArraySlice to avoid copying
-    /// - Returns: The text string as ArraySlice<UInt8>, or nil if this is not a text string
+    /// Get the text string value as UTF-8 bytes without copying (recommended for Embedded Swift)
+    ///
+    /// This method provides zero-copy access to the UTF-8 encoded text string data.
+    /// The returned slice contains UTF-8 bytes that can be converted to a String.
+    ///
+    /// ## Example Usage:
+    /// ```swift
+    /// let text = "Hello, 世界! 🌍"
+    /// let cbor = CBOR.textString(ArraySlice(text.utf8))
+    /// 
+    /// if let slice = cbor.textStringSlice() {
+    ///     // Convert UTF-8 bytes to String
+    ///     if let string = String(bytes: slice, encoding: .utf8) {
+    ///         print("Text: \(string)")
+    ///         print("UTF-8 byte count: \(slice.count)")
+    ///     }
+    ///     
+    ///     // Or work with raw UTF-8 bytes directly
+    ///     for byte in slice {
+    ///         print("UTF-8 byte: 0x\(String(byte, radix: 16))")
+    ///     }
+    /// }
+    /// ```
+    ///
+    /// - Returns: The text string as ArraySlice<UInt8> containing UTF-8 bytes, or nil if this is not a text string
+    /// - Note: For memory efficiency, prefer this method over `textStringValue()` in Embedded Swift
     public func textStringSlice() -> ArraySlice<UInt8>? {
         guard case .textString(let bytes) = self else { return nil }
         return bytes
     }
     
-    /// Get the text string value
-    /// - Returns: The text string as [UInt8], or nil if this is not a text string
+    /// Get the text string value as copied UTF-8 bytes
+    ///
+    /// This method creates a new Array by copying the UTF-8 encoded text string data.
+    /// Use `textStringSlice()` instead for zero-copy access in memory-constrained environments.
+    ///
+    /// ## Example Usage:
+    /// ```swift
+    /// let cbor = CBOR.textString(ArraySlice("Hello".utf8))
+    /// 
+    /// if let utf8Bytes = cbor.textStringValue() {
+    ///     // utf8Bytes is now a [UInt8] copy
+    ///     if let string = String(bytes: utf8Bytes, encoding: .utf8) {
+    ///         print("Decoded text: \(string)")
+    ///     }
+    /// }
+    /// ```
+    ///
+    /// - Returns: The text string as [UInt8] containing UTF-8 bytes, or nil if this is not a text string
+    /// - Note: This method allocates memory. Consider `textStringSlice()` for better performance.
     public func textStringValue() -> [UInt8]? {
         guard case .textString(let bytes) = self else { return nil }
         return Array(bytes)
@@ -240,7 +392,37 @@ public indirect enum CBOR: Equatable {
         }
     }
     
-    /// Iterator for CBOR array elements to avoid heap allocations
+    /// Get an iterator for CBOR array elements to avoid heap allocations (recommended for Embedded Swift)
+    ///
+    /// This method provides memory-efficient iteration over array elements without loading
+    /// the entire array into memory. Each element is decoded on-demand as you iterate.
+    ///
+    /// ## Example Usage:
+    /// ```swift
+    /// // Assuming you have a CBOR array
+    /// if let iterator = try cbor.arrayIterator() {
+    ///     var iterator = iterator // Make mutable
+    ///     
+    ///     // Iterate through elements one by one
+    ///     while let element = iterator.next() {
+    ///         switch element {
+    ///         case .unsignedInt(let value):
+    ///             print("Integer: \(value)")
+    ///         case .textString:
+    ///             if let slice = element.textStringSlice(),
+    ///                let text = String(bytes: slice, encoding: .utf8) {
+    ///                 print("Text: \(text)")
+    ///             }
+    ///         default:
+    ///             print("Other element: \(element)")
+    ///         }
+    ///     }
+    /// }
+    /// ```
+    ///
+    /// - Returns: A CBORArrayIterator for memory-efficient iteration, or nil if this is not an array
+    /// - Throws: CBORError if the array data is malformed
+    /// - Note: Prefer this over `arrayValue()` for large arrays in memory-constrained environments
     public func arrayIterator() throws -> CBORArrayIterator? {
         guard case .array(let bytes) = self else {
             return nil
@@ -248,12 +430,71 @@ public indirect enum CBOR: Equatable {
         return try CBORArrayIterator(bytes: bytes)
     }
     
-    /// Iterator for CBOR map entries to avoid heap allocations
+    /// Get an iterator for CBOR map entries to avoid heap allocations (recommended for Embedded Swift)
+    ///
+    /// This method provides memory-efficient iteration over map key-value pairs without loading
+    /// the entire map into memory. Each pair is decoded on-demand as you iterate.
+    ///
+    /// ## Example Usage:
+    /// ```swift
+    /// // Assuming you have a CBOR map
+    /// if let iterator = try cbor.mapIterator() {
+    ///     var iterator = iterator // Make mutable
+    ///     
+    ///     // Iterate through key-value pairs one by one
+    ///     while let pair = iterator.next() {
+    ///         print("Processing key-value pair:")
+    ///         
+    ///         // Handle the key
+    ///         if let keySlice = pair.key.textStringSlice(),
+    ///            let keyString = String(bytes: keySlice, encoding: .utf8) {
+    ///             print("  Key: \(keyString)")
+    ///         }
+    ///         
+    ///         // Handle the value
+    ///         switch pair.value {
+    ///         case .unsignedInt(let value):
+    ///             print("  Value: \(value)")
+    ///         case .bool(let flag):
+    ///             print("  Value: \(flag)")
+    ///         default:
+    ///             print("  Value: \(pair.value)")
+    ///         }
+    ///     }
+    /// }
+    /// ```
+    ///
+    /// - Returns: A CBORMapIterator for memory-efficient iteration, or nil if this is not a map
+    /// - Throws: CBORError if the map data is malformed
+    /// - Note: Prefer this over `mapValue()` for large maps in memory-constrained environments
     public func mapIterator() throws -> CBORMapIterator? {
         guard case .map(let bytes) = self else {
             return nil
         }
         return try CBORMapIterator(bytes: bytes)
+    }
+    
+    // MARK: - Convenience Methods for Embedded Swift
+    
+    /// Convert a text string CBOR value directly to a Swift String
+    ///
+    /// This is a convenience method that combines `textStringSlice()` and UTF-8 decoding
+    /// in one step, making it easier to work with text strings in Embedded Swift.
+    ///
+    /// ## Example Usage:
+    /// ```swift
+    /// let cbor = CBOR.textString(ArraySlice("Hello, World!".utf8))
+    /// 
+    /// if let text = cbor.stringValue {
+    ///     print("Text: \(text)")
+    /// }
+    /// ```
+    ///
+    /// - Returns: The decoded String, or nil if this is not a text string or contains invalid UTF-8
+    /// - Note: This method avoids intermediate allocations by working directly with the ArraySlice
+    public var stringValue: String? {
+        guard let slice = textStringSlice() else { return nil }
+        return String(bytes: slice, encoding: .utf8)
     }
 }
 
@@ -714,7 +955,22 @@ private func readUIntValue(additional: UInt8, reader: inout CBORReader) throws -
 
 // MARK: - Iterator Types
 
-/// Iterator for CBOR arrays that avoids heap allocations
+/// Memory-efficient iterator for CBOR arrays
+///
+/// This iterator decodes array elements on-demand without loading the entire array
+/// into memory, making it ideal for Embedded Swift and memory-constrained environments.
+///
+/// ## Usage:
+/// ```swift
+/// if let iterator = try cbor.arrayIterator() {
+///     var iterator = iterator
+///     while let element = iterator.next() {
+///         // Process element without allocating the entire array
+///     }
+/// }
+/// ```
+///
+/// - Note: Use this instead of `arrayValue()` for large arrays to minimize memory usage
 public struct CBORArrayIterator: IteratorProtocol {
     private var reader: CBORReader
     private let count: Int
@@ -758,7 +1014,24 @@ public struct CBORArrayIterator: IteratorProtocol {
     }
 }
 
-/// Iterator for CBOR maps that avoids heap allocations
+/// Memory-efficient iterator for CBOR maps
+///
+/// This iterator decodes map key-value pairs on-demand without loading the entire map
+/// into memory, making it ideal for Embedded Swift and memory-constrained environments.
+///
+/// ## Usage:
+/// ```swift
+/// if let iterator = try cbor.mapIterator() {
+///     var iterator = iterator
+///     while let pair = iterator.next() {
+///         let key = pair.key
+///         let value = pair.value
+///         // Process key-value pair without allocating the entire map
+///     }
+/// }
+/// ```
+///
+/// - Note: Use this instead of `mapValue()` for large maps to minimize memory usage
 public struct CBORMapIterator: IteratorProtocol {
     private var reader: CBORReader
     private let count: Int

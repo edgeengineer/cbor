@@ -15,6 +15,9 @@ CBOR is a lightweight implementation of the [CBOR](https://tools.ietf.org/html/r
 - **Direct CBOR Data Model:**  
   Represent CBOR values using an enum with cases for unsigned/negative integers, byte strings, text strings, arrays, maps (ordered key/value pairs), tagged values, simple values, booleans, null, undefined, and floats.
 
+- **Memory-Optimized for Embedded Swift:**  
+  Uses `ArraySlice<UInt8>` internally to avoid heap allocations by referencing original data instead of copying. Includes zero-copy access methods and memory-efficient iterators for arrays and maps.
+
 - **Encoding & Decoding:**  
   Easily convert between CBOR values and byte arrays.
 
@@ -31,6 +34,29 @@ CBOR is a lightweight implementation of the [CBOR](https://tools.ietf.org/html/r
 
 - **Error Handling:**  
   Detailed error types (`CBORError`) to help you diagnose encoding/decoding issues.
+
+## Table of Contents
+
+- [Features](#features)
+- [Documentation](#documentation)
+- [Installation](#installation)
+- [Quick Start](#quick-start)
+  - [Working Directly with CBOR Values](#1-working-directly-with-cbor-values)
+  - [Using Codable](#2-using-codable)
+  - [Working with Complex CBOR Structures](#3-working-with-complex-cbor-structures)
+  - [Error Handling](#4-error-handling)
+  - [Advanced Codable Examples](#5-advanced-codable-examples)
+  - [Working with Sets](#6-working-with-sets)
+  - [Working with Optionals and Nested Optionals](#7-working-with-optionals-and-nested-optionals)
+  - [Non-String Dictionary Keys](#8-non-string-dictionary-keys)
+- [Memory-Efficient Usage (Embedded Swift)](#memory-efficient-usage-embedded-swift)
+  - [Working with Byte Strings (Zero-Copy)](#9-working-with-byte-strings-zero-copy)
+  - [Working with Text Strings (Zero-Copy UTF-8)](#10-working-with-text-strings-zero-copy-utf-8)
+  - [Memory-Efficient Array Iteration](#11-memory-efficient-array-iteration)
+  - [Memory-Efficient Map Iteration](#12-memory-efficient-map-iteration)
+  - [Performance Comparison: Slice vs Value Methods](#13-performance-comparison-slice-vs-value-methods)
+  - [Decoding from Original Data](#14-decoding-from-original-data)
+- [License](#license)
 
 ## Documentation
 
@@ -330,6 +356,202 @@ assert(decoded.colorValues[.red] == 1)
 assert(decoded.colorValues[.green] == 2)
 assert(decoded.colorValues[.blue] == 3)
 ```
+
+## Memory-Efficient Usage (Embedded Swift)
+
+This CBOR library is optimized for memory-constrained environments like Embedded Swift. It uses `ArraySlice<UInt8>` internally to avoid unnecessary heap allocations by referencing original data instead of copying it.
+
+### 9. Working with Byte Strings (Zero-Copy)
+
+```swift
+import CBOR
+
+// Create a byte string from raw data
+let rawData: [UInt8] = [0x01, 0x02, 0x03, 0x04, 0x05]
+let cbor = CBOR.byteString(ArraySlice(rawData))
+
+// Zero-copy access (recommended for Embedded Swift)
+if let slice = cbor.byteStringSlice() {
+    print("Length: \(slice.count)")
+    print("First byte: 0x\(String(slice.first!, radix: 16))")
+    
+    // Process bytes without copying
+    for byte in slice {
+        print("Byte: 0x\(String(byte, radix: 16))")
+    }
+}
+
+// Copy to Array only when needed (allocates memory)
+if let bytes = cbor.byteStringValue() {
+    let hexString = bytes.map { String(format: "%02x", $0) }.joined()
+    print("Hex: \(hexString)")
+}
+```
+
+### 10. Working with Text Strings (Zero-Copy UTF-8)
+
+```swift
+import CBOR
+
+// Create a text string with Unicode content
+let text = "Hello, 世界! 🌍"
+let cbor = CBOR.textString(ArraySlice(text.utf8))
+
+// Zero-copy access to UTF-8 bytes
+if let slice = cbor.textStringSlice() {
+    print("UTF-8 byte count: \(slice.count)")
+    
+    // Convert to String without intermediate allocation
+    if let string = String(bytes: slice, encoding: .utf8) {
+        print("Text: \(string)")
+    }
+    
+    // Or examine raw UTF-8 bytes
+    for byte in slice {
+        print("UTF-8 byte: 0x\(String(byte, radix: 16))")
+    }
+}
+
+// Convenience method for direct String conversion
+if let text = cbor.stringValue {
+    print("Decoded text: \(text)")
+}
+```
+
+### 11. Memory-Efficient Array Iteration
+
+```swift
+import CBOR
+
+// Decode CBOR data containing an array
+let encodedArray: [UInt8] = [0x83, 0x01, 0x62, 0x68, 0x69, 0xf5] // [1, "hi", true]
+let cbor = try CBOR.decode(encodedArray)
+
+// Use iterator to avoid loading entire array into memory
+if let iterator = try cbor.arrayIterator() {
+    var iterator = iterator // Make mutable
+    var index = 0
+    
+    while let element = iterator.next() {
+        print("Element \(index):")
+        
+        switch element {
+        case .unsignedInt(let value):
+            print("  Integer: \(value)")
+        case .textString:
+            // Use zero-copy access for strings
+            if let text = element.stringValue {
+                print("  Text: \(text)")
+            }
+        case .bool(let flag):
+            print("  Boolean: \(flag)")
+        default:
+            print("  Other: \(element)")
+        }
+        
+        index += 1
+    }
+}
+
+// Compare with traditional approach (allocates full array)
+if let elements = try cbor.arrayValue() {
+    print("Traditional approach loaded \(elements.count) elements into memory")
+}
+```
+
+### 12. Memory-Efficient Map Iteration
+
+```swift
+import CBOR
+
+// Decode CBOR data containing a map
+let encodedMap: [UInt8] = [0xa2, 0x64, 0x6e, 0x61, 0x6d, 0x65, 0x64, 0x4a, 0x6f, 0x68, 0x6e, 0x63, 0x61, 0x67, 0x65, 0x18, 0x1e]
+// {"name": "John", "age": 30}
+let cbor = try CBOR.decode(encodedMap)
+
+// Use iterator to process key-value pairs without loading entire map
+if let iterator = try cbor.mapIterator() {
+    var iterator = iterator // Make mutable
+    
+    while let pair = iterator.next() {
+        print("Processing key-value pair:")
+        
+        // Handle the key (zero-copy for strings)
+        if let keyText = pair.key.stringValue {
+            print("  Key: \(keyText)")
+        }
+        
+        // Handle the value
+        switch pair.value {
+        case .unsignedInt(let value):
+            print("  Value: \(value)")
+        case .textString:
+            if let valueText = pair.value.stringValue {
+                print("  Value: \(valueText)")
+            }
+        default:
+            print("  Value: \(pair.value)")
+        }
+    }
+}
+
+// Compare with traditional approach (allocates full map)
+if let pairs = try cbor.mapValue() {
+    print("Traditional approach loaded \(pairs.count) pairs into memory")
+}
+```
+
+### 13. Performance Comparison: Slice vs Value Methods
+
+```swift
+import CBOR
+
+// Create a large byte string
+let largeData = [UInt8](repeating: 0xFF, count: 10000)
+let cbor = CBOR.byteString(ArraySlice(largeData))
+
+// ✅ Memory-efficient: Zero-copy access
+if let slice = cbor.byteStringSlice() {
+    // No memory allocation - just references original data
+    let sum = slice.reduce(0, +)
+    print("Sum using slice: \(sum)")
+}
+
+// ⚠️ Memory-intensive: Copies data
+if let bytes = cbor.byteStringValue() {
+    // Allocates 10KB of memory for the copy
+    let sum = bytes.reduce(0, +)
+    print("Sum using copy: \(sum)")
+}
+```
+
+### 14. Decoding from Original Data
+
+```swift
+import CBOR
+
+// When you decode CBOR from external data
+let networkData: [UInt8] = [0x65, 0x48, 0x65, 0x6c, 0x6c, 0x6f] // "Hello"
+let cbor = try CBOR.decode(networkData)
+
+// The decoded CBOR references the original networkData
+if let slice = cbor.textStringSlice() {
+    // slice points into networkData - no copying!
+    print("Text length: \(slice.count)")
+    
+    // As long as networkData stays alive, slice is valid
+    if let text = String(bytes: slice, encoding: .utf8) {
+        print("Decoded: \(text)")
+    }
+}
+```
+
+### Memory Usage Guidelines
+
+- **Prefer slice methods** (`byteStringSlice()`, `textStringSlice()`) over value methods for better memory efficiency
+- **Use iterators** (`arrayIterator()`, `mapIterator()`) for large collections to avoid loading everything into memory
+- **Keep original data alive** when using slices, as they reference the original data
+- **Use `stringValue`** convenience property for direct String conversion without intermediate allocations
 
 ## License
 
