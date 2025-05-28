@@ -35,10 +35,10 @@ extension CBOR: Encodable {
             }
         case .array(let arrayBytes):
             // For array, we need to decode the array first
-            var reader = CBORReader(data: Array(arrayBytes))
+            _ = arrayBytes // Unused but needed for pattern matching
             let array = try arrayValue() ?? []
             try container.encode(array)
-        case .map(let mapBytes):
+        case .map(_):
             // For map, we need to decode the map first
             let pairs = try mapValue() ?? []
             var keyedContainer = encoder.container(keyedBy: CBORKey.self)
@@ -61,7 +61,7 @@ extension CBOR: Encodable {
                     ))
                 }
             }
-        case .tagged(let tag, let valueBytes):
+        case .tagged(_, _):
             // For tagged, we need to decode the value first
             let taggedValue = try taggedValue()
             if let (tag, value) = taggedValue, tag == 1, case .float(let timeInterval) = value {

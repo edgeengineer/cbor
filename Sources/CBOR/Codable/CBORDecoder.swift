@@ -389,10 +389,12 @@ public final class CBORDecoder: Decoder {
             // Try ISO8601 string
             if case .textString(let bytes) = cbor {
                 if let string = try? CBORDecoder.bytesToString(bytes) {
+                    #if os(macOS) || os(iOS) || os(tvOS) || os(watchOS) || os(visionOS)
                     let formatter = ISO8601DateFormatter()
                     if let date = formatter.date(from: string) {
                         return date as! T
                     }
+                    #endif
                 }
             }
         }
@@ -923,10 +925,12 @@ private struct CBORKeyedDecodingContainer<K: CodingKey>: KeyedDecodingContainerP
             // Try ISO8601 string
             if case .textString(let bytes) = value {
                 if let string = try? CBORDecoder.bytesToString(bytes) {
+                    #if os(macOS) || os(iOS) || os(tvOS) || os(watchOS) || os(visionOS)
                     let formatter = ISO8601DateFormatter()
                     if let date = formatter.date(from: string) {
                         return date as! T
                     }
+                    #endif
                 }
             }
         }
@@ -1467,10 +1471,12 @@ private struct CBORUnkeyedDecodingContainer: UnkeyedDecodingContainer {
             // Try ISO8601 string
             if case .textString(let bytes) = value {
                 if let string = try? CBORDecoder.bytesToString(bytes) {
+                    #if os(macOS) || os(iOS) || os(tvOS) || os(watchOS) || os(visionOS)
                     let formatter = ISO8601DateFormatter()
                     if let date = formatter.date(from: string) {
                         return date as! T
                     }
+                    #endif
                 }
             }
         }
@@ -1909,10 +1915,12 @@ internal struct CBORSingleValueDecodingContainer: SingleValueDecodingContainer {
             // Try ISO8601 string
             if case .textString(let bytes) = cbor {
                 if let string = try? CBORDecoder.bytesToString(bytes) {
+                    #if os(macOS) || os(iOS) || os(tvOS) || os(watchOS) || os(visionOS)
                     let formatter = ISO8601DateFormatter()
                     if let date = formatter.date(from: string) {
                         return date as! T
                     }
+                    #endif
                 }
             }
             

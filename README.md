@@ -31,6 +31,7 @@ CBOR is a lightweight implementation of the [CBOR](https://tools.ietf.org/html/r
   - Sets and other collection types
   - Optionals and deeply nested optionals
   - Non-String dictionary keys
+  - Cross-platform date handling (ISO8601 format on Apple platforms)
 
 - **Error Handling:**  
   Detailed error types (`CBORError`) to help you diagnose encoding/decoding issues.
@@ -551,6 +552,23 @@ if let slice = cbor.textStringSlice() {
 - **Use iterators** (`arrayIterator()`, `mapIterator()`) for large collections to avoid loading everything into memory
 - **Keep original data alive** when using slices, as they reference the original data
 - **Use `stringValue`** convenience property for direct String conversion without intermediate allocations
+
+## Platform Compatibility
+
+This CBOR library is designed to work across all Swift-supported platforms:
+
+- **Apple platforms** (macOS, iOS, tvOS, watchOS, visionOS): Full feature support including ISO8601 date formatting
+- **Linux**: Full feature support except ISO8601 date formatting (dates are still supported through other formats)
+- **Windows**: Full feature support except ISO8601 date formatting (dates are still supported through other formats)
+- **Android**: Cross-platform compatibility maintained
+
+### Date Handling Notes
+
+The library provides automatic date encoding/decoding support through the `Codable` interface:
+- On **Apple platforms**: Dates are automatically formatted using `ISO8601DateFormatter` when encoded as text strings
+- On **Linux/Windows**: Date text string formatting is not available, but dates can still be encoded/decoded using other CBOR representations (tagged values, numeric timestamps, etc.)
+
+This ensures your code remains fully functional across all platforms while taking advantage of platform-specific optimizations where available.
 
 ## License
 
