@@ -1,9 +1,3 @@
-#if canImport(FoundationEssentials)
-import FoundationEssentials
-#elseif canImport(Foundation)
-import Foundation
-#endif
-
 // MARK: - Error Types
 
 /// Errors that can occur during CBOR encoding and decoding.
@@ -11,7 +5,7 @@ import Foundation
 /// These errors provide detailed information about what went wrong during
 /// CBOR processing operations, helping developers diagnose and fix issues
 /// in their CBOR data or usage of the CBOR API.
-public enum CBORError: Error, Equatable {
+public enum CBORError: Error, Equatable, Sendable {
     /// The input data is not valid CBOR.
     /// 
     /// This error occurs when the decoder encounters data that doesn't conform to
@@ -19,56 +13,11 @@ public enum CBORError: Error, Equatable {
     /// incomplete data, or data encoded with a different format entirely.
     case invalidCBOR
     
-    /// Expected a specific type but found another.
-    /// 
-    /// This error occurs when trying to decode a CBOR value as a specific type,
-    /// but the actual type of the value doesn't match the expected type.
-    /// - Parameters:
-    ///   - expected: The type that was expected (e.g., "String", "Int", "Array")
-    ///   - actual: The actual type that was found in the CBOR data
-    case typeMismatch(expected: String, actual: String)
-    
-    /// Array index out of bounds.
-    /// 
-    /// This error occurs when attempting to access an element in a CBOR array
-    /// using an index that is outside the valid range for the array.
-    /// - Parameters:
-    ///   - index: The requested index that was attempted to be accessed
-    ///   - count: The actual number of elements in the array (valid indices are 0..<count)
-    case outOfBounds(index: Int, count: Int)
-    
-    /// Required key missing from map.
-    /// 
-    /// This error occurs when trying to decode a CBOR map into a Swift struct or class,
-    /// but a required key is not present in the map.
-    /// - Parameter key: The name of the missing key
-    case missingKey(String)
-    
-    /// Value conversion failed.
-    /// 
-    /// This error occurs when a CBOR value cannot be converted to the requested Swift type,
-    /// even though the CBOR type is compatible with the requested type.
-    /// - Parameter message: A description of what went wrong during the conversion
-    case valueConversionFailed(String)
-    
     /// Invalid UTF-8 string data.
     /// 
     /// This error occurs when decoding a CBOR text string that contains invalid UTF-8 sequences.
     /// All CBOR text strings must contain valid UTF-8 data according to the specification.
     case invalidUTF8
-    
-    /// Integer overflow during encoding/decoding.
-    /// 
-    /// This error occurs when a CBOR integer value is too large to fit into the
-    /// corresponding Swift integer type (e.g., trying to decode a UInt64.max into an Int).
-    case integerOverflow
-    
-    /// Tag value is not supported.
-    /// 
-    /// This error occurs when the decoder encounters a CBOR tag that is not supported
-    /// by the current implementation.
-    /// - Parameter tag: The unsupported tag number
-    case unsupportedTag(UInt64)
     
     /// Reached end of data while decoding.
     /// 
@@ -103,9 +52,9 @@ public enum CBORError: Error, Equatable {
     /// Length of data is too large.
     /// 
     /// This error occurs when a CBOR string, array, or map has a length that is too large
-    /// to be represented as an Int in Swift.
-    /// - Parameter length: The length that was too large
-    case lengthTooLarge(UInt64)
+    /// to be processed by the current implementation, typically due to memory constraints.
+    /// - Parameter length: The length value that exceeded the implementation's limits
+    case lengthTooLarge(UInt64, maximum: UInt64)
     
     /// Indefinite length not supported.
     ///
@@ -148,26 +97,15 @@ public enum CBORError: Error, Equatable {
     case invalidData
 }
 
+@_unavailableInEmbedded
 extension CBORError: CustomStringConvertible {
     /// A human-readable description of the error.
     public var description: String {
         switch self {
         case .invalidCBOR:
             return "Invalid CBOR data: The input does not conform to the CBOR specification (RFC 8949)"
-        case .typeMismatch(let expected, let actual):
-            return "Type mismatch: expected \(expected), found \(actual)"
-        case .outOfBounds(let index, let count):
-            return "Array index out of bounds: attempted to access index \(index), but array only contains \(count) elements (valid indices are 0..<\(count))"
-        case .missingKey(let key):
-            return "Missing key: required key '\(key)' was not found in the CBOR map"
-        case .valueConversionFailed(let message):
-            return "Value conversion failed: \(message)"
         case .invalidUTF8:
             return "Invalid UTF-8 data: the CBOR text string contains invalid UTF-8 sequences"
-        case .integerOverflow:
-            return "Integer overflow: the CBOR integer value is too large for the target Swift integer type"
-        case .unsupportedTag(let tag):
-            return "Unsupported tag: tag \(tag) is not supported by this implementation"
         case .prematureEnd:
             return "Unexpected end of data: reached the end of input before completing the CBOR value"
         case .endOfData:
@@ -178,8 +116,8 @@ extension CBORError: CustomStringConvertible {
             return "Invalid position: attempted to seek to an invalid position in the data"
         case .invalidInitialByte(let byte):
             return "Invalid initial byte: 0x\(String(byte, radix: 16, uppercase: true)) is not a valid CBOR initial byte"
-        case .lengthTooLarge(let length):
-            return "Length too large: \(length) exceeds maximum supported length"
+        case .lengthTooLarge(let length, let maximum):
+            return "Length too large: the specified length \(length) exceeds the implementation's limits of \(maximum)"
         case .indefiniteLengthNotSupported:
             return "Indefinite length not supported: the current implementation does not support indefinite-length encoding"
         case .extraDataFound:
@@ -196,6 +134,13 @@ extension CBORError: CustomStringConvertible {
     }
 }
 
+#if canImport(FoundationEssentials)
+import FoundationEssentials
+#elseif canImport(Foundation)
+import Foundation
+#endif
+
+@_unavailableInEmbedded
 extension CBORError: LocalizedError {
     public var errorDescription: String? {
         return description
@@ -207,20 +152,8 @@ extension CBORError {
         switch (lhs, rhs) {
         case (.invalidCBOR, .invalidCBOR):
             return true
-        case (.typeMismatch(let expectedL, let actualL), .typeMismatch(let expectedR, let actualR)):
-            return expectedL == expectedR && actualL == actualR
-        case (.outOfBounds(let indexL, let countL), .outOfBounds(let indexR, let countR)):
-            return indexL == indexR && countL == countR
-        case (.missingKey(let keyL), .missingKey(let keyR)):
-            return keyL == keyR
-        case (.valueConversionFailed(let messageL), .valueConversionFailed(let messageR)):
-            return messageL == messageR
         case (.invalidUTF8, .invalidUTF8):
             return true
-        case (.integerOverflow, .integerOverflow):
-            return true
-        case (.unsupportedTag(let tagL), .unsupportedTag(let tagR)):
-            return tagL == tagR
         case (.prematureEnd, .prematureEnd):
             return true
         case (.endOfData, .endOfData):
@@ -231,8 +164,8 @@ extension CBORError {
             return true
         case (.invalidInitialByte(let byteL), .invalidInitialByte(let byteR)):
             return byteL == byteR
-        case (.lengthTooLarge(let lengthL), .lengthTooLarge(let lengthR)):
-            return lengthL == lengthR
+        case (.lengthTooLarge(let lengthL, let maximumL), .lengthTooLarge(let lengthR, let maximumR)):
+            return lengthL == lengthR && maximumL == maximumR
         case (.indefiniteLengthNotSupported, .indefiniteLengthNotSupported):
             return true
         case (.extraDataFound, .extraDataFound):

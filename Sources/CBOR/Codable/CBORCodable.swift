@@ -1,3 +1,4 @@
+#if !hasFeature(Embedded)
 #if canImport(FoundationEssentials)
 import FoundationEssentials
 #elseif canImport(Foundation)
@@ -9,6 +10,11 @@ import Foundation
 extension CBOR: Encodable {
     public func encode(to encoder: Encoder) throws {
         var container = encoder.singleValueContainer()
+
+        if let container = container as? CBOREncoderSingleValueContainer {
+            container.encoder.push(self)
+            return
+        }
         
         switch self {
         case .unsignedInt(let value):
@@ -29,7 +35,7 @@ extension CBOR: Encodable {
             }
         case .array(let arrayBytes):
             // For array, we need to decode the array first
-            var reader = CBORReader(data: arrayBytes)
+            var reader = CBORReader(data: Array(arrayBytes))
             let array = try arrayValue() ?? []
             try container.encode(array)
         case .map(let mapBytes):
@@ -89,6 +95,11 @@ extension CBOR: Encodable {
 extension CBOR: Decodable {
     public init(from decoder: Decoder) throws {
         let container = try decoder.singleValueContainer()
+
+        if let container = container as? CBORSingleValueDecodingContainer {
+            self = container.cbor
+            return
+        }
         
         if container.decodeNil() {
             self = .null
@@ -260,3 +271,4 @@ struct CBORKey: CodingKey {
         self.intValue = index
     }
 }
+#endif

@@ -1,3 +1,4 @@
+#if !hasFeature(Embedded)
 #if canImport(FoundationEssentials)
 import FoundationEssentials
 #elseif canImport(Foundation)
@@ -6,7 +7,7 @@ import Foundation
 
 // MARK: - CBOR Encoder
 
-public class CBOREncoder {
+public final class CBOREncoder {
     // MARK: - Storage
     
     private class Storage {
@@ -39,40 +40,26 @@ public class CBOREncoder {
     
     public init() {}
     
-    public func encode<T: Encodable>(_ value: T) throws -> Data {
-        // Special case for Data
-        if let data = value as? Data {
-            let bytes = [UInt8](data)
-            let cbor = CBOR.byteString(ArraySlice(bytes))
-            return Data(cbor.encode())
-        }
-        
-        // Special case for Date
-        if let date = value as? Date {
-            // For tagged values, we need to encode the inner value first and then use the bytes
+    public func encode<T: Encodable>(_ value: T) throws -> [UInt8] {
+        let cbor: CBOR
+        switch value {
+        case let data as Data:
+            cbor = CBOR.byteString(ArraySlice(Array(data)))
+        case let date as Date:
             let innerValue = CBOR.float(date.timeIntervalSince1970)
             let innerBytes = innerValue.encode()
-            let cbor = CBOR.tagged(1, ArraySlice(innerBytes))
-            return Data(cbor.encode())
-        }
-        
-        // Special case for URL
-        if let url = value as? URL {
-            // Convert the URL string to UTF-8 bytes
+            cbor = CBOR.tagged(1, ArraySlice(innerBytes))
+        case let url as URL:
             if let utf8Data = url.absoluteString.data(using: .utf8) {
                 let bytes = [UInt8](utf8Data)
-                let cbor = CBOR.textString(ArraySlice(bytes))
-                return Data(cbor.encode())
+                cbor = CBOR.textString(ArraySlice(bytes))
             } else {
                 throw EncodingError.invalidValue(url, EncodingError.Context(
                     codingPath: [],
                     debugDescription: "Invalid UTF-8 data in URL string"
                 ))
             }
-        }
-        
-        // Special case for arrays of primitive types
-        if let array = value as? [Int] {
+        case let array as [Int]:
             // For arrays, we need to encode each element and then combine them
             var encodedBytes: [UInt8] = []
             // Add array header
@@ -88,11 +75,8 @@ public class CBOREncoder {
                     encodedBytes.append(contentsOf: cbor.encode())
                 }
             }
-            
-            return Data(encodedBytes)
-        }
-        
-        if let array = value as? [String] {
+            cbor = CBOR.array(ArraySlice(encodedBytes))
+        case let array as [String]:
             // For arrays, we need to encode each element and then combine them
             var encodedBytes: [UInt8] = []
             // Add array header
@@ -103,8 +87,8 @@ public class CBOREncoder {
                 // Convert each string to UTF-8 bytes
                 if let utf8Data = item.data(using: .utf8) {
                     let bytes = [UInt8](utf8Data)
-                    let cbor = CBOR.textString(ArraySlice(bytes))
-                    encodedBytes.append(contentsOf: cbor.encode())
+                    let textCbor = CBOR.textString(ArraySlice(bytes))
+                    encodedBytes.append(contentsOf: textCbor.encode())
                 } else {
                     throw EncodingError.invalidValue(item, EncodingError.Context(
                         codingPath: [],
@@ -112,11 +96,8 @@ public class CBOREncoder {
                     ))
                 }
             }
-            
-            return Data(encodedBytes)
-        }
-        
-        if let array = value as? [Bool] {
+            cbor = CBOR.array(ArraySlice(encodedBytes))
+        case let array as [Bool]:
             // For arrays, we need to encode each element and then combine them
             var encodedBytes: [UInt8] = []
             // Add array header
@@ -124,14 +105,11 @@ public class CBOREncoder {
             
             // Add each element
             for item in array {
-                let cbor = CBOR.bool(item)
-                encodedBytes.append(contentsOf: cbor.encode())
+                let boolCbor = CBOR.bool(item)
+                encodedBytes.append(contentsOf: boolCbor.encode())
             }
-            
-            return Data(encodedBytes)
-        }
-        
-        if let array = value as? [Double] {
+            cbor = CBOR.array(ArraySlice(encodedBytes))
+        case let array as [Double]:
             // For arrays, we need to encode each element and then combine them
             var encodedBytes: [UInt8] = []
             // Add array header
@@ -139,14 +117,11 @@ public class CBOREncoder {
             
             // Add each element
             for item in array {
-                let cbor = CBOR.float(item)
-                encodedBytes.append(contentsOf: cbor.encode())
+                let floatCbor = CBOR.float(item)
+                encodedBytes.append(contentsOf: floatCbor.encode())
             }
-            
-            return Data(encodedBytes)
-        }
-        
-        if let array = value as? [Float] {
+            cbor = CBOR.array(ArraySlice(encodedBytes))
+        case let array as [Float]:
             // For arrays, we need to encode each element and then combine them
             var encodedBytes: [UInt8] = []
             // Add array header
@@ -154,14 +129,11 @@ public class CBOREncoder {
             
             // Add each element
             for item in array {
-                let cbor = CBOR.float(Double(item))
-                encodedBytes.append(contentsOf: cbor.encode())
+                let floatCbor = CBOR.float(Double(item))
+                encodedBytes.append(contentsOf: floatCbor.encode())
             }
-            
-            return Data(encodedBytes)
-        }
-        
-        if let array = value as? [Data] {
+            cbor = CBOR.array(ArraySlice(encodedBytes))
+        case let array as [Data]:
             // For arrays, we need to encode each element and then combine them
             var encodedBytes: [UInt8] = []
             // Add array header
@@ -170,46 +142,35 @@ public class CBOREncoder {
             // Add each element
             for item in array {
                 let bytes = [UInt8](item)
-                let cbor = CBOR.byteString(ArraySlice(bytes))
-                encodedBytes.append(contentsOf: cbor.encode())
+                let dataCbor = CBOR.byteString(ArraySlice(bytes))
+                encodedBytes.append(contentsOf: dataCbor.encode())
             }
-            
-            return Data(encodedBytes)
+            cbor = CBOR.array(ArraySlice(encodedBytes))
+        default:
+            storage = Storage()
+            try value.encode(to: self)
+            cbor = storage.topValue
         }
-        
-        // For other types, use the Encodable protocol
-        storage = Storage() // Reset storage
-        try value.encode(to: self)
-        
-        // Get the encoded CBOR value and convert it to Data
-        let cbor = storage.topValue
-        return Data(cbor.encode())
+        return cbor.encode()
     }
     
     // MARK: - Internal API
     
-    fileprivate func push(_ value: CBOR) {
+    @usableFromInline
+    internal func push(_ value: CBOR) {
         storage.push(value)
     }
     
     // Implementation of the encodeCBOR method that's referenced in the code
     fileprivate func encodeCBOR<T: Encodable>(_ value: T) throws -> CBOR {
-        // Special case for Data
-        if let data = value as? Data {
-            return CBOR.byteString(ArraySlice([UInt8](data)))
-        }
-        
-        // Special case for Date
-        if let date = value as? Date {
-            // For tagged values, we need to encode the inner value first and then use the bytes
+        switch value {
+        case let data as Data:
+            return CBOR.byteString(ArraySlice(Array(data)))
+        case let date as Date:
             let floatValue = CBOR.float(date.timeIntervalSince1970)
             let encodedBytes = floatValue.encode()
             return CBOR.tagged(1, ArraySlice(encodedBytes))
-        }
-        
-        // Special case for URL
-        if let url = value as? URL {
-            // Convert the URL string to UTF-8 bytes
+        case let url as URL:
             if let utf8Data = url.absoluteString.data(using: .utf8) {
                 let bytes = [UInt8](utf8Data)
                 return CBOR.textString(ArraySlice(bytes))
@@ -219,10 +180,7 @@ public class CBOREncoder {
                     debugDescription: "Invalid UTF-8 data in URL string"
                 ))
             }
-        }
-        
-        // Special case for arrays of primitive types
-        if let array = value as? [Int] {
+        case let array as [Int]:
             // For arrays, we need to encode each element and then combine them
             var encodedBytes: [UInt8] = []
             // Add array header
@@ -239,9 +197,8 @@ public class CBOREncoder {
                 }
             }
             
-            return CBOR.byteString(ArraySlice(encodedBytes))
-        }
-        if let array = value as? [String] {
+            return CBOR.array(ArraySlice(encodedBytes))
+        case let array as [String]:
             // For arrays, we need to encode each element and then combine them
             var encodedBytes: [UInt8] = []
             // Add array header
@@ -262,9 +219,8 @@ public class CBOREncoder {
                 }
             }
             
-            return CBOR.byteString(ArraySlice(encodedBytes))
-        }
-        if let array = value as? [Bool] {
+            return CBOR.array(ArraySlice(encodedBytes))
+        case let array as [Bool]:
             // For arrays, we need to encode each element and then combine them
             var encodedBytes: [UInt8] = []
             // Add array header
@@ -276,9 +232,8 @@ public class CBOREncoder {
                 encodedBytes.append(contentsOf: cbor.encode())
             }
             
-            return CBOR.byteString(ArraySlice(encodedBytes))
-        }
-        if let array = value as? [Double] {
+            return CBOR.array(ArraySlice(encodedBytes))
+        case let array as [Double]:
             // For arrays, we need to encode each element and then combine them
             var encodedBytes: [UInt8] = []
             // Add array header
@@ -290,9 +245,8 @@ public class CBOREncoder {
                 encodedBytes.append(contentsOf: cbor.encode())
             }
             
-            return CBOR.byteString(ArraySlice(encodedBytes))
-        }
-        if let array = value as? [Float] {
+            return CBOR.array(ArraySlice(encodedBytes))
+        case let array as [Float]:
             // For arrays, we need to encode each element and then combine them
             var encodedBytes: [UInt8] = []
             // Add array header
@@ -304,9 +258,8 @@ public class CBOREncoder {
                 encodedBytes.append(contentsOf: cbor.encode())
             }
             
-            return CBOR.byteString(ArraySlice(encodedBytes))
-        }
-        if let array = value as? [Data] {
+            return CBOR.array(ArraySlice(encodedBytes))
+        case let array as [Data]:
             // For arrays, we need to encode each element and then combine them
             var encodedBytes: [UInt8] = []
             // Add array header
@@ -319,15 +272,15 @@ public class CBOREncoder {
                 encodedBytes.append(contentsOf: cbor.encode())
             }
             
-            return CBOR.byteString(ArraySlice(encodedBytes))
+            return CBOR.array(ArraySlice(encodedBytes))
+        default:
+            // For other types, use the Encodable protocol
+            let tempEncoder = CBOREncoder()
+            try value.encode(to: tempEncoder)
+            
+            // Get the encoded CBOR value
+            return tempEncoder.storage.topValue
         }
-        
-        // For other types, use the Encodable protocol
-        let tempEncoder = CBOREncoder()
-        try value.encode(to: tempEncoder)
-        
-        // Get the encoded CBOR value
-        return tempEncoder.storage.topValue
     }
     
     /// Encodes an unsigned integer with the given major type
@@ -1058,9 +1011,9 @@ private struct AnyCodingKey: CodingKey {
     }
 }
 
-private struct CBOREncoderSingleValueContainer: SingleValueEncodingContainer {
+internal struct CBOREncoderSingleValueContainer: SingleValueEncodingContainer {
     let codingPath: [CodingKey]
-    private let encoder: CBOREncoder
+    internal let encoder: CBOREncoder
     
     init(codingPath: [CodingKey], encoder: CBOREncoder) {
         self.codingPath = codingPath
@@ -1148,3 +1101,4 @@ private struct CBOREncoderSingleValueContainer: SingleValueEncodingContainer {
         try encoder.push(encoder.encodeCBOR(value))
     }
 }
+#endif
