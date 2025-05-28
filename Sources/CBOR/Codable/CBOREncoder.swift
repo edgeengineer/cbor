@@ -44,23 +44,108 @@ public final class CBOREncoder {
         let cbor: CBOR
         switch value {
         case let data as Data:
-            cbor = CBOR.byteString(Array(data))
+            cbor = CBOR.byteString(ArraySlice(Array(data)))
         case let date as Date:
-            cbor = CBOR.tagged(1, CBOR.float(date.timeIntervalSince1970))
+            let innerValue = CBOR.float(date.timeIntervalSince1970)
+            let innerBytes = innerValue.encode()
+            cbor = CBOR.tagged(1, ArraySlice(innerBytes))
         case let url as URL:
-            cbor = CBOR.textString(url.absoluteString)
+            if let utf8Data = url.absoluteString.data(using: .utf8) {
+                let bytes = [UInt8](utf8Data)
+                cbor = CBOR.textString(ArraySlice(bytes))
+            } else {
+                throw EncodingError.invalidValue(url, EncodingError.Context(
+                    codingPath: [],
+                    debugDescription: "Invalid UTF-8 data in URL string"
+                ))
+            }
         case let array as [Int]:
-            cbor = CBOR.array(array.map { $0 < 0 ? CBOR.negativeInt(Int64(-1 - $0)) : CBOR.unsignedInt(UInt64($0)) })
+            // For arrays, we need to encode each element and then combine them
+            var encodedBytes: [UInt8] = []
+            // Add array header
+            encodeUnsigned(major: 4, value: UInt64(array.count), into: &encodedBytes)
+            
+            // Add each element
+            for item in array {
+                if item < 0 {
+                    let cbor = CBOR.negativeInt(Int64(item))
+                    encodedBytes.append(contentsOf: cbor.encode())
+                } else {
+                    let cbor = CBOR.unsignedInt(UInt64(item))
+                    encodedBytes.append(contentsOf: cbor.encode())
+                }
+            }
+            cbor = CBOR.array(ArraySlice(encodedBytes))
         case let array as [String]:
-            cbor = CBOR.array(array.map { CBOR.textString($0) })
+            // For arrays, we need to encode each element and then combine them
+            var encodedBytes: [UInt8] = []
+            // Add array header
+            encodeUnsigned(major: 4, value: UInt64(array.count), into: &encodedBytes)
+            
+            // Add each element
+            for item in array {
+                // Convert each string to UTF-8 bytes
+                if let utf8Data = item.data(using: .utf8) {
+                    let bytes = [UInt8](utf8Data)
+                    let textCbor = CBOR.textString(ArraySlice(bytes))
+                    encodedBytes.append(contentsOf: textCbor.encode())
+                } else {
+                    throw EncodingError.invalidValue(item, EncodingError.Context(
+                        codingPath: [],
+                        debugDescription: "Invalid UTF-8 data in string array item"
+                    ))
+                }
+            }
+            cbor = CBOR.array(ArraySlice(encodedBytes))
         case let array as [Bool]:
-            cbor = CBOR.array(array.map { CBOR.bool($0) })
+            // For arrays, we need to encode each element and then combine them
+            var encodedBytes: [UInt8] = []
+            // Add array header
+            encodeUnsigned(major: 4, value: UInt64(array.count), into: &encodedBytes)
+            
+            // Add each element
+            for item in array {
+                let boolCbor = CBOR.bool(item)
+                encodedBytes.append(contentsOf: boolCbor.encode())
+            }
+            cbor = CBOR.array(ArraySlice(encodedBytes))
         case let array as [Double]:
-            cbor = CBOR.array(array.map { CBOR.float($0) })
+            // For arrays, we need to encode each element and then combine them
+            var encodedBytes: [UInt8] = []
+            // Add array header
+            encodeUnsigned(major: 4, value: UInt64(array.count), into: &encodedBytes)
+            
+            // Add each element
+            for item in array {
+                let floatCbor = CBOR.float(item)
+                encodedBytes.append(contentsOf: floatCbor.encode())
+            }
+            cbor = CBOR.array(ArraySlice(encodedBytes))
         case let array as [Float]:
-            cbor = CBOR.array(array.map { CBOR.float(Double($0)) })
+            // For arrays, we need to encode each element and then combine them
+            var encodedBytes: [UInt8] = []
+            // Add array header
+            encodeUnsigned(major: 4, value: UInt64(array.count), into: &encodedBytes)
+            
+            // Add each element
+            for item in array {
+                let floatCbor = CBOR.float(Double(item))
+                encodedBytes.append(contentsOf: floatCbor.encode())
+            }
+            cbor = CBOR.array(ArraySlice(encodedBytes))
         case let array as [Data]:
-            cbor = CBOR.array(array.map { CBOR.byteString(Array($0)) })
+            // For arrays, we need to encode each element and then combine them
+            var encodedBytes: [UInt8] = []
+            // Add array header
+            encodeUnsigned(major: 4, value: UInt64(array.count), into: &encodedBytes)
+            
+            // Add each element
+            for item in array {
+                let bytes = [UInt8](item)
+                let dataCbor = CBOR.byteString(ArraySlice(bytes))
+                encodedBytes.append(contentsOf: dataCbor.encode())
+            }
+            cbor = CBOR.array(ArraySlice(encodedBytes))
         default:
             storage = Storage()
             try value.encode(to: self)
@@ -80,23 +165,114 @@ public final class CBOREncoder {
     fileprivate func encodeCBOR<T: Encodable>(_ value: T) throws -> CBOR {
         switch value {
         case let data as Data:
-            return CBOR.byteString(Array(data))
+            return CBOR.byteString(ArraySlice(Array(data)))
         case let date as Date:
-            return CBOR.tagged(1, CBOR.float(date.timeIntervalSince1970))
+            let floatValue = CBOR.float(date.timeIntervalSince1970)
+            let encodedBytes = floatValue.encode()
+            return CBOR.tagged(1, ArraySlice(encodedBytes))
         case let url as URL:
-            return CBOR.textString(url.absoluteString)
+            if let utf8Data = url.absoluteString.data(using: .utf8) {
+                let bytes = [UInt8](utf8Data)
+                return CBOR.textString(ArraySlice(bytes))
+            } else {
+                throw EncodingError.invalidValue(url, EncodingError.Context(
+                    codingPath: [],
+                    debugDescription: "Invalid UTF-8 data in URL string"
+                ))
+            }
         case let array as [Int]:
-            return CBOR.array(array.map { $0 < 0 ? CBOR.negativeInt(Int64(-1 - $0)) : CBOR.unsignedInt(UInt64($0)) })
+            // For arrays, we need to encode each element and then combine them
+            var encodedBytes: [UInt8] = []
+            // Add array header
+            encodeUnsigned(major: 4, value: UInt64(array.count), into: &encodedBytes)
+            
+            // Add each element
+            for item in array {
+                if item < 0 {
+                    let cbor = CBOR.negativeInt(Int64(item))
+                    encodedBytes.append(contentsOf: cbor.encode())
+                } else {
+                    let cbor = CBOR.unsignedInt(UInt64(item))
+                    encodedBytes.append(contentsOf: cbor.encode())
+                }
+            }
+            
+            return CBOR.array(ArraySlice(encodedBytes))
         case let array as [String]:
-            return CBOR.array(array.map { CBOR.textString($0) })
+            // For arrays, we need to encode each element and then combine them
+            var encodedBytes: [UInt8] = []
+            // Add array header
+            encodeUnsigned(major: 4, value: UInt64(array.count), into: &encodedBytes)
+            
+            // Add each element
+            for item in array {
+                // Convert each string to UTF-8 bytes
+                if let utf8Data = item.data(using: .utf8) {
+                    let bytes = [UInt8](utf8Data)
+                    let cbor = CBOR.textString(ArraySlice(bytes))
+                    encodedBytes.append(contentsOf: cbor.encode())
+                } else {
+                    throw EncodingError.invalidValue(item, EncodingError.Context(
+                        codingPath: [],
+                        debugDescription: "Invalid UTF-8 data in string array item"
+                    ))
+                }
+            }
+            
+            return CBOR.array(ArraySlice(encodedBytes))
         case let array as [Bool]:
-            return CBOR.array(array.map { CBOR.bool($0) })
+            // For arrays, we need to encode each element and then combine them
+            var encodedBytes: [UInt8] = []
+            // Add array header
+            encodeUnsigned(major: 4, value: UInt64(array.count), into: &encodedBytes)
+            
+            // Add each element
+            for item in array {
+                let cbor = CBOR.bool(item)
+                encodedBytes.append(contentsOf: cbor.encode())
+            }
+            
+            return CBOR.array(ArraySlice(encodedBytes))
         case let array as [Double]:
-            return CBOR.array(array.map { CBOR.float($0) })
+            // For arrays, we need to encode each element and then combine them
+            var encodedBytes: [UInt8] = []
+            // Add array header
+            encodeUnsigned(major: 4, value: UInt64(array.count), into: &encodedBytes)
+            
+            // Add each element
+            for item in array {
+                let cbor = CBOR.float(item)
+                encodedBytes.append(contentsOf: cbor.encode())
+            }
+            
+            return CBOR.array(ArraySlice(encodedBytes))
         case let array as [Float]:
-            return CBOR.array(array.map { CBOR.float(Double($0)) })
+            // For arrays, we need to encode each element and then combine them
+            var encodedBytes: [UInt8] = []
+            // Add array header
+            encodeUnsigned(major: 4, value: UInt64(array.count), into: &encodedBytes)
+            
+            // Add each element
+            for item in array {
+                let cbor = CBOR.float(Double(item))
+                encodedBytes.append(contentsOf: cbor.encode())
+            }
+            
+            return CBOR.array(ArraySlice(encodedBytes))
         case let array as [Data]:
-            return CBOR.array(array.map { CBOR.byteString(Array($0)) })
+            // For arrays, we need to encode each element and then combine them
+            var encodedBytes: [UInt8] = []
+            // Add array header
+            encodeUnsigned(major: 4, value: UInt64(array.count), into: &encodedBytes)
+            
+            // Add each element
+            for item in array {
+                let bytes = [UInt8](item)
+                let cbor = CBOR.byteString(ArraySlice(bytes))
+                encodedBytes.append(contentsOf: cbor.encode())
+            }
+            
+            return CBOR.array(ArraySlice(encodedBytes))
         default:
             // For other types, use the Encodable protocol
             let tempEncoder = CBOREncoder()
@@ -104,6 +280,42 @@ public final class CBOREncoder {
             
             // Get the encoded CBOR value
             return tempEncoder.storage.topValue
+        }
+    }
+    
+    /// Encodes an unsigned integer with the given major type
+    ///
+    /// - Parameters:
+    ///   - major: The major type of the integer
+    ///   - value: The unsigned integer value
+    ///   - output: The output buffer to write the encoded bytes to
+    fileprivate func encodeUnsigned(major: UInt8, value: UInt64, into output: inout [UInt8]) {
+        let majorByte = major << 5
+        if value < 24 {
+            output.append(majorByte | UInt8(value))
+        } else if value <= UInt8.max {
+            output.append(majorByte | 24)
+            output.append(UInt8(value))
+        } else if value <= UInt16.max {
+            output.append(majorByte | 25)
+            output.append(UInt8(value >> 8))
+            output.append(UInt8(value & 0xff))
+        } else if value <= UInt32.max {
+            output.append(majorByte | 26)
+            output.append(UInt8(value >> 24))
+            output.append(UInt8((value >> 16) & 0xff))
+            output.append(UInt8((value >> 8) & 0xff))
+            output.append(UInt8(value & 0xff))
+        } else {
+            output.append(majorByte | 27)
+            output.append(UInt8(value >> 56))
+            output.append(UInt8((value >> 48) & 0xff))
+            output.append(UInt8((value >> 40) & 0xff))
+            output.append(UInt8((value >> 32) & 0xff))
+            output.append(UInt8((value >> 24) & 0xff))
+            output.append(UInt8((value >> 16) & 0xff))
+            output.append(UInt8((value >> 8) & 0xff))
+            output.append(UInt8(value & 0xff))
         }
     }
 }
@@ -143,7 +355,53 @@ private struct CBOREncoderUnkeyedContainer: UnkeyedEncodingContainer {
     
     // Finalize the container by pushing the array to the encoder
     private mutating func finalize() {
-        encoder.push(CBOR.array(elements))
+        // For arrays, we need to encode each element and then combine them
+        var encodedBytes: [UInt8] = []
+        // Add array header
+        encoder.encodeUnsigned(major: 4, value: UInt64(elements.count), into: &encodedBytes)
+        
+        // Add each element
+        for element in elements {
+            encodedBytes.append(contentsOf: element.encode())
+        }
+        
+        encoder.push(CBOR.array(ArraySlice(encodedBytes)))
+    }
+    
+    /// Encodes an unsigned integer with the given major type
+    ///
+    /// - Parameters:
+    ///   - major: The major type of the integer
+    ///   - value: The unsigned integer value
+    ///   - output: The output buffer to write the encoded bytes to
+    private func encodeUnsigned(major: UInt8, value: UInt64, into output: inout [UInt8]) {
+        let majorByte = major << 5
+        if value < 24 {
+            output.append(majorByte | UInt8(value))
+        } else if value <= UInt8.max {
+            output.append(majorByte | 24)
+            output.append(UInt8(value))
+        } else if value <= UInt16.max {
+            output.append(majorByte | 25)
+            output.append(UInt8(value >> 8))
+            output.append(UInt8(value & 0xff))
+        } else if value <= UInt32.max {
+            output.append(majorByte | 26)
+            output.append(UInt8(value >> 24))
+            output.append(UInt8((value >> 16) & 0xff))
+            output.append(UInt8((value >> 8) & 0xff))
+            output.append(UInt8(value & 0xff))
+        } else {
+            output.append(majorByte | 27)
+            output.append(UInt8(value >> 56))
+            output.append(UInt8((value >> 48) & 0xff))
+            output.append(UInt8((value >> 40) & 0xff))
+            output.append(UInt8((value >> 32) & 0xff))
+            output.append(UInt8((value >> 24) & 0xff))
+            output.append(UInt8((value >> 16) & 0xff))
+            output.append(UInt8((value >> 8) & 0xff))
+            output.append(UInt8(value & 0xff))
+        }
     }
     
     mutating func encodeNil() throws {
@@ -157,7 +415,16 @@ private struct CBOREncoderUnkeyedContainer: UnkeyedEncodingContainer {
     }
     
     mutating func encode(_ value: String) throws {
-        elements.append(CBOR.textString(value))
+        // Convert the string to UTF-8 bytes
+        if let utf8Data = value.data(using: .utf8) {
+            let bytes = [UInt8](utf8Data)
+            elements.append(CBOR.textString(ArraySlice(bytes)))
+        } else {
+            throw EncodingError.invalidValue(value, EncodingError.Context(
+                codingPath: codingPath,
+                debugDescription: "Unable to encode string as UTF-8"
+            ))
+        }
         finalize()
     }
     
@@ -226,23 +493,35 @@ private struct CBOREncoderUnkeyedContainer: UnkeyedEncodingContainer {
     mutating func encode<T>(_ value: T) throws where T: Encodable {
         // Special case for Data
         if let data = value as? Data {
-            elements.append(CBOR.byteString(Array(data)))
+            elements.append(CBOR.byteString(ArraySlice([UInt8](data))))
             finalize()
             return
         }
         
         // Special case for Date
         if let date = value as? Date {
-            elements.append(CBOR.tagged(1, CBOR.float(date.timeIntervalSince1970)))
+            // For tagged values, we need to encode the inner value first and then use the bytes
+            let innerValue = CBOR.float(date.timeIntervalSince1970)
+            let innerBytes = innerValue.encode()
+            elements.append(CBOR.tagged(1, ArraySlice(innerBytes)))
             finalize()
             return
         }
         
         // Special case for URL
         if let url = value as? URL {
-            elements.append(CBOR.textString(url.absoluteString))
-            finalize()
-            return
+            // Convert the URL string to UTF-8 bytes
+            if let utf8Data = url.absoluteString.data(using: .utf8) {
+                let bytes = [UInt8](utf8Data)
+                elements.append(CBOR.textString(ArraySlice(bytes)))
+                finalize()
+                return
+            } else {
+                throw EncodingError.invalidValue(url, EncodingError.Context(
+                    codingPath: codingPath,
+                    debugDescription: "Invalid UTF-8 data in URL string"
+                ))
+            }
         }
         
         // For other types, use the Encodable protocol
@@ -299,101 +578,192 @@ private struct CBOREncoderKeyedContainer<K: CodingKey>: KeyedEncodingContainerPr
         self.encoder = encoder
     }
     
+    // Helper method to convert a string to a CBOR text string
+    private func textStringCBOR(_ string: String) -> CBOR {
+        if let utf8Data = string.data(using: .utf8) {
+            let bytes = [UInt8](utf8Data)
+            return CBOR.textString(ArraySlice(bytes))
+        } else {
+            // This should never happen with valid strings, but we need to handle it
+            return CBOR.textString(ArraySlice<UInt8>())
+        }
+    }
+    
     // Finalize the container by pushing the map to the encoder
     private mutating func finalize() {
-        encoder.push(CBOR.map(pairs))
+        // For map, we need to encode the pairs
+        var encodedBytes: [UInt8] = []
+        // Add map header
+        encodeUnsigned(major: 5, value: UInt64(pairs.count), into: &encodedBytes)
+        
+        // Add each key-value pair
+        for pair in pairs {
+            encodedBytes.append(contentsOf: pair.key.encode())
+            encodedBytes.append(contentsOf: pair.value.encode())
+        }
+        
+        encoder.push(CBOR.map(ArraySlice(encodedBytes)))
+    }
+    
+    /// Encodes an unsigned integer with the given major type
+    ///
+    /// - Parameters:
+    ///   - major: The major type of the integer
+    ///   - value: The unsigned integer value
+    ///   - output: The output buffer to write the encoded bytes to
+    private func encodeUnsigned(major: UInt8, value: UInt64, into output: inout [UInt8]) {
+        let majorByte = major << 5
+        if value < 24 {
+            output.append(majorByte | UInt8(value))
+        } else if value <= UInt8.max {
+            output.append(majorByte | 24)
+            output.append(UInt8(value))
+        } else if value <= UInt16.max {
+            output.append(majorByte | 25)
+            output.append(UInt8(value >> 8))
+            output.append(UInt8(value & 0xff))
+        } else if value <= UInt32.max {
+            output.append(majorByte | 26)
+            output.append(UInt8(value >> 24))
+            output.append(UInt8((value >> 16) & 0xff))
+            output.append(UInt8((value >> 8) & 0xff))
+            output.append(UInt8(value & 0xff))
+        } else {
+            output.append(majorByte | 27)
+            output.append(UInt8(value >> 56))
+            output.append(UInt8((value >> 48) & 0xff))
+            output.append(UInt8((value >> 40) & 0xff))
+            output.append(UInt8((value >> 32) & 0xff))
+            output.append(UInt8((value >> 24) & 0xff))
+            output.append(UInt8((value >> 16) & 0xff))
+            output.append(UInt8((value >> 8) & 0xff))
+            output.append(UInt8(value & 0xff))
+        }
     }
     
     mutating func encodeNil(forKey key: K) throws {
         let keyString = key.stringValue
-        pairs.append(CBORMapPair(key: CBOR.textString(keyString), value: CBOR.null))
+        pairs.append(CBORMapPair(key: textStringCBOR(keyString), value: CBOR.null))
         finalize()
     }
     
     mutating func encode(_ value: Bool, forKey key: K) throws {
         let keyString = key.stringValue
-        pairs.append(CBORMapPair(key: CBOR.textString(keyString), value: CBOR.bool(value)))
+        pairs.append(CBORMapPair(key: textStringCBOR(keyString), value: CBOR.bool(value)))
         finalize()
     }
     
     mutating func encode(_ value: String, forKey key: K) throws {
-        let keyString = key.stringValue
-        pairs.append(CBORMapPair(key: CBOR.textString(keyString), value: CBOR.textString(value)))
+        // Convert the string to UTF-8 bytes
+        if let utf8Data = value.data(using: .utf8) {
+            let bytes = [UInt8](utf8Data)
+            let keyString = key.stringValue
+            pairs.append(CBORMapPair(key: textStringCBOR(keyString), value: CBOR.textString(ArraySlice(bytes))))
+        } else {
+            throw EncodingError.invalidValue(value, EncodingError.Context(
+                codingPath: codingPath,
+                debugDescription: "Unable to encode string as UTF-8"
+            ))
+        }
         finalize()
     }
     
     mutating func encode(_ value: Double, forKey key: K) throws {
         let keyString = key.stringValue
-        pairs.append(CBORMapPair(key: CBOR.textString(keyString), value: CBOR.float(value)))
+        pairs.append(CBORMapPair(key: textStringCBOR(keyString), value: CBOR.float(value)))
         finalize()
     }
     
     mutating func encode(_ value: Float, forKey key: K) throws {
         let keyString = key.stringValue
-        pairs.append(CBORMapPair(key: CBOR.textString(keyString), value: CBOR.float(Double(value))))
+        pairs.append(CBORMapPair(key: textStringCBOR(keyString), value: CBOR.float(Double(value))))
         finalize()
     }
     
     mutating func encode(_ value: Int, forKey key: K) throws {
         let keyString = key.stringValue
         if value < 0 {
-            pairs.append(CBORMapPair(key: CBOR.textString(keyString), value: CBOR.negativeInt(Int64(-1 - value))))
+            pairs.append(CBORMapPair(key: textStringCBOR(keyString), value: CBOR.negativeInt(Int64(-1 - value))))
         } else {
-            pairs.append(CBORMapPair(key: CBOR.textString(keyString), value: CBOR.unsignedInt(UInt64(value))))
+            pairs.append(CBORMapPair(key: textStringCBOR(keyString), value: CBOR.unsignedInt(UInt64(value))))
         }
         finalize()
     }
     
     mutating func encode(_ value: Int8, forKey key: K) throws {
-        try encode(Int(value), forKey: key)
+        let keyString = key.stringValue
+        if value < 0 {
+            pairs.append(CBORMapPair(key: textStringCBOR(keyString), value: CBOR.negativeInt(Int64(-1 - Int64(value)))))
+        } else {
+            pairs.append(CBORMapPair(key: textStringCBOR(keyString), value: CBOR.unsignedInt(UInt64(value))))
+        }
+        finalize()
     }
     
     mutating func encode(_ value: Int16, forKey key: K) throws {
-        try encode(Int(value), forKey: key)
+        let keyString = key.stringValue
+        if value < 0 {
+            pairs.append(CBORMapPair(key: textStringCBOR(keyString), value: CBOR.negativeInt(Int64(-1 - Int64(value)))))
+        } else {
+            pairs.append(CBORMapPair(key: textStringCBOR(keyString), value: CBOR.unsignedInt(UInt64(value))))
+        }
+        finalize()
     }
     
     mutating func encode(_ value: Int32, forKey key: K) throws {
-        try encode(Int(value), forKey: key)
+        let keyString = key.stringValue
+        if value < 0 {
+            pairs.append(CBORMapPair(key: textStringCBOR(keyString), value: CBOR.negativeInt(Int64(-1 - Int64(value)))))
+        } else {
+            pairs.append(CBORMapPair(key: textStringCBOR(keyString), value: CBOR.unsignedInt(UInt64(value))))
+        }
+        finalize()
     }
     
     mutating func encode(_ value: Int64, forKey key: K) throws {
         let keyString = key.stringValue
         if value < 0 {
-            pairs.append(CBORMapPair(key: CBOR.textString(keyString), value: CBOR.negativeInt(Int64(-1 - value))))
+            pairs.append(CBORMapPair(key: textStringCBOR(keyString), value: CBOR.negativeInt(value)))
         } else {
-            pairs.append(CBORMapPair(key: CBOR.textString(keyString), value: CBOR.unsignedInt(UInt64(value))))
+            pairs.append(CBORMapPair(key: textStringCBOR(keyString), value: CBOR.unsignedInt(UInt64(value))))
         }
         finalize()
     }
     
     mutating func encode(_ value: UInt, forKey key: K) throws {
         let keyString = key.stringValue
-        pairs.append(CBORMapPair(key: CBOR.textString(keyString), value: CBOR.unsignedInt(UInt64(value))))
+        pairs.append(CBORMapPair(key: textStringCBOR(keyString), value: CBOR.unsignedInt(UInt64(value))))
         finalize()
     }
     
     mutating func encode(_ value: UInt8, forKey key: K) throws {
-        try encode(UInt(value), forKey: key)
+        let keyString = key.stringValue
+        pairs.append(CBORMapPair(key: textStringCBOR(keyString), value: CBOR.unsignedInt(UInt64(value))))
+        finalize()
     }
     
     mutating func encode(_ value: UInt16, forKey key: K) throws {
-        try encode(UInt(value), forKey: key)
+        let keyString = key.stringValue
+        pairs.append(CBORMapPair(key: textStringCBOR(keyString), value: CBOR.unsignedInt(UInt64(value))))
+        finalize()
     }
     
     mutating func encode(_ value: UInt32, forKey key: K) throws {
-        try encode(UInt(value), forKey: key)
+        let keyString = key.stringValue
+        pairs.append(CBORMapPair(key: textStringCBOR(keyString), value: CBOR.unsignedInt(UInt64(value))))
+        finalize()
     }
     
     mutating func encode(_ value: UInt64, forKey key: K) throws {
         let keyString = key.stringValue
-        pairs.append(CBORMapPair(key: CBOR.textString(keyString), value: CBOR.unsignedInt(value)))
+        pairs.append(CBORMapPair(key: textStringCBOR(keyString), value: CBOR.unsignedInt(value)))
         finalize()
     }
     
     mutating func encode<T>(_ value: T, forKey key: K) throws where T: Encodable {
         let keyString = key.stringValue
         let cbor = try encoder.encodeCBOR(value)
-        pairs.append(CBORMapPair(key: CBOR.textString(keyString), value: cbor))
+        pairs.append(CBORMapPair(key: textStringCBOR(keyString), value: cbor))
         finalize()
     }
     
@@ -407,7 +777,7 @@ private struct CBOREncoderKeyedContainer<K: CodingKey>: KeyedEncodingContainerPr
         // Create a new container that will finalize when it's done
         let finalizedContainer = FinalizedKeyedEncodingContainer(container: container) { [self] result in
             var mutableSelf = self
-            mutableSelf.pairs.append(CBORMapPair(key: CBOR.textString(keyString), value: result))
+            mutableSelf.pairs.append(CBORMapPair(key: textStringCBOR(keyString), value: result))
         }
         
         return KeyedEncodingContainer(finalizedContainer)
@@ -423,12 +793,12 @@ private struct CBOREncoderKeyedContainer<K: CodingKey>: KeyedEncodingContainerPr
         // Create a new container that will finalize when it's done
         return FinalizedUnkeyedEncodingContainer(container: container) { [self] result in
             var mutableSelf = self
-            mutableSelf.pairs.append(CBORMapPair(key: CBOR.textString(keyString), value: result))
+            mutableSelf.pairs.append(CBORMapPair(key: textStringCBOR(keyString), value: result))
         }
     }
     
     func superEncoder() -> Encoder {
-        return superEncoder(forKey: Key(stringValue: "super")!)
+        return encoder
     }
     
     func superEncoder(forKey key: K) -> Encoder {
@@ -659,7 +1029,16 @@ internal struct CBOREncoderSingleValueContainer: SingleValueEncodingContainer {
     }
     
     func encode(_ value: String) throws {
-        encoder.push(CBOR.textString(value))
+        // Convert the string to UTF-8 bytes
+        if let utf8Data = value.data(using: .utf8) {
+            let bytes = [UInt8](utf8Data)
+            encoder.push(CBOR.textString(ArraySlice(bytes)))
+        } else {
+            throw EncodingError.invalidValue(value, EncodingError.Context(
+                codingPath: codingPath,
+                debugDescription: "Unable to encode string as UTF-8"
+            ))
+        }
     }
     
     func encode(_ value: Double) throws {

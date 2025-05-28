@@ -623,19 +623,25 @@ struct CBORCodableTests {
             let cbor = try CBOR.decode(Array(data))
             
             // Verify the structure manually
-            if case let .map(pairs) = cbor {
+            if case .map = cbor {
+                // Decode the map to get the actual pairs
+                let decodedPairs = try cbor.mapValue() ?? []
+                
                 // Check that we have the expected keys
-                let nameFound = pairs.contains { pair in
-                    if case .textString("name") = pair.key, 
-                       case .textString("Alice") = pair.value {
+                let nameFound = decodedPairs.contains { pair in
+                    if case .textString = pair.key, 
+                       case .textString = pair.value,
+                       pair.key.stringValue == "name",
+                       pair.value.stringValue == "Alice" {
                         return true
                     }
                     return false
                 }
                 
-                let ageFound = pairs.contains { pair in
-                    if case .textString("age") = pair.key, 
-                       case .unsignedInt(30) = pair.value {
+                let ageFound = decodedPairs.contains { pair in
+                    if case .textString = pair.key, 
+                       case .unsignedInt(30) = pair.value,
+                       pair.key.stringValue == "age" {
                         return true
                     }
                     return false

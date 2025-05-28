@@ -1,13 +1,21 @@
 /// A helper struct for reading CBOR data byte by byte
-struct CBORReader: ~Copyable {
+struct CBORReader {
     private let data: [UInt8]
     private(set) var index: Int
     internal var maximumStringLength: UInt64 = 65_536
     internal var maximumElementCount: UInt64 = 16_384
     
+    /// Creates a reader with the given data
+    ///
+    /// - Parameter data: The data to read
     init(data: [UInt8]) {
         self.data = data
         self.index = 0
+    }
+    
+    /// Whether there are more bytes to read
+    var hasMoreBytes: Bool {
+        return index < data.count
     }
     
     /// Read a single byte from the input
@@ -15,6 +23,7 @@ struct CBORReader: ~Copyable {
         guard index < data.count else {
             throw CBORError.prematureEnd
         }
+        
         let byte = data[index]
         index += 1
         return byte
@@ -41,18 +50,24 @@ struct CBORReader: ~Copyable {
         }
     }
     
-    /// Check if there are more bytes to read
-    var hasMoreBytes: Bool {
-        return index < data.count
-    }
-    
     /// Get the current position in the byte array
     var currentPosition: Int {
         return index
     }
     
-    /// Get the total number of bytes
-    var totalBytes: Int {
-        return data.count
+    /// Skip a specified number of bytes
+    mutating func skip(_ count: Int) throws(CBORError) {
+        guard index + count <= data.count else {
+            throw CBORError.prematureEnd
+        }
+        index += count
+    }
+    
+    /// Seek to a specific position in the data
+    mutating func seek(to position: Int) throws(CBORError) {
+        guard position >= 0 && position <= data.count else {
+            throw CBORError.invalidPosition
+        }
+        index = position
     }
 }
