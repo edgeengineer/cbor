@@ -496,6 +496,98 @@ public indirect enum CBOR: Equatable, Sendable {
         guard let slice = textStringSlice() else { return nil }
         return String(bytes: slice, encoding: .utf8)
     }
+    
+    // MARK: - Convenience Constructors
+    
+    /// Creates a CBOR text string from a Swift String
+    public static func textString(_ string: String) -> CBOR {
+        return .textString(ArraySlice(string.utf8))
+    }
+    
+    /// Creates a CBOR array from an array of CBOR values
+    public static func array(_ elements: [CBOR]) -> CBOR {
+        var arrayBuffer: [UInt8] = []
+        let count = UInt64(elements.count)
+        let majorType: UInt8 = 4 << 5
+        
+        // Add array header
+        if count <= 23 {
+            arrayBuffer.append(majorType | UInt8(count))
+        } else if count <= UInt64(UInt8.max) {
+            arrayBuffer.append(majorType | 24)
+            arrayBuffer.append(UInt8(count))
+        } else if count <= UInt64(UInt16.max) {
+            arrayBuffer.append(majorType | 25)
+            arrayBuffer.append(UInt8(count >> 8))
+            arrayBuffer.append(UInt8(count & 0xFF))
+        } else if count <= UInt64(UInt32.max) {
+            arrayBuffer.append(majorType | 26)
+            arrayBuffer.append(UInt8(count >> 24))
+            arrayBuffer.append(UInt8((count >> 16) & 0xFF))
+            arrayBuffer.append(UInt8((count >> 8) & 0xFF))
+            arrayBuffer.append(UInt8(count & 0xFF))
+        } else {
+            arrayBuffer.append(majorType | 27)
+            arrayBuffer.append(UInt8(count >> 56))
+            arrayBuffer.append(UInt8((count >> 48) & 0xFF))
+            arrayBuffer.append(UInt8((count >> 40) & 0xFF))
+            arrayBuffer.append(UInt8((count >> 32) & 0xFF))
+            arrayBuffer.append(UInt8((count >> 24) & 0xFF))
+            arrayBuffer.append(UInt8((count >> 16) & 0xFF))
+            arrayBuffer.append(UInt8((count >> 8) & 0xFF))
+            arrayBuffer.append(UInt8(count & 0xFF))
+        }
+        
+        // Add each element's encoded bytes
+        for element in elements {
+            arrayBuffer.append(contentsOf: element.encode())
+        }
+        
+        return .array(ArraySlice(arrayBuffer))
+    }
+    
+    /// Creates a CBOR map from an array of key-value pairs
+    public static func map(_ pairs: [CBORMapPair]) -> CBOR {
+        var mapBuffer: [UInt8] = []
+        let count = UInt64(pairs.count)
+        let majorType: UInt8 = 5 << 5
+        
+        // Add map header
+        if count <= 23 {
+            mapBuffer.append(majorType | UInt8(count))
+        } else if count <= UInt64(UInt8.max) {
+            mapBuffer.append(majorType | 24)
+            mapBuffer.append(UInt8(count))
+        } else if count <= UInt64(UInt16.max) {
+            mapBuffer.append(majorType | 25)
+            mapBuffer.append(UInt8(count >> 8))
+            mapBuffer.append(UInt8(count & 0xFF))
+        } else if count <= UInt64(UInt32.max) {
+            mapBuffer.append(majorType | 26)
+            mapBuffer.append(UInt8(count >> 24))
+            mapBuffer.append(UInt8((count >> 16) & 0xFF))
+            mapBuffer.append(UInt8((count >> 8) & 0xFF))
+            mapBuffer.append(UInt8(count & 0xFF))
+        } else {
+            mapBuffer.append(majorType | 27)
+            mapBuffer.append(UInt8(count >> 56))
+            mapBuffer.append(UInt8((count >> 48) & 0xFF))
+            mapBuffer.append(UInt8((count >> 40) & 0xFF))
+            mapBuffer.append(UInt8((count >> 32) & 0xFF))
+            mapBuffer.append(UInt8((count >> 24) & 0xFF))
+            mapBuffer.append(UInt8((count >> 16) & 0xFF))
+            mapBuffer.append(UInt8((count >> 8) & 0xFF))
+            mapBuffer.append(UInt8(count & 0xFF))
+        }
+        
+        // Add each pair's encoded bytes
+        for pair in pairs {
+            mapBuffer.append(contentsOf: pair.key.encode())
+            mapBuffer.append(contentsOf: pair.value.encode())
+        }
+        
+        return .map(ArraySlice(mapBuffer))
+    }
 }
 
 /// A key-value pair in a CBOR map
