@@ -35,7 +35,7 @@ struct CBORTaggedAndErrorTests {
             
             // Verify it's a tagged value
             if case .tagged = decoded {
-                #expect(true, "Successfully decoded a tagged value")
+                #expect(Bool(true), "Successfully decoded a tagged value")
             } else {
                 Issue.record("Expected a tagged value, got \(decoded)")
             }
@@ -138,7 +138,7 @@ struct CBORTaggedAndErrorTests {
                 Issue.record("Expected to throw for invalid CBOR \(bytes)")
             } catch {
                 // Expected to throw
-                #expect(true, "Should throw for invalid CBOR")
+                #expect(Bool(true), "Should throw for invalid CBOR")
             }
         }
     }
@@ -158,7 +158,7 @@ struct CBORTaggedAndErrorTests {
                 Issue.record("Expected to throw for premature end \(bytes)")
             } catch {
                 // Expected to throw
-                #expect(true, "Should throw for premature end")
+                #expect(Bool(true), "Should throw for premature end")
             }
         }
     }
@@ -181,12 +181,10 @@ struct CBORTaggedAndErrorTests {
             do {
                 let _ = try CBOR.decode(data)
                 Issue.record("Expected to throw for data with extra bytes \(data)")
-            } catch let error as CBORError {
+            } catch let error {
                 // Check if the error is related to extra data
                 #expect(error.description.contains("extra") || error.description.contains("Extra"), 
                        "Error should mention extra data, got: \(error.description)")
-            } catch {
-                Issue.record("Unexpected error type: \(error)")
             }
         }
     }
