@@ -18,6 +18,9 @@ CBOR is a lightweight implementation of the [CBOR](https://tools.ietf.org/html/r
 - **Memory-Optimized for Embedded Swift:**  
   Uses `ArraySlice<UInt8>` internally to avoid heap allocations by referencing original data instead of copying. Includes zero-copy access methods and memory-efficient iterators for arrays and maps.
 
+- **Swift 6.2+ Span Support:**  
+  Experimental support for Swift 6.2's `Span` type for even better performance. When Swift 6.2+ is available, the library provides Span-based APIs for zero-copy access to contiguous memory regions.
+
 - **Encoding & Decoding:**  
   Easily convert between CBOR values and byte arrays.
 
@@ -569,6 +572,72 @@ The library provides automatic date encoding/decoding support through the `Codab
 - On **Linux/Windows**: Date text string formatting is not available, but dates can still be encoded/decoded using other CBOR representations (tagged values, numeric timestamps, etc.)
 
 This ensures your code remains fully functional across all platforms while taking advantage of platform-specific optimizations where available.
+
+## Swift 6.2+ Span Support (Experimental)
+
+When using Swift 6.2 or later, this library provides experimental support for the new `Span` type, which offers improved performance for working with contiguous memory.
+
+### What is Span?
+
+`Span` is a new type introduced in Swift 6.2 (SE-0447) that provides safe, performant access to contiguous memory regions. It's similar to `ArraySlice` but with better performance characteristics and stronger safety guarantees.
+
+### Available Span APIs
+
+When compiled with Swift 6.2+, the following APIs are available:
+
+```swift
+// Decode CBOR from a Span
+@available(macOS 15.0, iOS 18.0, watchOS 11.0, tvOS 18.0, *)
+static func decode(from span: Span<UInt8>) throws(CBORError) -> CBOR
+
+// Create CBOR values from Span
+@available(macOS 15.0, iOS 18.0, watchOS 11.0, tvOS 18.0, *)
+static func byteString(span: Span<UInt8>) -> CBOR
+static func textString(span: Span<UInt8>) -> CBOR
+
+// Array extension for convenience
+@available(macOS 15.0, iOS 18.0, watchOS 11.0, tvOS 18.0, *)
+extension Array where Element == UInt8 {
+    func decodeCBOR() throws(CBORError) -> CBOR
+}
+```
+
+### Using Span with CBOR
+
+```swift
+#if compiler(>=6.2)
+// When Swift 6.2+ is available
+let data: [UInt8] = [0x83, 0x01, 0x02, 0x03] // CBOR array [1, 2, 3]
+
+// Use the array extension (which can leverage Span internally)
+let cbor = try data.decodeCBOR()
+
+// Future: When Span initialization from arrays becomes available
+// data.withSpan { span in
+//     let cbor = try CBOR.decode(from: span)
+// }
+#endif
+```
+
+### Current Limitations
+
+- Direct Span initialization from arrays requires lifetime annotations, which are not yet available in Swift
+- The current implementation converts Span to Array internally for compatibility
+- Full Span benefits will be realized when lifetime annotations are added to Swift
+
+### Building with Span Support
+
+To use the Span features, ensure you're using Swift 6.2 or later:
+
+```bash
+# Install Swift 6.2+ snapshot
+swiftly install main-snapshot
+
+# Build with Swift 6.2+
+swift build
+```
+
+The library uses conditional compilation, so it remains compatible with earlier Swift versions - Span features are simply not available when compiled with Swift < 6.2.
 
 ## License
 
